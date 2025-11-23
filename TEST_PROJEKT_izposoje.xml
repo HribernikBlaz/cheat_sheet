@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<izposoje xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="shema.xsd">
+  <izposoja>
+    <idClana>C001</idClana>
+    <idKnjige>K001</idKnjige>
+    <naslov>naslov1</naslov>
+    <datumIzposoje>2025-01-01</datumIzposoje>
+  </izposoja>
+  <izposoja>
+    <idClana>C002</idClana>
+    <idKnjige>K004</idKnjige>
+    <naslov>naslov2</naslov>
+    <datumIzposoje>2025-01-11</datumIzposoje>
+  </izposoja>
+</izposoje>

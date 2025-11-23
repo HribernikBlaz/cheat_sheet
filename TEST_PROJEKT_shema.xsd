@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ČLANI -->
+  <xs:element name="clani">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="clan" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ime" type="xs:string"/>
+              <xs:element name="priimek" type="xs:string"/>
+              <xs:element name="email" type="xs:string"/>
+            </xs:sequence>
+
+            <xs:attribute name="id" type="xs:string" use="required"/>
+            
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- IZPOSOJE -->
+  <xs:element name="izpsooje">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="izposoja" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="idClana" type="xs:string"/>
+              <xs:element name="idKnjige" type="xs:string"/>
+              <xs:element name="naslov" type="xs:string"/>
+              <xs:element name="datumIzposoje" type="xs:date"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

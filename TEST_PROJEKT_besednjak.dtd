@@ -1,0 +1,19 @@
+<!ELEMENT clani (clan*)>
+<!ELEMENT clan (ime, priimek, email)>
+<!ATTLIST clan id ID #REQUIRED>
+
+<!ELEMENT ime (#PCDATA)>
+<!ELEMENT priimek (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+
+
+<!ELEMENT izposoje (izposoja*)>
+<!ELEMENT izposoja (idClana, idKnjige, naslov, datumIzposoje)>
+
+<!ELEMENT idClana (#PCDATA)>
+<!ELEMENT idKnjige (#PCDATA)>
+<!ELEMENT naslov (#PCDATA)>
+<!ELEMENT datumIzposoje (#PCDATA)>
+
+
+
