@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <!-- ====================================== -->
+  <!-- KOMPLEKSNI TIPI Z SIMPLECONTENT -->
+  <!-- ====================================== -->
+  
+  <!-- Cena z valuto - simpleContent z atributom -->
+  <xs:complexType name="CenaZValutoType">
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="valuta" type="xs:string" default="EUR"/>
+        <xs:attribute name="popust" type="xs:decimal" default="0"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Naziv z jezikom - simpleContent z atributom -->
+  <xs:complexType name="NazivZJezikomType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="jezik" type="xs:string" default="sl"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ====================================== -->
+  <!-- OSNOVNI TIP ZA DOBAVITELJA (za redefine) -->
+  <!-- ====================================== -->
+  
+  <xs:complexType name="BaseDobaviteljType">
+    <xs:sequence>
+      <xs:element name="naziv" type="xs:string"/>
+      <xs:element name="naslov" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
