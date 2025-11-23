@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXT Files in C# - Cheat Sheet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f35;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff00a0;
+            --accent-tertiary: #7c3aed;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2d3748;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 160, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes bgPulse {
+            0% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        nav {
+            background: rgba(26, 31, 53, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        nav a.active {
+            color: var(--accent-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            animation: lineGrow 2s ease-out;
+        }
+
+        @keyframes lineGrow {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100px;
+            }
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 0.6s ease-out backwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .section:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .section:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .section:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .section:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .section:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .section:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .section:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 217, 255, 0.2);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        h2::before {
+            content: '▸';
+            margin-right: 0.5rem;
+            color: var(--accent-secondary);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-secondary);
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-primary);
+            display: block;
+            line-height: 1.6;
+        }
+
+        .note {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: var(--accent-primary);
+        }
+
+        .tip {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 217, 255, 0.1));
+            border: 1px solid var(--accent-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip::before {
+            content: '💡';
+            font-size: 2rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            opacity: 0.3;
+        }
+
+        .tip-title {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer::before {
+            content: '{ C# + TXT }';
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li>Developer Cheat Sheets</li>
+            <li><a href="index.html">DTD Basics</a></li>
+            <li><a href="txt-files.html" class="active">TXT Files (C#)</a></li>
+            <li><a href="dtd-csharp.html">DTD in C#</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>TXT FILES IN C#</h1>
+            <p class="subtitle">📄 Working with Text Files - Complete Guide</p>
+        </header>
+
+        <div class="section">
+            <h2>1. File Check & Basic Operations</h2>
+
+            <h3>Check if file exists</h3>
+            <pre data-lang="C#"><code>if (!File.Exists(filePath))
+{
+    Console.WriteLine("File doesn't exist!");
+    return;
+}</code></pre>
+
+            <div class="note">
+                <strong>Important:</strong> Always check if a file exists before reading to avoid exceptions!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. Writing to Files - StreamWriter</h2>
+
+            <h3>Append Mode (add to end of file)</h3>
+            <pre data-lang="C#"><code>// true parameter = append mode (doesn't overwrite existing content)
+using (StreamWriter sw = new StreamWriter(filePath, true))
+{
+    sw.WriteLine(line);  // Writes line and adds newline at the end
+}</code></pre>
+
+            <h3>Overwrite Mode (replace entire file)</h3>
+            <pre data-lang="C#"><code>// false parameter = overwrite mode
+using (StreamWriter sw = new StreamWriter(filePath, false))
+{
+    sw.WriteLine(line);
+}</code></pre>
+
+            <h3>Complete Example: Save New Product</h3>
+            <pre data-lang="C#"><code>static void SaveProduct()
+{
+    Console.WriteLine("\n---- Enter New Product ----");
+
+    Console.Write("Product name: ");
+    string name = Console.ReadLine();
+
+    Console.Write("Price: ");
+    string price = Console.ReadLine();
+
+    Console.Write("Stock: ");
+    string stock = Console.ReadLine();
+
+    Console.Write("Supplier: ");
+    string supplier = Console.ReadLine();
+
+    // Create line with all data, separated by semicolon
+    string line = $"{name};{price};{stock};{supplier}";
+
+    try
+    {
+        // StreamWriter with true = append mode
+        using (StreamWriter sw = new StreamWriter("products.txt", true))
+        {
+            sw.WriteLine(line);
+        }
+        Console.WriteLine("\nProduct successfully saved!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nError occurred: {ex.Message}");
+    }
+}</code></pre>
+
+            <div class="note">
+                <strong>Key Concepts:</strong><br>
+                • <code>using</code> statement automatically closes the file<br>
+                • <code>true</code> = append mode, <code>false</code> = overwrite mode<br>
+                • <code>WriteLine()</code> adds automatic newline<br>
+                • Always use try-catch for file operations
+            </div>
+        </div>
+
+        <div class="section">
+
+            <h2>3. Updating Products in TXT File</h2>
+            <p>This example shows how to edit an existing product inside a TXT file. Logic:</p>
+            <ul>
+                <li>Read all products into a list</li>
+                <li>Find product by name</li>
+                <li>Modify its fields</li>
+                <li>Rewrite entire file with updated data</li>
+            </ul>
+
+
+            <pre data-lang="C#"><code>static void EditProduct()
+{
+    if (!File.Exists("products.txt"))
+    {
+        Console.WriteLine("The products file does not exist!");
+        return;
+    }
+
+    Console.WriteLine("\n ---- EDIT PRODUCT ----");
+    Console.WriteLine("Enter the product name you want to edit: ");
+    string searchedName = Console.ReadLine();
+
+    List<string> updatedLines = new List<string>();
+    bool found = false;
+
+    try
+    {
+        using (StreamReader sr = new StreamReader("products.txt"))
+        {
+            string line;
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                string[] data = line.Split(';');
+                if (data.Length == 4 && data[0].ToLower() == searchedName.ToLower())
+                {
+                    Console.WriteLine($"Product found: {data[0]}");
+                    Console.WriteLine($"Current price: {data[1]} EUR");
+                    Console.WriteLine($"Current stock: {data[2]}");
+                    Console.WriteLine($"Current supplier: {data[3]}");
+
+                    string newPrice = data[1];
+                    Console.Write("\nEnter new price (leave empty to keep current): ");
+                    string newPriceStr = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newPriceStr)) newPrice = newPriceStr;
+
+                    string newStock = data[2];
+                    Console.Write("Enter new stock (leave empty to keep current): ");
+                    string newStockStr = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newStockStr)) newStock = newStockStr;
+
+                    string newSupplier = data[3];
+                    Console.Write("Enter new supplier (leave empty to keep current): ");
+                    string newSupplierStr = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newSupplierStr)) newSupplier = newSupplierStr;
+
+                    string newLine = $"{data[0]};{newPrice};{newStock};{newSupplier}";
+                    updatedLines.Add(newLine);
+
+                    found = true;
+                }
+                else
+                {
+                    updatedLines.Add(line);
+                }
+            }
+        }
+
+        if (found)
+        {
+            using (StreamWriter sw = new StreamWriter("products.txt", false))
+            {
+                foreach (string l in updatedLines)
+                {
+                    sw.WriteLine(l);
+                }
+            }
+
+            Console.WriteLine("Product successfully updated!");
+        }
+        else
+        {
+            Console.WriteLine("A product with that name was not found!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error has occurred: {ex.Message}");
+    }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>4. Reading Files - StreamReader</h2>
+
+            <h3>Basic reading pattern</h3>
+            <pre data-lang="C#"><code>using (StreamReader sr = new StreamReader(filePath))
+{
+    string line;
+    
+    // Read line by line until end of file
+    while ((line = sr.ReadLine()) != null)
+    {
+        // Process each line
+        Console.WriteLine(line);
+    }
+}</code></pre>
+
+            <h3>Complete Example: Display All Products</h3>
+            <pre data-lang="C#"><code>static void ReadAllProducts()
+{
+    if (!File.Exists("products.txt"))
+    {
+        Console.WriteLine("Products file doesn't exist!");
+        return;
+    }
+
+    Console.WriteLine("\n---- ALL PRODUCTS ----");
+    Console.WriteLine("======================================");
+    
+    try
+    {
+        using (StreamReader sr = new StreamReader("products.txt"))
+        {
+            string line;
+            int number = 1;
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                // Split line by semicolon - creates string array
+                string[] data = line.Split(';');
+
+                if (data.Length == 4)
+                {
+                    Console.WriteLine($"\n{number}. {data[0]}");
+                    Console.WriteLine($"    Price: {data[1]} EUR");
+                    Console.WriteLine($"    Stock: {data[2]} units");
+                    Console.WriteLine($"    Supplier: {data[3]}");
+                    number++;
+                }
+            }
+
+            Console.WriteLine("\n======================================");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error reading file: {ex.Message}");
+    }
+}</code></pre>
+
+            <div class="note">
+                <strong>Important:</strong><br>
+                • <code>ReadLine()</code> returns <code>null</code> at end of file<br>
+                • <code>Split(';')</code> divides string into array<br>
+                • Always check array length before accessing elements
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. Searching & Filtering Data</h2>
+
+            <h3>Complete Example: Search Products by Supplier and Stock</h3>
+            <pre data-lang="C#"><code>static void SearchProducts()
+{
+    if (!File.Exists("products.txt"))
+    {
+        Console.WriteLine("\nFile doesn't exist!");
+        return;
+    }
+
+    Console.WriteLine("\n---- SEARCH PRODUCTS ----");
+    
+    Console.Write("Enter supplier name: ");
+    string searchSupplier = Console.ReadLine();
+
+    Console.Write("Enter maximum stock: ");
+    string maxStockInput = Console.ReadLine();
+    int maxStock = int.Parse(maxStockInput);
+
+    // List to store found products
+    List<string> foundProducts = new List<string>();
+
+    try
+    {
+        using (StreamReader sr = new StreamReader("products.txt"))
+        {
+            string line;
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                // Split line into parts by semicolon
+                string[] data = line.Split(';');
+
+                if (data.Length == 4)
+                {
+                    string name = data[0];
+                    string price = data[1];
+                    int stock = int.Parse(data[2]);
+                    string supplier = data[3];
+
+                    // Check if supplier matches AND stock is less than max
+                    if ((supplier.ToLower() == searchSupplier.ToLower()) 
+                        && (stock < maxStock))
+                    {
+                        foundProducts.Add(line);
+                    }
+                }
+            }
+
+            // Display results
+            if (foundProducts.Count > 0)
+            {
+                Console.WriteLine($"\nFound {foundProducts.Count} products:");
+                Console.WriteLine("-------------------------------");
+
+                foreach (string product in foundProducts)
+                {
+                    string[] data = product.Split(";");
+                    Console.WriteLine($"Product: {data[0]}");
+                    Console.WriteLine($"Price: {data[1]} EUR");
+                    Console.WriteLine($"Stock: {data[2]} units");
+                    Console.WriteLine($"Supplier: {data[3]}");
+                    Console.WriteLine("-------------------------------");
+                }
+
+                // Save results to separate file
+                string resultsFile = "search_results.txt";
+                using (StreamWriter sw = new StreamWriter(resultsFile, false))
+                {
+                    sw.WriteLine($"SEARCH RESULTS - Supplier: {searchSupplier}, Stock < {maxStock}");
+                    sw.WriteLine("================================");
+
+                    foreach (string product in foundProducts)
+                    {
+                        sw.WriteLine(product);
+                    }
+                }
+                Console.WriteLine($"\nResults saved to {resultsFile}");
+            }
+            else
+            {
+                Console.WriteLine("\nNo products found matching criteria.");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error occurred while reading: {ex.Message}");
+    }
+}</code></pre>
+
+            <div class="note">
+                <strong>Key Techniques:</strong><br>
+                • Use <code>List&lt;string&gt;</code> to collect matching items<br>
+                • <code>ToLower()</code> for case-insensitive comparison<br>
+                • <code>int.Parse()</code> to convert string to number<br>
+                • Save filtered results to new file
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Data Processing & Modification</h2>
+
+            <h3>Complete Example: Discount Prices</h3>
+            <pre data-lang="C#"><code>static void DiscountPrices()
+{
+    if (!File.Exists("products.txt"))
+    {
+        Console.WriteLine("Products file doesn't exist!");
+        return;
+    }
+
+    Console.WriteLine("\n---- PRICE DISCOUNT ----");
+    
+    Console.Write("Enter discount percentage (e.g. 10 for 10%): ");
+    string percentInput = Console.ReadLine();
+    double percent = double.Parse(percentInput);
+
+    if (percent <= 0 || percent > 100)
+    {
+        Console.WriteLine("\nPercentage must be between 0 and 100");
+        return;
+    }
+
+    List<string> discountedProducts = new List<string>();
+    int productCount = 0;
+
+    try
+    {
+        // Read all products
+        using (StreamReader sr = new StreamReader("products.txt"))
+        {
+            string line;
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                string[] data = line.Split(";");
+                
+                if (data.Length == 4)
+                {
+                    string name = data[0];
+                    double oldPrice = double.Parse(data[1]);
+                    string stock = data[2];
+                    string supplier = data[3];
+
+                    // Calculate new price
+                    double newPrice = oldPrice * (1 - percent / 100);
+                    newPrice = Math.Round(newPrice, 2);
+
+                    // Create new line with updated price
+                    string newLine = $"{name};{newPrice.ToString("F2")};{stock};{supplier}";
+
+                    discountedProducts.Add(newLine);
+                    productCount++;
+
+                    // Display changes
+                    Console.WriteLine($"\n{name}");
+                    Console.WriteLine($"    Old price: {oldPrice.ToString("F2")} EUR");
+                    Console.WriteLine($"    New price: {newPrice.ToString("F2")} EUR, discounted by {percent}%");
+                }
+            }
+        }
+
+        // Save discounted products to new file
+        string discountFile = "products_sale.txt";
+
+        using (StreamWriter sw = new StreamWriter(discountFile, false))
+        {
+            sw.WriteLine($"SALE - Discount {percent}%");
+            sw.WriteLine($"Date: {DateTime.Now.ToString("dd.MM.yyyy HH:mm")}");
+            sw.WriteLine($"Number of products: {productCount}");
+            sw.WriteLine();
+
+            foreach (string product in discountedProducts)
+            {
+                sw.WriteLine(product);
+            }
+        }
+
+        Console.WriteLine($"\n\nSuccessfully discounted {productCount} products");
+        Console.WriteLine($"Sale products saved to {discountFile}");
+    }
+    catch (FormatException)
+    {
+        Console.WriteLine("\nError: Price in file is not a valid number!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nError occurred: {ex.Message}");
+    }
+}</code></pre>
+
+            <div class="note">
+                <strong>Important Points:</strong><br>
+                • <code>double.Parse()</code> for decimal numbers<br>
+                • <code>Math.Round(value, 2)</code> rounds to 2 decimal places<br>
+                • <code>ToString("F2")</code> formats number with 2 decimals<br>
+                • <code>FormatException</code> catches parsing errors<br>
+                • <code>DateTime.Now</code> gets current date and time
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. Common Patterns & Best Practices</h2>
+
+            <h3>String Interpolation for Building Lines</h3>
+            <pre data-lang="C#"><code>// Modern way (recommended)
+string line = $"{name};{price};{stock};{supplier}";
+
+// Old way
+string line = name + ";" + price + ";" + stock + ";" + supplier;</code></pre>
+
+            <h3>Safe Number Parsing</h3>
+            <pre data-lang="C#"><code>// Using TryParse (safer - doesn't throw exception)
+if (int.TryParse(input, out int result))
+{
+    // Successfully parsed
+    Console.WriteLine($"Number: {result}");
+}
+else
+{
+    Console.WriteLine("Invalid number!");
+}
+
+// Using Parse (throws exception on error)
+try
+{
+    int result = int.Parse(input);
+}
+catch (FormatException)
+{
+    Console.WriteLine("Invalid number!");
+}</code></pre>
+
+            <h3>Error Handling Template</h3>
+            <pre data-lang="C#"><code>try
+{
+    // File operations here
+}
+catch (FileNotFoundException)
+{
+    Console.WriteLine("File not found!");
+}
+catch (UnauthorizedAccessException)
+{
+    Console.WriteLine("No permission to access file!");
+}
+catch (IOException ex)
+{
+    Console.WriteLine($"I/O error: {ex.Message}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Unexpected error: {ex.Message}");
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>8. Quick Reference Table</h2>
+
+            <pre data-lang="C#"><code>// FILE OPERATIONS
+File.Exists(path)                    // Check if file exists
+File.Delete(path)                    // Delete file
+File.Copy(source, dest)              // Copy file
+File.Move(source, dest)              // Move file
+
+// STREAMWRITER - Writing
+new StreamWriter(path, true)         // Append mode
+new StreamWriter(path, false)        // Overwrite mode
+sw.WriteLine(text)                   // Write line with newline
+sw.Write(text)                       // Write without newline
+
+// STREAMREADER - Reading
+sr.ReadLine()                        // Read one line (null at end)
+sr.ReadToEnd()                       // Read entire file as string
+
+// STRING OPERATIONS
+text.Split(';')                      // Split by delimiter → array
+text.ToLower()                       // Convert to lowercase
+text.ToUpper()                       // Convert to uppercase
+text.Trim()                          // Remove whitespace
+text.Contains("word")                // Check if contains
+
+// CONVERSIONS
+int.Parse(text)                      // String → int (throws exception)
+int.TryParse(text, out int result)  // Safe parsing (returns bool)
+double.Parse(text)                   // String → double
+value.ToString()                     // Any type → string
+value.ToString("F2")                 // Format with 2 decimals
+
+// LIST OPERATIONS
+List<string> list = new List<string>();
+list.Add(item)                       // Add item
+list.Count                           // Number of items
+list.Remove(item)                    // Remove item
+list.Clear()                         // Remove all items</code></pre>
+        </div>
+
+        <div class="tip">
+            <div class="tip-title">💡 Pro Tips</div>
+            <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                <li>Always use <code>using</code> statements for automatic resource cleanup</li>
+                <li>Check file existence before reading to avoid crashes</li>
+                <li>Use <code>TryParse</code> for safer number conversions</li>
+                <li>Store complex data as delimited text (e.g., semicolons)</li>
+                <li>Validate data length after splitting to avoid array index errors</li>
+                <li>Use meaningful variable names for better code readability</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>TXT Files in C# - Complete Reference Guide</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Master file operations for unstructured data</p>
+        </footer>
+    </div>
+</body>
+
+</html>

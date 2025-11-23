@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTD Cheat Sheet - Quick Reference</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f35;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff00a0;
+            --accent-tertiary: #7c3aed;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2d3748;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 160, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(26, 31, 53, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        nav a.active {
+            color: var(--accent-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            animation: lineGrow 2s ease-out;
+        }
+
+        @keyframes lineGrow {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 0.6s ease-out backwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+        .section:nth-child(9) { animation-delay: 0.9s; }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 217, 255, 0.2);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        h2::before {
+            content: '▸';
+            margin-right: 0.5rem;
+            color: var(--accent-secondary);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-secondary);
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1rem 0;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--accent-tertiary), var(--accent-secondary));
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: white;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .example {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-required {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            color: white;
+        }
+
+        .badge-optional {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+
+        .badge-unique {
+            background: linear-gradient(135deg, var(--accent-primary), #0891b2);
+            color: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-primary);
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .warning-box::before {
+            content: '❌ ';
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .success-box::before {
+            content: '✓ ';
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .tip {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 217, 255, 0.1));
+            border: 1px solid var(--accent-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip::before {
+            content: '💡';
+            font-size: 2rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            opacity: 0.3;
+        }
+
+        .tip-title {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer::before {
+            content: '{ XML + DTD }';
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Developer Cheat Sheets</li>
+            <li><a href="index.html" class="active">DTD Basics</a></li>
+            <li><a href="txt-files.html">TXT Files (C#)</a></li>
+            <li><a href="dtd-csharp.html">DTD in C#</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>DTD CHEAT SHEET</h1>
+            <p class="subtitle">📋 Your Quick Reference for Document Type Definition</p>
+        </header>
+
+        <div class="section">
+            <h2>1. Basic Syntax</h2>
+            <pre data-lang="dtd"><code>&lt;!-- Element definition --&gt;
+&lt;!ELEMENT element_name content&gt;
+
+&lt;!-- Attribute definition --&gt;
+&lt;!ATTLIST element_name
+    attribute1 type requirement
+    attribute2 type requirement&gt;
+
+&lt;!-- Internal entity (constant) --&gt;
+&lt;!ENTITY name "value"&gt;
+
+&lt;!-- Comment --&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>2. Element Content Types</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>(#PCDATA)</code></td>
+                        <td>Text content (e.g., "Hello", "123", "abc@def.com")</td>
+                    </tr>
+                    <tr>
+                        <td><code>(child1, child2, child3)</code></td>
+                        <td>Child elements (exactly in this order)</td>
+                    </tr>
+                    <tr>
+                        <td><code>EMPTY</code></td>
+                        <td>Empty element (e.g., &lt;br/&gt;)</td>
+                    </tr>
+                    <tr>
+                        <td><code>ANY</code></td>
+                        <td>Anything (text, child elements, mixed)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>3. Cardinality - How Many Times an Element Appears</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Meaning</th>
+                        <th>Number of Occurrences</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>(none)</code></td>
+                        <td>Exactly once</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td><code>?</code></td>
+                        <td>Optional</td>
+                        <td>0 or 1</td>
+                    </tr>
+                    <tr>
+                        <td><code>+</code></td>
+                        <td>One or more</td>
+                        <td>1, 2, 3, ... ∞</td>
+                    </tr>
+                    <tr>
+                        <td><code>*</code></td>
+                        <td>Zero or more</td>
+                        <td>0, 1, 2, 3, ... ∞</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Examples:</h3>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">Optional element</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT product (name, price, desc?)</code>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted);">desc is optional</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">At least 1</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT catalog (product+)</code>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted);">at least 1 product</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">0 or more</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT products (product*)</code>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted);">0 or more products</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Multiple phones</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT person (name, surname, phone+)</code>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted);">at least 1 phone</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. Attribute Types</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>CDATA</code></td>
+                        <td>Any text</td>
+                    </tr>
+                    <tr>
+                        <td><code>ID</code> <span class="badge badge-unique">UNIQUE</span></td>
+                        <td>Unique identifier in document</td>
+                    </tr>
+                    <tr>
+                        <td><code>IDREF</code></td>
+                        <td>Reference to another element's ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>(a|b|c)</code></td>
+                        <td>Limited set of values (only a, b, or c)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>5. Attribute Requirements</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>#REQUIRED</code> <span class="badge badge-required">Required</span></td>
+                        <td>REQUIRED attribute</td>
+                    </tr>
+                    <tr>
+                        <td><code>#IMPLIED</code> <span class="badge badge-optional">Optional</span></td>
+                        <td>Optional attribute</td>
+                    </tr>
+                    <tr>
+                        <td><code>"default"</code></td>
+                        <td>Default value</td>
+                    </tr>
+                    <tr>
+                        <td><code>#FIXED "value"</code></td>
+                        <td>Fixed value (cannot be different)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>6. Practical Examples</h2>
+            
+            <h3>Text content (can be anything)</h3>
+            <div class="example">
+                <pre data-lang="dtd"><code>&lt;!ELEMENT name (#PCDATA)&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;name&gt;Logitech MX Mouse&lt;/name&gt;</code></pre>
+            </div>
+
+            <h3>Required unique ID</h3>
+            <div class="example">
+                <pre data-lang="dtd"><code>&lt;!ATTLIST product id ID #REQUIRED&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;product id="A001"&gt;...&lt;/product&gt;</code></pre>
+            </div>
+
+            <h3>Limited set of values with default</h3>
+            <div class="example">
+                <pre data-lang="dtd"><code>&lt;!ATTLIST price currency (EUR|USD|GBP) "EUR"&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;price currency="USD"&gt;100&lt;/price&gt;
+&lt;price&gt;100&lt;/price&gt;  &lt;!-- defaults to EUR --&gt;</code></pre>
+            </div>
+
+            <h3>Empty element with attribute</h3>
+            <div class="example">
+                <pre data-lang="dtd"><code>&lt;!ELEMENT note EMPTY&gt;
+&lt;!ATTLIST note text CDATA #IMPLIED&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;note text="Important!" /&gt;</code></pre>
+            </div>
+
+            <h3>Reference to another element</h3>
+            <div class="example">
+                <pre data-lang="dtd"><code>&lt;!ATTLIST product supplierId IDREF #REQUIRED&gt;
+&lt;!ATTLIST supplier id ID #REQUIRED&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;supplier id="S001"&gt;...&lt;/supplier&gt;
+&lt;product supplierId="S001"&gt;...&lt;/product&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. Quick Recipes</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">Element exactly ONCE</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT parent (child)&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Element OPTIONAL</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT parent (child?)&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Element MORE than ONCE</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT parent (child+)&gt;</code>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted);">at least 1</p>
+                        <code>&lt;!ELEMENT parent (child*)&gt;</code>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted);">can be 0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Attribute UNIQUE</div>
+                    <div class="card-content">
+                        <code>&lt;!ATTLIST element id ID #REQUIRED&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Specific values</div>
+                    <div class="card-content">
+                        <code>&lt;!ATTLIST element type (a|b|c) "a"&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">TEXT only</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT element (#PCDATA)&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">EMPTY element</div>
+                    <div class="card-content">
+                        <code>&lt;!ELEMENT element EMPTY&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Attribute REQUIRED</div>
+                    <div class="card-content">
+                        <code>&lt;!ATTLIST element attr CDATA #REQUIRED&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Attribute OPTIONAL</div>
+                    <div class="card-content">
+                        <code>&lt;!ATTLIST element attr CDATA #IMPLIED&gt;</code>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Element POINTS to another</div>
+                    <div class="card-content">
+                        <code>&lt;!ATTLIST target id ID #REQUIRED&gt;</code><br>
+                        <code>&lt;!ATTLIST source ref IDREF #REQUIRED&gt;</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. Common Mistakes</h2>
+            
+            <div class="warning-box">
+                <strong>ID cannot start with a number</strong>
+                <pre data-lang="xml"><code>&lt;product id="123"&gt;  &lt;!-- ERROR! --&gt;</code></pre>
+            </div>
+            <div class="success-box">
+                <strong>CORRECT</strong>
+                <pre data-lang="xml"><code>&lt;product id="A123"&gt;  &lt;!-- ✓ CORRECT --&gt;</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>Two elements with same ID</strong>
+                <pre data-lang="xml"><code>&lt;product id="A001"&gt;...&lt;/product&gt;
+&lt;product id="A001"&gt;...&lt;/product&gt;  &lt;!-- ERROR! --&gt;</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>Wrong order of elements</strong>
+                <pre data-lang="dtd"><code>DTD: &lt;!ELEMENT product (name, price)&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;product&gt;&lt;price&gt;...&lt;/price&gt;&lt;name&gt;...&lt;/name&gt;&lt;/product&gt;  &lt;!-- ERROR! --&gt;</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>EMPTY element with content</strong>
+                <pre data-lang="dtd"><code>DTD: &lt;!ELEMENT note EMPTY&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;note&gt;text&lt;/note&gt;  &lt;!-- ERROR! --&gt;</code></pre>
+            </div>
+            <div class="success-box">
+                <strong>CORRECT</strong>
+                <pre data-lang="xml"><code>&lt;note /&gt;  &lt;!-- ✓ CORRECT --&gt;</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>Invalid value from limited set</strong>
+                <pre data-lang="dtd"><code>DTD: &lt;!ATTLIST price currency (EUR|USD) "EUR"&gt;</code></pre>
+                <pre data-lang="xml"><code>&lt;price currency="GBP"&gt;100&lt;/price&gt;  &lt;!-- ERROR! (GBP not allowed) --&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>9. How to Link DTD with XML</h2>
+            
+            <h3>External DTD file</h3>
+            <pre data-lang="xml"><code>&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE root_element SYSTEM "vocabulary.dtd"&gt;
+&lt;root_element&gt;
+  ...
+&lt;/root_element&gt;</code></pre>
+
+            <h3>Internal DTD (inside XML document)</h3>
+            <pre data-lang="xml"><code>&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE root_element [
+  &lt;!ELEMENT root_element (child*)&gt;
+  &lt;!ELEMENT child (#PCDATA)&gt;
+]&gt;
+&lt;root_element&gt;
+  ...
+&lt;/root_element&gt;</code></pre>
+        </div>
+
+        <div class="tip">
+            <div class="tip-title">💡 Pro Tip</div>
+            <p>Bookmark this page for quick access while working with DTD documents! You can also print it or save as PDF for offline use.</p>
+        </div>
+
+        <footer>
+            <p>DTD Cheat Sheet - Quick Reference for Developers</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Everything you need to work with Document Type Definition</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTD in C# - Cheat Sheet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f35;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff00a0;
+            --accent-tertiary: #7c3aed;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2d3748;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 160, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        nav {
+            background: rgba(26, 31, 53, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        nav a.active {
+            color: var(--accent-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            animation: lineGrow 2s ease-out;
+        }
+
+        @keyframes lineGrow {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 0.6s ease-out backwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+        .section:nth-child(9) { animation-delay: 0.9s; }
+        .section:nth-child(10) { animation-delay: 1.0s; }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 217, 255, 0.2);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        h2::before {
+            content: '▸';
+            margin-right: 0.5rem;
+            color: var(--accent-secondary);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-secondary);
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-primary);
+            display: block;
+            line-height: 1.6;
+        }
+
+        .note {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: var(--accent-primary);
+        }
+
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--error);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning strong {
+            color: var(--error);
+        }
+
+        .tip {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 217, 255, 0.1));
+            border: 1px solid var(--accent-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip::before {
+            content: '💡';
+            font-size: 2rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            opacity: 0.3;
+        }
+
+        .tip-title {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer::before {
+            content: '{ C# + XML + DTD }';
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Developer Cheat Sheets</li>
+            <li><a href="index.html">DTD Basics</a></li>
+            <li><a href="txt-files.html">TXT Files (C#)</a></li>
+            <li><a href="dtd-csharp.html" class="active">DTD in C#</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>DTD IN C#</h1>
+            <p class="subtitle">🔧 Complete Guide to XML & DTD Manipulation</p>
+        </header>
+
+        <div class="section">
+            <h2>0. Required Using Statements</h2>
+            <pre data-lang="C#"><code>using System.Xml;
+using System.Xml.Schema;  // For DTD validation
+using System.Globalization;  // For number formatting</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>1. Creating XML File with DOCTYPE</h2>
+            
+            <h3>Creating file programmatically</h3>
+            <pre data-lang="C#"><code>static void CreateXMLWithDTD()
+{
+    string dtdPath = "vocabulary.dtd";
+    string xmlPath = "products.xml";
+
+    // Create XML as string with DOCTYPE declaration
+    string xmlContent = $@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<!DOCTYPE products SYSTEM ""{dtdPath}"">
+<products>
+</products>";
+
+    File.WriteAllText(xmlPath, xmlContent);
+}</code></pre>
+
+            <h3>Creating with XmlDocument</h3>
+            <pre data-lang="C#"><code>static void CreateXMLWithDTD_Advanced()
+{
+    XmlDocument doc = new XmlDocument();
+    
+    // 1. XML Declaration
+    XmlDeclaration declaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+    doc.AppendChild(declaration);
+
+    // 2. DOCTYPE (DTD reference)
+    XmlDocumentType doctype = doc.CreateDocumentType(
+        "products",     // Root element name
+        null,           // Public ID (null for SYSTEM)
+        "vocabulary.dtd",  // System ID (DTD file path)
+        null            // Internal subset
+    );
+    doc.AppendChild(doctype);
+
+    // 3. Root element
+    XmlElement root = doc.CreateElement("products");
+    doc.AppendChild(root);
+
+    doc.Save("products.xml");
+}</code></pre>
+
+            <div class="note">
+                <strong>Important:</strong> DOCTYPE must come AFTER XML declaration but BEFORE root element!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. DTD Validation</h2>
+            
+            <h3>Complete validation setup</h3>
+            <pre data-lang="C#"><code>static bool validationOK = true;
+
+static void ValidateXML(string path)
+{
+    validationOK = true;
+
+    try
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        
+        // Enable DTD processing
+        settings.DtdProcessing = DtdProcessing.Parse;
+        
+        // Set validation type to DTD
+        settings.ValidationType = ValidationType.DTD;
+        
+        // Register validation event handler
+        settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+        
+        // Allow external DTD files
+        settings.XmlResolver = new XmlUrlResolver();
+
+        // Create reader and validate
+        XmlReader reader = XmlReader.Create(path, settings);
+
+        // Read through entire document
+        while (reader.Read()) ;
+        
+        reader.Close();
+
+        if (validationOK)
+        {
+            Console.WriteLine("✅ XML is valid!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Validation error: {ex.Message}");
+        validationOK = false;
+    }
+}
+
+// Callback for validation errors
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    Console.WriteLine($"❌ Validation error: {e.Message}");
+    validationOK = false;
+}</code></pre>
+
+            <h3>Safe validation pattern (temp file)</h3>
+            <pre data-lang="C#"><code>// Save to temp file, validate, then replace original if valid
+string tempPath = "temp_products.xml";
+doc.Save(tempPath);
+
+ValidateXML(tempPath);
+
+if (validationOK)
+{
+    File.Copy(tempPath, "products.xml", true);  // Overwrite original
+    File.Delete(tempPath);
+    Console.WriteLine("✅ Changes saved and validated!");
+}
+else
+{
+    File.Delete(tempPath);
+    Console.WriteLine("❌ Changes NOT saved due to validation error!");
+}</code></pre>
+
+            <div class="warning">
+                <strong>Always validate before saving!</strong> Use temp file pattern to avoid corrupting your XML.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. Reading XML - Basic Operations</h2>
+            
+            <h3>Load XML file</h3>
+            <pre data-lang="C#"><code>XmlDocument doc = new XmlDocument();
+doc.Load("products.xml");</code></pre>
+
+            <h3>Get all elements of specific type</h3>
+            <pre data-lang="C#"><code>// Get all <product> elements
+XmlNodeList products = doc.SelectNodes("//product");
+
+Console.WriteLine($"Found {products.Count} products");</code></pre>
+
+            <h3>Get single element</h3>
+            <pre data-lang="C#"><code>// Get specific product by ID attribute
+XmlNode product = doc.SelectSingleNode("//product[@id='A001']");
+
+if (product == null)
+{
+    Console.WriteLine("Product not found!");
+    return;
+}</code></pre>
+
+            <h3>Reading element content</h3>
+            <pre data-lang="C#"><code>// Read attribute
+string id = product.Attributes["id"]?.Value ?? "?";
+string category = product.Attributes["category"]?.Value ?? "?";
+
+// Read child element text
+string name = product.SelectSingleNode("name")?.InnerText ?? "";
+string price = product.SelectSingleNode("price")?.InnerText ?? "";
+
+// Read EMPTY element attribute
+XmlNode availableNode = product.SelectSingleNode("available");
+string available = availableNode?.Attributes["status"]?.Value ?? "?";</code></pre>
+
+            <div class="note">
+                <strong>Key Points:</strong><br>
+                • Use <code>?.</code> (null-conditional operator) to avoid null exceptions<br>
+                • Use <code>??</code> (null-coalescing operator) for default values<br>
+                • <code>SelectNodes</code> returns list, <code>SelectSingleNode</code> returns one
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. Complete Example: Display All Items</h2>
+            
+            <pre data-lang="C#"><code>static void DisplayAllProducts()
+{
+    if (!File.Exists("products.xml"))
+    {
+        Console.WriteLine("File products.xml doesn't exist!");
+        return;
+    }
+
+    XmlDocument doc = new XmlDocument();
+    doc.Load("products.xml");
+
+    XmlNodeList products = doc.SelectNodes("//product");
+
+    if (products.Count == 0)
+    {
+        Console.WriteLine("\nNo products yet!");
+        return;
+    }
+
+    Console.WriteLine("\n========== PRODUCT LIST ==========");
+
+    foreach (XmlNode product in products)
+    {
+        // Read attributes
+        string id = product.Attributes["id"]?.Value ?? "?";
+        string category = product.Attributes["category"]?.Value ?? "?";
+
+        // Read child elements
+        string name = product.SelectSingleNode("name")?.InnerText ?? "";
+        string price = product.SelectSingleNode("price")?.InnerText ?? "";
+        string stock = product.SelectSingleNode("stock")?.InnerText ?? "";
+        string supplierId = product.SelectSingleNode("supplierId")?.InnerText ?? "";
+        string date = product.SelectSingleNode("lastPurchase")?.InnerText ?? "";
+
+        // Read EMPTY element with attribute
+        XmlNode availableNode = product.SelectSingleNode("available");
+        string available = availableNode?.Attributes["status"]?.Value ?? "?";
+
+        // Get supplier name from another XML file
+        string supplierName = GetSupplierName(supplierId);
+
+        Console.WriteLine($"\nProduct ID: {id}");
+        Console.WriteLine($"   Name: {name}");
+        Console.WriteLine($"   Category: {category}");
+        Console.WriteLine($"   Price: {price} EUR");
+        Console.WriteLine($"   Stock: {stock} units");
+        Console.WriteLine($"   Available: {available}");
+        Console.WriteLine($"   Supplier: {supplierName} (ID: {supplierId})");
+        Console.WriteLine($"   Last purchase: {date}");
+    }
+
+    Console.WriteLine("\n==================================");
+    Console.WriteLine($"Total: {products.Count} products");
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>5. Adding New Elements</h2>
+            
+            <h3>Complete example: Add product</h3>
+            <pre data-lang="C#"><code>static void AddProduct()
+{
+    Console.WriteLine("\n========== ADD PRODUCT ==========");
+
+    // Get user input
+    Console.Write("Product ID (e.g., A002): ");
+    string id = Console.ReadLine();
+
+    Console.Write("Name: ");
+    string name = Console.ReadLine();
+
+    Console.Write("Price (EUR): ");
+    string priceInput = Console.ReadLine();
+    
+    decimal price;
+    if (!decimal.TryParse(priceInput, NumberStyles.Any, 
+        CultureInfo.InvariantCulture, out price))
+    {
+        Console.WriteLine("\nInvalid price format!");
+        return;
+    }
+
+    Console.Write("Stock (units): ");
+    string stockInput = Console.ReadLine();
+    
+    int stock;
+    if (!int.TryParse(stockInput, out stock))
+    {
+        Console.WriteLine("\nInvalid stock format!");
+        return;
+    }
+
+    Console.Write("Category (electronics/clothing/food/other): ");
+    string category = Console.ReadLine();
+
+    Console.Write("Supplier ID: ");
+    string supplierId = Console.ReadLine();
+
+    Console.Write("Available? (yes/no): ");
+    string availableStr = Console.ReadLine();
+    string available = availableStr?.ToLower() == "yes" ? "yes" : "no";
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("products.xml");
+
+        XmlNode root = doc.SelectSingleNode("products");
+
+        // Create new product element
+        XmlElement newProduct = doc.CreateElement("product");
+        
+        // Set attributes
+        newProduct.SetAttribute("id", id);
+        newProduct.SetAttribute("category", category);
+
+        // Create and add child elements
+        XmlElement nameEl = doc.CreateElement("name");
+        nameEl.InnerText = name;
+        newProduct.AppendChild(nameEl);
+
+        XmlElement priceEl = doc.CreateElement("price");
+        priceEl.InnerText = price.ToString("F2", CultureInfo.InvariantCulture);
+        newProduct.AppendChild(priceEl);
+
+        XmlElement stockEl = doc.CreateElement("stock");
+        stockEl.InnerText = stock.ToString();
+        newProduct.AppendChild(stockEl);
+
+        XmlElement supplierEl = doc.CreateElement("supplierId");
+        supplierEl.InnerText = supplierId;
+        newProduct.AppendChild(supplierEl);
+
+        XmlElement dateEl = doc.CreateElement("lastPurchase");
+        dateEl.InnerText = DateTime.Now.ToString("yyyy-MM-dd");
+        newProduct.AppendChild(dateEl);
+
+        // EMPTY element with attribute
+        XmlElement availableEl = doc.CreateElement("available");
+        availableEl.SetAttribute("status", available);
+        newProduct.AppendChild(availableEl);
+
+        // Add to root
+        root.AppendChild(newProduct);
+
+        // Validate before saving
+        string tempPath = "temp_products.xml";
+        doc.Save(tempPath);
+
+        ValidateXML(tempPath);
+
+        if (validationOK)
+        {
+            File.Copy(tempPath, "products.xml", true);
+            File.Delete(tempPath);
+            Console.WriteLine("\n✅ Product successfully added and validated!");
+        }
+        else
+        {
+            File.Delete(tempPath);
+            Console.WriteLine("\n❌ Product NOT added due to validation error!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nError adding product: {ex.Message}");
+    }
+}</code></pre>
+
+            <div class="note">
+                <strong>Element creation steps:</strong><br>
+                1. Create element: <code>doc.CreateElement("name")</code><br>
+                2. Set content: <code>element.InnerText = "value"</code><br>
+                3. Set attributes: <code>element.SetAttribute("attr", "value")</code><br>
+                4. Add to parent: <code>parent.AppendChild(element)</code>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Updating Elements</h2>
+            
+            <h3>Complete example: Edit product</h3>
+            <pre data-lang="C#"><code>static void EditProduct()
+{
+    Console.WriteLine("\n========== EDIT PRODUCT ==========");
+    Console.Write("Enter product ID: ");
+    string id = Console.ReadLine();
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("products.xml");
+
+        // Find product by ID
+        XmlNode product = doc.SelectSingleNode($"//product[@id='{id}']");
+
+        if (product == null)
+        {
+            Console.WriteLine($"\nProduct with ID {id} doesn't exist!");
+            return;
+        }
+
+        // Display current data
+        Console.WriteLine("\n--- CURRENT DATA ---");
+        Console.WriteLine($"Name: {product.SelectSingleNode("name")?.InnerText}");
+        Console.WriteLine($"Price: {product.SelectSingleNode("price")?.InnerText}");
+        Console.WriteLine($"Stock: {product.SelectSingleNode("stock")?.InnerText}");
+        Console.WriteLine("\nLeave empty to keep unchanged.");
+
+        // Update name
+        Console.Write("\nNew name: ");
+        string newName = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newName))
+        {
+            product.SelectSingleNode("name").InnerText = newName;
+        }
+
+        // Update price
+        Console.Write("New price (EUR): ");
+        string newPriceInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newPriceInput))
+        {
+            decimal newPrice;
+            if (decimal.TryParse(newPriceInput, NumberStyles.Any, 
+                CultureInfo.InvariantCulture, out newPrice))
+            {
+                product.SelectSingleNode("price").InnerText = 
+                    newPrice.ToString("F2", CultureInfo.InvariantCulture);
+            }
+        }
+
+        // Update stock
+        Console.Write("New stock: ");
+        string newStockInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newStockInput))
+        {
+            int newStock;
+            if (int.TryParse(newStockInput, out newStock))
+            {
+                product.SelectSingleNode("stock").InnerText = newStock.ToString();
+            }
+        }
+
+        // Update attribute (EMPTY element)
+        Console.Write("Available (yes/no): ");
+        string newAvailable = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newAvailable))
+        {
+            product.SelectSingleNode("available")
+                   .Attributes["status"].Value = newAvailable;
+        }
+
+        // Validate and save
+        string tempPath = "temp_products.xml";
+        doc.Save(tempPath);
+
+        ValidateXML(tempPath);
+
+        if (validationOK)
+        {
+            File.Copy(tempPath, "products.xml", true);
+            File.Delete(tempPath);
+            Console.WriteLine("\n✅ Product successfully updated!");
+        }
+        else
+        {
+            File.Delete(tempPath);
+            Console.WriteLine("\n❌ Changes NOT saved due to validation error!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nError updating: {ex.Message}");
+    }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>7. Deleting Elements</h2>
+            
+            <h3>Delete node</h3>
+            <pre data-lang="C#"><code>static void DeleteProduct()
+{
+    Console.Write("Enter product ID to delete: ");
+    string id = Console.ReadLine();
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("products.xml");
+
+        XmlNode product = doc.SelectSingleNode($"//product[@id='{id}']");
+        
+        if (product == null)
+        {
+            Console.WriteLine($"\nProduct with ID '{id}' doesn't exist!");
+            return;
+        }
+
+        string name = product.SelectSingleNode("name")?.InnerText ?? "Unknown";
+
+        Console.Write($"\nReally delete product '{name}'? (y/n): ");
+        string confirmation = Console.ReadLine();
+
+        if (confirmation?.ToLower() == "y")
+        {
+            // Remove from parent
+            product.ParentNode.RemoveChild(product);
+            
+            doc.Save("products.xml");
+
+            Console.WriteLine($"\n✅ Product '{name}' (ID: {id}) deleted!");
+        }
+        else
+        {
+            Console.WriteLine("\nDeletion cancelled.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nError deleting: {ex.Message}");
+    }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>8. XPath Query Examples</h2>
+            
+            <pre data-lang="C#"><code>// Get all products
+XmlNodeList all = doc.SelectNodes("//product");
+
+// Get product by ID attribute
+XmlNode specific = doc.SelectSingleNode("//product[@id='A001']");
+
+// Get products by category attribute
+XmlNodeList electronics = doc.SelectNodes("//product[@category='electronics']");
+
+// Get products where supplier ID equals specific value
+XmlNodeList bySupplier = doc.SelectNodes("//product[supplierId='S001']");
+
+// Get products where stock > 50 (text comparison, be careful!)
+XmlNodeList highStock = doc.SelectNodes("//product[stock>50]");
+
+// Get first product
+XmlNode first = doc.SelectSingleNode("//product[1]");
+
+// Get last product
+XmlNode last = doc.SelectSingleNode("//product[last()]");
+
+// Count products
+int count = doc.SelectNodes("//product").Count;</code></pre>
+
+            <div class="note">
+                <strong>XPath Cheat Sheet:</strong><br>
+                • <code>//element</code> - All elements anywhere<br>
+                • <code>[@attr='value']</code> - By attribute value<br>
+                • <code>[child='value']</code> - By child element value<br>
+                • <code>[position]</code> - By position (1-indexed!)<br>
+                • <code>/</code> - Direct child<br>
+                • <code>//</code> - Any descendant
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>9. Working with Attributes</h2>
+            
+            <h3>Reading attributes</h3>
+            <pre data-lang="C#"><code>// Safe reading with null checking
+string id = node.Attributes["id"]?.Value ?? "default";
+
+// Direct reading (can throw exception if null)
+string id = node.Attributes["id"].Value;
+
+// Check if attribute exists
+if (node.Attributes["id"] != null)
+{
+    string id = node.Attributes["id"].Value;
+}</code></pre>
+
+            <h3>Setting attributes</h3>
+            <pre data-lang="C#"><code>// Set or update attribute
+element.SetAttribute("id", "A001");
+element.SetAttribute("category", "electronics");
+
+// Multiple attributes
+element.SetAttribute("id", "A001");
+element.SetAttribute("status", "active");
+element.SetAttribute("priority", "high");</code></pre>
+
+            <h3>EMPTY elements with attributes</h3>
+            <pre data-lang="C#"><code>// Create EMPTY element (no InnerText!)
+XmlElement emptyEl = doc.CreateElement("available");
+emptyEl.SetAttribute("status", "yes");
+product.AppendChild(emptyEl);
+
+// Read EMPTY element attribute
+XmlNode emptyNode = product.SelectSingleNode("available");
+string status = emptyNode?.Attributes["status"]?.Value ?? "unknown";</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>10. Helper Methods & Patterns</h2>
+            
+            <h3>Check if element exists</h3>
+            <pre data-lang="C#"><code>static bool ProductExists(string id)
+{
+    if (!File.Exists("products.xml")) return false;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("products.xml");
+
+        XmlNode product = doc.SelectSingleNode($"//product[@id='{id}']");
+        return product != null;
+    }
+    catch
+    {
+        return false;
+    }
+}</code></pre>
+
+            <h3>Get data from related file</h3>
+            <pre data-lang="C#"><code>static string GetSupplierName(string supplierId)
+{
+    if (!File.Exists("suppliers.xml")) return "Unknown";
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("suppliers.xml");
+
+        XmlNode supplier = doc.SelectSingleNode($"//supplier[@id='{supplierId}']");
+
+        if (supplier != null)
+        {
+            return supplier.SelectSingleNode("name")?.InnerText ?? "Unknown";
+        }
+    }
+    catch
+    {
+        // Handle error silently
+    }
+    
+    return "Unknown";
+}</code></pre>
+
+            <h3>Safe number formatting</h3>
+            <pre data-lang="C#"><code>// For decimal numbers (prices)
+decimal price = 19.99m;
+string priceStr = price.ToString("F2", CultureInfo.InvariantCulture);
+// Result: "19.99" (always with dot, not comma)
+
+// Parsing with culture invariant
+decimal.TryParse(input, NumberStyles.Any, 
+    CultureInfo.InvariantCulture, out decimal result);</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>11. Quick Reference</h2>
+            
+            <pre data-lang="C#"><code>// LOADING
+XmlDocument doc = new XmlDocument();
+doc.Load("file.xml");
+
+// CREATING ELEMENTS
+XmlElement el = doc.CreateElement("name");
+el.InnerText = "value";
+el.SetAttribute("attr", "value");
+
+// ADDING TO PARENT
+parent.AppendChild(child);
+
+// READING
+XmlNodeList list = doc.SelectNodes("//element");
+XmlNode node = doc.SelectSingleNode("//element[@id='1']");
+string text = node?.InnerText ?? "";
+string attr = node?.Attributes["id"]?.Value ?? "";
+
+// UPDATING
+node.InnerText = "new value";
+node.Attributes["attr"].Value = "new value";
+
+// DELETING
+parent.RemoveChild(child);
+
+// SAVING
+doc.Save("file.xml");
+
+// VALIDATION
+XmlReaderSettings settings = new XmlReaderSettings();
+settings.DtdProcessing = DtdProcessing.Parse;
+settings.ValidationType = ValidationType.DTD;
+settings.ValidationEventHandler += ValidationCallBack;
+XmlReader reader = XmlReader.Create(path, settings);
+while (reader.Read()) ;
+reader.Close();</code></pre>
+        </div>
+
+        <div class="tip">
+            <div class="tip-title">💡 Best Practices</div>
+            <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                <li>Always use null-conditional operators (<code>?.</code>) when reading XML</li>
+                <li>Validate XML with temp file before overwriting original</li>
+                <li>Use <code>CultureInfo.InvariantCulture</code> for number formatting</li>
+                <li>Remember: XPath indices are 1-based, not 0-based!</li>
+                <li>EMPTY elements have attributes but no <code>InnerText</code></li>
+                <li>Always close readers and use <code>using</code> statements</li>
+                <li>Check file existence before operations</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>DTD in C# - Complete XML Manipulation Guide</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Master XML and DTD validation in C#</p>
+        </footer>
+    </div>
+</body>
+</html>
