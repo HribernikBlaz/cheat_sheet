@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTD Primeri - Celotna Koda</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f35;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff00a0;
+            --accent-warning: #f59e0b;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border-color: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        nav {
+            background: rgba(26, 31, 53, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-primary);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-warning), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-warning);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-primary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent-warning);
+            color: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .info-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent-warning);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>DTD Primeri</li>
+            <li><a href="index.html">DTD</a></li>
+            <li><a href="slovenian-cheat-sheet.html">Slovensko</a></li>
+            <li><a href="txt-examples-slovenian.html">TXT Primeri</a></li>
+            <li><a href="dtd-examples-slovenian.html" class="active">DTD Primeri</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>📋 DTD - CELOTNA KODA</h1>
+            <p class="subtitle">Vsi primeri iz naloga03_DTD</p>
+        </header>
+
+        <!-- MAIN SETUP -->
+        <div class="section">
+            <h2><span class="tag">Setup</span> Osnovne Nastavitve</h2>
+            <pre><code>using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+
+namespace naloga03_DTD
+{
+    class Program
+    {
+        static string potDoArtiklov = "artikli.xml";
+        static string potDoDobaviteljev = "dobavitelji.xml";
+        static string potDoBesednjaka = "besednjak.dtd";
+        static bool validacijaOK = true;
+
+        static void Main(string[] args)
+        {
+            NarediDatoteke();
+
+            while (true)
+            {
+                Console.WriteLine("\n===== UPRAVLJANJE ARTIKLOV IN DOBAVITELJEV =====");
+                Console.WriteLine("1) Izpis artiklov");
+                Console.WriteLine("2) Dodaj artikel");
+                Console.WriteLine("3) Uredi artikel");
+                Console.WriteLine("4) Izbriši artikel");
+                Console.WriteLine("5) Išči artikle po dobavitelju");
+                Console.WriteLine("6) Izpis dobaviteljev");
+                Console.WriteLine("7) Dodaj dobavitelja");
+                Console.WriteLine("8) Uredi dobavitelja");
+                Console.WriteLine("9) Izbriši dobavitelja");
+                Console.WriteLine("10) Ustvari testne podatke");
+                Console.WriteLine("0) Izhod");
+
+                Console.Write("\nIzbira: ");
+                string izbira = Console.ReadLine();
+
+                switch (izbira)
+                {
+                    case "1": IzpisArtiklov(); break;
+                    case "2": DodajArtikel(); break;
+                    case "3": UrediArtikel(); break;
+                    case "4": IzbrisiArtikel(); break;
+                    case "5": IsciArtiklePoDobavitelju(); break;
+                    case "6": IzpisDobaviteljev(); break;
+                    case "7": DodajDobavitelja(); break;
+                    case "8": UrediDobavitelja(); break;
+                    case "9": IzbrisiDobavitelja(); break;
+                    case "10": UstvariTestnePodatke(); break;
+                    case "0":
+                        Console.WriteLine("Program se končuje...");
+                        return;
+                    default:
+                        Console.WriteLine("Napačna izbira!");
+                        break;
+                }
+            }
+        }
+    }
+}</code></pre>
+        </div>
+
+        <!-- VALIDACIJA DTD -->
+        <div class="section">
+            <h2><span class="tag">Validacija</span> DTD Validacija</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda validira XML dokument proti DTD. Uporablja XmlReaderSettings z
+                DtdProcessing.Parse in ValidationEventHandler za lovljenje napak.
+            </div>
+            <pre><code>// ---------------------------------
+// DTD VALIDACIJA
+// ---------------------------------
+static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+
+    try
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.ValidationType = ValidationType.DTD;
+        settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+        settings.XmlResolver = new XmlUrlResolver();
+
+        XmlReader reader = XmlReader.Create(pot, settings);
+
+        while (reader.Read()) ;
+        reader.Close();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Napaka pri validaciji: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    Console.WriteLine($"❌ Napaka pri validaciji: {e.Message}");
+    validacijaOK = false;
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>XmlReaderSettings</strong> - konfiguracija za validacijo</li>
+                    <li><strong>DtdProcessing.Parse</strong> - omogoči obdelavo DTD</li>
+                    <li><strong>ValidationType.DTD</strong> - nastavi tip validacije na DTD</li>
+                    <li><strong>ValidationEventHandler</strong> - callback funkcija za napake</li>
+                    <li><strong>XmlUrlResolver</strong> - potreben za reševanje zunanjih DTD</li>
+                    <li><strong>validacijaOK</strong> - globalna spremenljivka za status</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- USTVARJANJE DATOTEK -->
+        <div class="section">
+            <h2><span class="tag">Ustvarjanje</span> Ustvarjanje XML Datotek z DTD</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Dve metodi za ustvarjanje XML datotek z DTD referenco. Prva uporablja string template,
+                druga XmlDocument API.
+            </div>
+
+            <h3>Metoda 1: String Template (Enostavnejša)</h3>
+            <pre><code>static void NarediDatoteke()
+{
+    if (!File.Exists(potDoArtiklov))
+    {
+        string xmlArtikli = $@"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;!DOCTYPE artikli SYSTEM ""{potDoBesednjaka}""&gt;
+&lt;artikli&gt;
+&lt;/artikli&gt;";
+        File.WriteAllText(potDoArtiklov, xmlArtikli);
+    }
+
+    if (!File.Exists(potDoDobaviteljev))
+    {
+        string xmlDobavitelji = $@"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;!DOCTYPE dobavitelji SYSTEM ""{potDoBesednjaka}""&gt;
+&lt;dobavitelji&gt;
+&lt;/dobavitelji&gt;";
+        File.WriteAllText(potDoDobaviteljev, xmlDobavitelji);
+    }
+}</code></pre>
+
+            <h3>Metoda 2: XmlDocument API (Programska)</h3>
+            <pre><code>static void NarediDatoteke()
+{
+    // DOBAVITELJI
+    XmlDocument docDob = new XmlDocument();
+    XmlDeclaration declDob = docDob.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docDob.AppendChild(declDob);
+
+    XmlDocumentType doctypeDob = docDob.CreateDocumentType(
+        "dobavitelji", null, potDoBesednjaka, null);
+    docDob.AppendChild(doctypeDob);
+
+    XmlElement rootDob = docDob.CreateElement("dobavitelji");
+    docDob.AppendChild(rootDob);
+
+    docDob.Save(potDoDobaviteljev);
+
+    // ARTIKLI
+    XmlDocument docArt = new XmlDocument();
+    XmlDeclaration declArt = docArt.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docArt.AppendChild(declArt);
+
+    XmlDocumentType doctypeArt = docArt.CreateDocumentType(
+        "artikli", null, potDoBesednjaka, null);
+    docArt.AppendChild(doctypeArt);
+
+    XmlElement rootArt = docArt.CreateElement("artikli");
+    docArt.AppendChild(rootArt);
+
+    docArt.Save(potDoArtiklov);
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>CreateXmlDeclaration</strong> - ustvari &lt;?xml version="1.0"?&gt;</li>
+                    <li><strong>CreateDocumentType</strong> - ustvari &lt;!DOCTYPE ... SYSTEM "..."&gt;</li>
+                    <li><strong>Vrstni red</strong> - deklaracija → DOCTYPE → root element</li>
+                    <li><strong>String template</strong> - enostavnejši, a manj fleksibilen</li>
+                    <li><strong>XmlDocument</strong> - bolj programski, omogoča dinamično gradnjo</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TESTNI PODATKI -->
+        <div class="section">
+            <h2><span class="tag">Testni Podatki</span> Ustvarjanje Testnih Podatkov</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ustvari testne podatke za dobavitelje in artikle z vsemi potrebnimi atributi in elementi.
+            </div>
+            <pre><code>static void UstvariTestnePodatke()
+{
+    Console.WriteLine("\n To bo prepisalo obstoječe podatke!");
+    Console.Write("Ste prepričani? (y/n): ");
+    string potrditev = Console.ReadLine();
+
+    if (potrditev?.ToLower() != "y")
+    {
+        Console.WriteLine("Prekinjeno");
+        return;
+    }
+
+    // DOBAVITELJI
+    XmlDocument docDob = new XmlDocument();
+    XmlDeclaration declDob = docDob.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docDob.AppendChild(declDob);
+
+    XmlDocumentType doctypeDob = docDob.CreateDocumentType(
+        "dobavitelji", null, potDoBesednjaka, null);
+    docDob.AppendChild(doctypeDob);
+
+    XmlElement rootDob = docDob.CreateElement("dobavitelji");
+    docDob.AppendChild(rootDob);
+
+    // Uporablja tvojo metodo UstvariDobavitelja
+    UstvariDobavitelja(docDob, rootDob, "D1", "malo", "Dobavitelj 1",
+        "Naslov 1", "12345678", "kontakt1@email.com", "Opis dobavitelja 1", "da");
+    UstvariDobavitelja(docDob, rootDob, "D2", "srednje", "Dobavitelj 2",
+        "Naslov 2", "87654321", "kontakt2@email.com", "Opis dobavitelja 2", "da");
+    UstvariDobavitelja(docDob, rootDob, "D3", "mikro", "Dobavitelj 3",
+        "Naslov 3", "11223344", "kontakt3@email.com", "Opis dobavitelja 3", "ne");
+    UstvariDobavitelja(docDob, rootDob, "D4", "veliko", "Dobavitelj 4",
+        "Naslov 4", "44332211", "kontakt4@email.com", "Opis dobavitelja 4", "da");
+    UstvariDobavitelja(docDob, rootDob, "D5", "srednje", "Dobavitelj 5",
+        "Naslov 5", "55667788", "kontakt5@email.com", "Opis dobavitelja 5", "da");
+
+    docDob.Save(potDoDobaviteljev);
+
+    // ARTIKLI
+    XmlDocument docArt = new XmlDocument();
+    XmlDeclaration declArt = docArt.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docArt.AppendChild(declArt);
+
+    XmlDocumentType doctypeArt = docArt.CreateDocumentType(
+        "artikli", null, potDoBesednjaka, null);
+    docArt.AppendChild(doctypeArt);
+
+    XmlElement rootArt = docArt.CreateElement("artikli");
+    docArt.AppendChild(rootArt);
+
+    // Uporablja tvojo metodo UstvariArtikel
+    UstvariArtikel(docArt, rootArt, "A001", "elektronika", "Artikel 1",
+        "149.99", "34", "D2", "2025-11-11", "da");
+    UstvariArtikel(docArt, rootArt, "A002", "oblacila", "Artikel 2",
+        "129.99", "11", "D1", "2025-11-11", "da");
+    UstvariArtikel(docArt, rootArt, "A003", "obutev", "Artikel 3",
+        "189.99", "5", "D1", "2025-11-11", "da");
+    UstvariArtikel(docArt, rootArt, "A004", "hrana", "Artikel 4",
+        "19.99", "78", "D5", "2025-11-11", "da");
+    UstvariArtikel(docArt, rootArt, "A005", "drugo", "Artikel 5",
+        "49.99", "35", "D4", "2025-11-11", "da");
+
+    docArt.Save(potDoArtiklov);
+
+    Console.WriteLine("✅ Testni podatki uspešno ustvarjeni!");
+}</code></pre>
+        </div>
+
+        <!-- USTVARI DOBAVITELJA -->
+        <div class="section">
+            <h2><span class="tag">Dobavitelj</span> Ustvarjanje Dobavitelja z EMPTY Elementom</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda ustvari dobavitelja z vsemi potrebnimi elementi, vključno z EMPTY elementom
+                "aktiven" ki ima atribut "status".
+            </div>
+            <pre><code>static void UstvariDobavitelja(XmlDocument doc, XmlElement root, string id, string tip,
+    string naziv, string naslov, string davcna, string kontakt, string opis, string aktiven)
+{
+    XmlElement dobavitelj = doc.CreateElement("dobavitelj");
+    dobavitelj.SetAttribute("id", id);
+    dobavitelj.SetAttribute("tip", tip);
+
+    XmlElement nazivEl = doc.CreateElement("naziv");
+    nazivEl.InnerText = naziv;
+    dobavitelj.AppendChild(nazivEl);
+
+    XmlElement naslovEl = doc.CreateElement("naslov");
+    naslovEl.InnerText = naslov;
+    dobavitelj.AppendChild(naslovEl);
+
+    XmlElement davcnaEl = doc.CreateElement("davcna");
+    davcnaEl.InnerText = davcna;
+    dobavitelj.AppendChild(davcnaEl);
+
+    XmlElement kontaktEl = doc.CreateElement("kontakt");
+    kontaktEl.InnerText = kontakt;
+    dobavitelj.AppendChild(kontaktEl);
+
+    XmlElement opisEl = doc.CreateElement("opis");
+    opisEl.InnerText = opis;
+    dobavitelj.AppendChild(opisEl);
+
+    // EMPTY element z atributom
+    XmlElement aktivenEl = doc.CreateElement("aktiven");
+    aktivenEl.SetAttribute("status", aktiven);
+    dobavitelj.AppendChild(aktivenEl);
+
+    root.AppendChild(dobavitelj);
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>SetAttribute()</strong> - nastavi atribute na elementu (id, tip)</li>
+                    <li><strong>CreateElement()</strong> - ustvari nov XML element</li>
+                    <li><strong>InnerText</strong> - nastavi tekstovno vsebino elementa</li>
+                    <li><strong>AppendChild()</strong> - doda element kot otroka</li>
+                    <li><strong>EMPTY element</strong> - aktivenEl nima InnerText, samo atribut</li>
+                    <li><strong>Rezultat</strong> - &lt;aktiven status="da"/&gt;</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- USTVARI ARTIKEL -->
+        <div class="section">
+            <h2><span class="tag">Artikel</span> Ustvarjanje Artikla z EMPTY Elementom</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda ustvari artikel z vsemi potrebnimi elementi, vključno z EMPTY elementom
+                "razpolozljiv" ki ima atribut "stanje".
+            </div>
+            <pre><code>static void UstvariArtikel(XmlDocument doc, XmlElement root, string id, string kategorija,
+    string naziv, string cena, string zaloga, string dobaviteljId, string datum, string razpolozljiv)
+{
+    XmlElement artikel = doc.CreateElement("artikel");
+    artikel.SetAttribute("id", id);
+    artikel.SetAttribute("kategorija", kategorija);
+
+    XmlElement nazivEl = doc.CreateElement("naziv");
+    nazivEl.InnerText = naziv;
+    artikel.AppendChild(nazivEl);
+
+    XmlElement cenaEl = doc.CreateElement("cena");
+    cenaEl.InnerText = cena;
+    artikel.AppendChild(cenaEl);
+
+    XmlElement zalogaEl = doc.CreateElement("zaloga");
+    zalogaEl.InnerText = zaloga;
+    artikel.AppendChild(zalogaEl);
+
+    XmlElement dobaviteljIdEl = doc.CreateElement("dobaviteljId");
+    dobaviteljIdEl.InnerText = dobaviteljId;
+    artikel.AppendChild(dobaviteljIdEl);
+
+    XmlElement datumEl = doc.CreateElement("zadnjaNabava");
+    datumEl.InnerText = datum;
+    artikel.AppendChild(datumEl);
+
+    // EMPTY element z atributom
+    XmlElement razpolozljivEl = doc.CreateElement("razpolozljiv");
+    razpolozljivEl.SetAttribute("stanje", razpolozljiv);
+    artikel.AppendChild(razpolozljivEl);
+
+    root.AppendChild(artikel);
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Dva atributa</strong> - id in kategorija (oba na artikel elementu)</li>
+                    <li><strong>Več otrok</strong> - naziv, cena, zaloga, dobaviteljId, zadnjaNabava</li>
+                    <li><strong>EMPTY element</strong> - razpolozljivEl nima InnerText</li>
+                    <li><strong>Rezultat</strong> - &lt;razpolozljiv stanje="da"/&gt;</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- IZPIS ARTIKLOV -->
+        <div class="section">
+            <h2><span class="tag">Izpis</span> Izpis Artiklov z Branjem EMPTY Elementa</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda prebere vse artikle iz XML datoteke in izpiše njihove podatke,
+                vključno z branjem atributa iz EMPTY elementa.
+            </div>
+            <pre><code>// ---------------
+// ARTIKLI - IZPIS
+// ---------------
+static void IzpisArtiklov()
+{
+    if (!File.Exists(potDoArtiklov))
+    {
+        Console.WriteLine($"Datoteka {potDoArtiklov} ne obstaja!");
+        return;
+    }
+
+    XmlDocument doc = new XmlDocument();
+    doc.Load(potDoArtiklov);
+
+    XmlNodeList artikli = doc.SelectNodes("//artikel");
+
+    if (artikli.Count == 0)
+    {
+        Console.WriteLine("\nNi še nobenega artikla!");
+        return;
+    }
+
+    Console.WriteLine("\n=============SEZNAM ARTIKLOV=============");
+
+    foreach (XmlNode artikel in artikli)
+    {
+        string id = artikel.Attributes["id"]?.Value ?? "?";
+        string kategorija = artikel.Attributes["kategorija"]?.Value ?? "?";
+
+        string naziv = artikel.SelectSingleNode("naziv")?.InnerText ?? "";
+        string cena = artikel.SelectSingleNode("cena")?.InnerText ?? "";
+        string zaloga = artikel.SelectSingleNode("zaloga")?.InnerText ?? "";
+        string dobaviteljId = artikel.SelectSingleNode("dobaviteljId")?.InnerText ?? "";
+        string datum = artikel.SelectSingleNode("zadnjaNabava")?.InnerText ?? "";
+
+        XmlNode razpolozljivNode = artikel.SelectSingleNode("razpolozljiv");
+        string razpolozljiv = razpolozljivNode?.Attributes["stanje"]?.Value ?? "?";
+
+        string dobaviteljNaziv = PridobiNazivDobavitelja(dobaviteljId);
+
+        Console.WriteLine($"\nArtikel ID: {id}");
+        Console.WriteLine($"   Naziv: {naziv}");
+        Console.WriteLine($"   Kategorija: {kategorija}");
+        Console.WriteLine($"   Cena: {cena} EUR");
+        Console.WriteLine($"   Zaloga: {zaloga} kosov");
+        Console.WriteLine($"   Razpoložljiv: {razpolozljiv}");
+        Console.WriteLine($"   Dobavitelj: {dobaviteljNaziv} (ID: {dobaviteljId})");
+        Console.WriteLine($"   Zadnja nabava: {datum}");
+    }
+
+    Console.WriteLine("\n=========================================");
+    Console.WriteLine($"Skupaj {artikli.Count} artiklov");
+    Console.ReadKey();
+    Console.Clear();
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti - Branje EMPTY Elementa:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Najdi element</strong> - <code>SelectSingleNode("razpolozljiv")</code></li>
+                    <li><strong>Preberi atribut</strong> - <code>.Attributes["stanje"]?.Value</code></li>
+                    <li><strong>Null-conditional (?)</strong> - varno delo z možnostjo null vrednosti</li>
+                    <li><strong>Null-coalescing (??)</strong> - privzeta vrednost če je null</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DODAJ ARTIKEL -->
+        <div class="section">
+            <h2><span class="tag">Dodaj</span> Dodajanje Artikla z Validacijo</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda doda nov artikel v XML datoteko. Najprej shrani v začasno datoteko,
+                validira, in šele nato prepiše originalno datoteko če je validacija uspešna.
+            </div>
+            <pre><code>// -------------------
+// ARTIKLI - DODAJANJE
+// -------------------
+static void DodajArtikel()
+{
+    Console.WriteLine("\n=============DODAJ ARTIKEL=============");
+
+    if (!ImaDobavitelje())
+    {
+        Console.WriteLine("\n⚠Ni še nobenega dobavitelja! Najprej dodaj dobavitelja.");
+        Console.ReadKey();
+        Console.Clear();
+        return;
+    }
+
+    Console.WriteLine("\nRazpoložljivi dobavitelji:");
+    PrikaziDobavitelje();
+
+    Console.Write("\nID artikla (npr. A002): ");
+    string id = Console.ReadLine();
+
+    if (AliArtikelObstaja(id))
+    {
+        Console.WriteLine($"\n Artikel z id {id} že obstaja!");
+        return;
+    }
+
+    Console.Write("Naziv artikla: ");
+    string naziv = Console.ReadLine();
+
+    Console.WriteLine("\nIzberi kategorijo:");
+    Console.WriteLine("1) elektronika");
+    Console.WriteLine("2) obutev");
+    Console.WriteLine("3) oblacila");
+    Console.WriteLine("4) hrana");
+    Console.WriteLine("5) drugo");
+    Console.Write("Izbira (1-5): ");
+    string kategorijaIzbira = Console.ReadLine();
+
+    string kategorija = kategorijaIzbira switch
+    {
+        "1" => "elektronika",
+        "2" => "obutev",
+        "3" => "oblacila",
+        "4" => "hrana",
+        "5" => "drugo",
+        _ => "drugo"
+    };
+
+    Console.Write("Cena (EUR): ");
+    string cenaVnos = Console.ReadLine();
+
+    decimal cena;
+    if (!decimal.TryParse(cenaVnos, NumberStyles.Any, CultureInfo.InvariantCulture, out cena))
+    {
+        Console.WriteLine("\nNapačen format cene!");
+        return;
+    }
+
+    Console.Write("zaloga (kosi): ");
+    string zalogaVnos = Console.ReadLine();
+
+    int zaloga;
+    if (!int.TryParse(zalogaVnos, out zaloga))
+    {
+        Console.WriteLine("\nNapačen format cene!");
+        return;
+    }
+
+    Console.Write("ID dobavitelja: ");
+    string dobaviteljId = Console.ReadLine();
+
+    if (!AliDobaviteljObstaja(dobaviteljId))
+    {
+        Console.WriteLine($"\nDobavitelj z ID {dobaviteljId} ne obstaja!");
+        return;
+    }
+
+    Console.Write("Vnesi datum zadnje nabave (YYYY-MM-DD): ");
+    string datum = Console.ReadLine();
+
+    Console.Write("Ali je artikel razpoložljiv? (da/ne): ");
+    string razpolozljivStr = Console.ReadLine();
+    string razpolozljiv = razpolozljivStr?.ToLower() == "da" ? "da" : "ne";
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(potDoArtiklov);
+
+        XmlNode root = doc.SelectSingleNode("artikli");
+
+        XmlElement novArtikel = doc.CreateElement("artikel");
+        novArtikel.SetAttribute("id", id);
+        novArtikel.SetAttribute("kategorija", kategorija);
+
+        XmlElement nazivEl = doc.CreateElement("naziv");
+        nazivEl.InnerText = naziv;
+        novArtikel.AppendChild(nazivEl);
+
+        XmlElement cenaEl = doc.CreateElement("cena");
+        cenaEl.InnerText = cena.ToString("F2", CultureInfo.InvariantCulture);
+        novArtikel.AppendChild(cenaEl);
+
+        XmlElement zalogaEl = doc.CreateElement("zaloga");
+        zalogaEl.InnerText = zaloga.ToString();
+        novArtikel.AppendChild(zalogaEl);
+
+        XmlElement dobEl = doc.CreateElement("dobaviteljId");
+        dobEl.InnerText = dobaviteljId;
+        novArtikel.AppendChild(dobEl);
+
+        XmlElement datumEl = doc.CreateElement("zadnjaNabava");
+        datumEl.InnerText = DateTime.Now.ToString("yyyy-MM-dd");
+        novArtikel.AppendChild(datumEl);
+
+        XmlElement razpolozljivEl = doc.CreateElement("razpolozljiv");
+        razpolozljivEl.SetAttribute("stanje", razpolozljiv);
+        novArtikel.AppendChild(razpolozljivEl);
+
+        root.AppendChild(novArtikel);
+
+        string tempPath = "temp_artikli.xml";
+        doc.Save(tempPath);
+
+        ValidirajXML(tempPath);
+
+        if (validacijaOK)
+        {
+            File.Copy(tempPath, potDoArtiklov, true);
+            File.Delete(tempPath);
+            Console.WriteLine("\nArtikel uspešno dodan in validiran!");
+        }
+        else
+        {
+            File.Delete(tempPath);
+            Console.WriteLine("\nArtikel ni bil dodan zaradi napake pri validaciji!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka pri dodajanju: {ex.Message}");
+    }
+
+    Console.ReadKey();
+    Console.Clear();
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti - Varno Shranjevanje:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>1. Shrani v temp datoteko</strong> - <code>doc.Save("temp_artikli.xml")</code></li>
+                    <li><strong>2. Validiraj temp datoteko</strong> - <code>ValidirajXML(tempPath)</code></li>
+                    <li><strong>3. Če OK → prepiši original</strong> - <code>File.Copy(tempPath, original, true)</code></li>
+                    <li><strong>4. Če ERROR → izbriši temp</strong> - <code>File.Delete(tempPath)</code></li>
+                    <li><strong>Prednost</strong> - ne pokvariš originalne datoteke če je napaka</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- UREDI ARTIKEL -->
+        <div class="section">
+            <h2><span class="tag">Uredi</span> Urejanje Artikla</h2>
+            <pre><code>// -------------------
+// ARTIKLI - UREJANJE
+// -------------------
+static void UrediArtikel()
+{
+    Console.WriteLine("SHRANJENI ARTIKLI:");
+    PrikaziArtikle();
+    Console.WriteLine("\n=============UREDI ARTIKEL=============");
+    Console.Write("Vnesi ID artikla:");
+    string id = Console.ReadLine();
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(potDoArtiklov);
+
+        XmlNode artikel = doc.SelectSingleNode($"//artikel[@id='{id}']");
+
+        if (artikel == null)
+        {
+            Console.WriteLine($"\nArtikel z ID {id} ne obstaja!");
+            return;
+        }
+        string staraKategorija = artikel.Attributes["kategorija"]?.Value ?? "";
+        Console.WriteLine("\n--- TRENUTNI PODATKI ---");
+        Console.WriteLine($"Naziv: {artikel.SelectSingleNode("naziv")?.InnerText}");
+        Console.WriteLine($"Cena: {artikel.SelectSingleNode("cena")?.InnerText}");
+        Console.WriteLine($"Zaloga: {artikel.SelectSingleNode("zaloga")?.InnerText}");
+        Console.WriteLine($"Dobavitelj: {artikel.SelectSingleNode("dobaviteljId")?.InnerText}");
+        Console.WriteLine($"Zadnja nabava: {artikel.SelectSingleNode("zadnjaNabava")?.InnerText}");
+        Console.WriteLine($"Kategorija: {staraKategorija}");
+        Console.WriteLine($"Razpoložljiv: {artikel.SelectSingleNode("razpolozljiv").Attributes["stanje"].Value}");
+        Console.WriteLine("\nPusti prazno da se nič ne spremeni.");
+
+        Console.Write("\nNov naziv:");
+        string novNaziv = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novNaziv))
+        {
+            artikel.SelectSingleNode("naziv").InnerText = novNaziv;
+        }
+
+        Console.WriteLine($"\nTrenutna kategorija: {staraKategorija}");
+        Console.WriteLine("Izberi novo kategorijo:");
+        Console.WriteLine("1) elektronika");
+        Console.WriteLine("2) obutev");
+        Console.WriteLine("3) oblacila");
+        Console.WriteLine("4) hrana");
+        Console.WriteLine("5) drugo");
+        Console.Write("Izbira (Enter za ohranitev): ");
+        string kategorijaIzbira = Console.ReadLine();
+
+        string novaKategorija = staraKategorija;
+        if (!string.IsNullOrWhiteSpace(kategorijaIzbira))
+        {
+            novaKategorija = kategorijaIzbira switch
+            {
+                "1" => "elektronika",
+                "2" => "obutev",
+                "3" => "oblacila",
+                "4" => "hrana",
+                "5" => "drugo",
+                _ => staraKategorija
+            };
+        }
+
+        Console.Write("Nova cena (EUR): ");
+        string novaCenaVnos = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novaCenaVnos))
+        {
+            decimal novaCena;
+            if (decimal.TryParse(novaCenaVnos, NumberStyles.Any, CultureInfo.InvariantCulture, out novaCena))
+            {
+                artikel.SelectSingleNode("cena").InnerText = novaCena.ToString("F2", CultureInfo.InvariantCulture);
+            }
+        }
+
+        Console.Write("Nova zaloga: ");
+        string novaZalogaVnos = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novaZalogaVnos))
+        {
+            int novaZaloga;
+            if (int.TryParse(novaZalogaVnos, out novaZaloga))
+            {
+                artikel.SelectSingleNode("zaloga").InnerText = novaZaloga.ToString();
+            }
+        }
+
+        Console.Write("Nov dobavitelj: ");
+        string novDobaviteljVnos = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novDobaviteljVnos))
+        {
+            if (AliDobaviteljObstaja(novDobaviteljVnos))
+            {
+                artikel.SelectSingleNode("dobaviteljId").InnerText = novDobaviteljVnos;
+            }
+            else Console.WriteLine($"Dobavitelj z id {novDobaviteljVnos} ne obstaja!");
+        }
+
+        Console.Write($"Nov datum: ");
+        string novDatum = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novDatum))
+        {
+            artikel.SelectSingleNode("zadnjaNabava").InnerText = novDatum;
+        }
+
+        Console.Write($"Razpoložljiv (da/ne): ");
+        string novRazpolozljiv = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novRazpolozljiv))
+        {
+            artikel.SelectSingleNode("razpolozljiv").Attributes["stanje"].Value = novRazpolozljiv;
+        }
+
+        string tempPath = "temp_artikli.xml";
+        doc.Save(tempPath);
+
+        ValidirajXML(tempPath);
+
+        if (validacijaOK)
+        {
+            File.Copy(tempPath, potDoArtiklov, true);
+            File.Delete(tempPath);
+            Console.WriteLine("\nArtikel uspešno posodobljen in validiran!");
+        }
+        else
+        {
+            File.Delete(tempPath);
+            Console.WriteLine("\nSpremembe niso bile shranjene zaradi napake pri validaciji!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka pri urejanju: {ex.Message}");
+    }
+    Console.ReadKey();
+    Console.Clear();
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Opcijska polja</strong> - IsNullOrWhiteSpace() preveri če uporabnik vnese novo vrednost</li>
+                    <li><strong>Prikaz trenutnih</strong> - najprej izpiše obstoječe vrednosti</li>
+                    <li><strong>Validacija na koncu</strong> - uporabi isti varni vzorec kot pri dodajanju</li>
+                    <li><strong>Branje atributa EMPTY</strong> - razpolozljiv element ima atribut "stanje"</li>
+                    <li><strong>Pisanje atributa EMPTY</strong> - <code>.Attributes["stanje"].Value = nov</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- POMOŽNE FUNKCIJE -->
+        <div class="section">
+            <h2><span class="tag">Pomožne</span> Pomožne Funkcije</h2>
+
+            <h3>Preverjanje Obstoja Artikla</h3>
+            <pre><code>static bool AliArtikelObstaja(string id)
+{
+    if (!File.Exists(potDoArtiklov)) return false;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(potDoArtiklov);
+
+        XmlNode artikel = doc.SelectSingleNode($"//artikel[@id='{id}']");
+        return artikel != null;
+    }
+    catch
+    {
+        return false;
+    }
+}</code></pre>
+
+            <h3>Preverjanje Obstoja Dobavitelja</h3>
+            <pre><code>static bool AliDobaviteljObstaja(string id)
+{
+    if (!File.Exists(potDoDobaviteljev)) return false;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(potDoDobaviteljev);
+
+        XmlNode dobavitelj = doc.SelectSingleNode($"//dobavitelj[@id='{id}']");
+        return dobavitelj != null;
+    }
+    catch
+    {
+        return false;
+    }
+}</code></pre>
+
+            <h3>Prikaz Dobaviteljev</h3>
+            <pre><code>static void PrikaziDobavitelje()
+{
+    if (!File.Exists(potDoDobaviteljev)) return;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(potDoDobaviteljev);
+
+        XmlNodeList dobavitelji = doc.SelectNodes("//dobavitelj");
+
+        foreach (XmlNode dobavitelj in dobavitelji)
+        {
+            string id = dobavitelj.Attributes["id"]?.Value ?? "?";
+            string naziv = dobavitelj.SelectSingleNode("naziv")?.InnerText ?? "?";
+            Console.WriteLine($" [{id}] - {naziv}");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Napaka pri branju dobaviteljev: {ex.Message}");
+    }
+}</code></pre>
+
+            <h3>Pridobivanje Naziva Dobavitelja</h3>
+            <pre><code>static string PridobiNazivDobavitelja(string dobaviteljId)
+{
+    if (!File.Exists(potDoDobaviteljev)) return "Neznano";
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(potDoDobaviteljev);
+
+        XmlNode dobavitelj = doc.SelectSingleNode($"//dobavitelj[@id='{dobaviteljId}']");
+
+        if (dobavitelj != null)
+        {
+            return dobavitelj.SelectSingleNode("naziv")?.InnerText ?? "Neznano";
+        }
+    }
+    catch
+    {
+        // Ignore exception
+    }
+    return "Neznano";
+}</code></pre>
+        </div>
+
+        <!-- KEY CONCEPTS -->
+        <div class="section">
+            <h2><span class="tag">Povzetek</span> Ključni Koncepti za DTD</h2>
+
+            <h3>✅ DTD Validacija - Nastavitev</h3>
+            <div class="info-box">
+                <pre><code>XmlReaderSettings settings = new XmlReaderSettings();
+settings.DtdProcessing = DtdProcessing.Parse;      // Omogoči DTD
+settings.ValidationType = ValidationType.DTD;      // Tip validacije
+settings.ValidationEventHandler += ValidationCallBack; // Error handler
+settings.XmlResolver = new XmlUrlResolver();       // Razreši zunanje DTD
+
+XmlReader reader = XmlReader.Create(pot, settings);
+while (reader.Read()) ;
+reader.Close();</code></pre>
+            </div>
+
+            <h3>📝 Ustvarjanje XML z DTD (String Template)</h3>
+            <div class="info-box">
+                <pre><code>string xml = $@"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;!DOCTYPE artikli SYSTEM ""besednjak.dtd""&gt;
+&lt;artikli&gt;
+&lt;/artikli&gt;";
+File.WriteAllText("artikli.xml", xml);</code></pre>
+            </div>
+
+            <h3>📝 Ustvarjanje XML z DTD (XmlDocument)</h3>
+            <div class="info-box">
+                <pre><code>XmlDocument doc = new XmlDocument();
+XmlDeclaration decl = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+doc.AppendChild(decl);
+
+XmlDocumentType doctype = doc.CreateDocumentType(
+    "artikli", null, "besednjak.dtd", null);
+doc.AppendChild(doctype);
+
+XmlElement root = doc.CreateElement("artikli");
+doc.AppendChild(root);
+doc.Save("artikli.xml");</code></pre>
+            </div>
+
+            <h3>🔧 EMPTY Element (Pisanje in Branje)</h3>
+            <div class="info-box">
+                <pre><code>// PISANJE - Ustvarjanje EMPTY elementa z atributom
+XmlElement razpolozljivEl = doc.CreateElement("razpolozljiv");
+razpolozljivEl.SetAttribute("stanje", "da");
+artikel.AppendChild(razpolozljivEl);
+// Rezultat: &lt;razpolozljiv stanje="da"/&gt;
+
+// BRANJE - Branje atributa iz EMPTY elementa
+XmlNode razpolozljivNode = artikel.SelectSingleNode("razpolozljiv");
+string razpolozljiv = razpolozljivNode?.Attributes["stanje"]?.Value ?? "?";</code></pre>
+            </div>
+
+            <h3>🛡️ Varno Shranjevanje s Temp Datoteko</h3>
+            <div class="info-box">
+                <pre><code>// 1. Shrani v temp datoteko
+doc.Save("temp.xml");
+
+// 2. Validiraj temp datoteko
+ValidirajXML("temp.xml");
+
+// 3. Če je validacija OK, prepiši original
+if (validacijaOK)
+{
+    File.Copy("temp.xml", "artikli.xml", true);
+    File.Delete("temp.xml");
+}
+else
+{
+    File.Delete("temp.xml");
+    Console.WriteLine("Validacija ni uspela!");
+}</code></pre>
+            </div>
+
+            <h3>⚠️ Pogoste Napake</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li>❌ <strong>Manjka XmlUrlResolver</strong> - ne more najti zunanje DTD</li>
+                    <li>❌ <strong>Napačen vrstni red</strong> - deklaracija mora biti pred DOCTYPE</li>
+                    <li>❌ <strong>Brez validacije</strong> - ne preverja skladnosti z DTD</li>
+                    <li>❌ <strong>Direktno shranjevanje</strong> - pokvariš datoteko če je napaka</li>
+                    <li>❌ <strong>InnerText za EMPTY</strong> - EMPTY elementi nimajo vsebine!</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>💡 DTD - Celotna Koda v Slovenščini</strong></p>
+            <p style="margin-top: 0.5rem;">Vsi primeri iz naloga03_DTD</p>
+        </footer>
+    </div>
+</body>
+</html>

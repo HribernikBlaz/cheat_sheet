@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXT Primeri - Celotna Koda</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f35;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff00a0;
+            --accent-success: #10b981;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border-color: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        nav {
+            background: rgba(26, 31, 53, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-primary);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-success), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-success);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-primary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent-success);
+            color: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--accent-success);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>TXT Primeri</li>
+            <li><a href="index.html">DTD</a></li>
+            <li><a href="slovenian-cheat-sheet.html">Slovensko</a></li>
+            <li><a href="txt-examples-slovenian.html" class="active">TXT Primeri</a></li>
+            <li><a href="dtd-examples-slovenian.html">DTD Primeri</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>📁 TXT DATOTEKE - CELOTNA KODA</h1>
+            <p class="subtitle">Vsi primeri iz naloga01_nestrukturiraniPodatki</p>
+        </header>
+
+        <!-- MAIN PROGRAM -->
+        <div class="section">
+            <h2><span class="tag">Main</span> Glavni Program</h2>
+            <pre><code>using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+
+namespace naloga01_nestrukturiraniPodatki
+{
+    class Program
+    {
+        // Pot do datoteke kot konstanta, da jo lahko vsi deli programa uporabljajo
+        static string potDoDatoteke = "artikli.txt";
+
+        static void Main(string[] args)
+        {
+            bool konec = false;
+            while (!konec)
+            {
+                Console.WriteLine("\n===== UPRAVLJANJE ARTIKLOV ====");
+                Console.WriteLine("1 - Shrani nov artikel");
+                Console.WriteLine("2 - Išči artikle po dobavitelju in zalogi");
+                Console.WriteLine("3 - Prikaži vse artikle");
+                Console.WriteLine("4 - Znižaj ceno artiklov");
+                Console.WriteLine("0 - Izhod iz apliakcije");
+                Console.WriteLine("\nIzberi možnost: ");
+
+                string izbira = Console.ReadLine();
+
+                switch (izbira)
+                {
+                    case "1":
+                        ShraniArtikel();
+                        break;
+                    case "2":
+                        IsciArtikle();
+                        break;
+                    case "3":
+                        BeriVseArtikle();
+                        break;
+                    case "4":
+                        ZnizajCene();
+                        break;
+                    case "0":
+                        konec = true;
+                        Console.WriteLine("Program se končuje...");
+                        break;
+                    default:
+                        Console.WriteLine("Napačna izbira!");
+                        break;
+                }
+            }
+        }
+    }
+}</code></pre>
+        </div>
+
+        <!-- SHRANI ARTIKEL -->
+        <div class="section">
+            <h2><span class="tag">Metoda 1</span> Shranjevanje Artikla</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda omogoča uporabniku, da vnese podatke o novem artiklu (ime, cena, zaloga, dobavitelj)
+                in jih zapiše v tekstovno datoteko. Uporablja StreamWriter s <code>true</code> parametrom za append mode.
+            </div>
+            <pre><code>static void ShraniArtikel()
+{
+    Console.WriteLine("\n ---- Vnos novega artikla ----");
+
+    Console.WriteLine("Ime izdelka: ");
+    string ime = Console.ReadLine();
+
+    Console.WriteLine("Cena izdelka: ");
+    string cena = Console.ReadLine();
+
+    Console.WriteLine("Zaloga: ");
+    string zaloga = Console.ReadLine();
+
+    Console.WriteLine("Dobavitelj: ");
+    string dobavitelj = Console.ReadLine();
+
+    // ustvarjanje vrstice z vsemi podatki, ločeno s podpičjem
+    string vrstica = $"{ime};{cena};{zaloga};{dobavitelj}";
+
+    try
+    {
+        // Streamwriter s true parametrom odpre datoteko v append načinu,
+        // kar pomeni, da ne prepiše obstoječe vsebine, ampak doda nov vnos na konec
+        using (StreamWriter sw = new StreamWriter(potDoDatoteke, true))
+        {
+            sw.WriteLine(vrstica);  // zapiše vrstico in doda novo vrstico na konec
+        }
+        Console.WriteLine("\nArtikel je bil uspešno shranjen!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nPrišlo je do izjeme {ex.Message}");
+    }
+    Console.ReadKey();
+    Console.Clear();
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>StreamWriter</strong> - za pisanje v datoteko</li>
+                    <li><strong>true parameter</strong> - odpre datoteko v append mode (doda na konec)</li>
+                    <li><strong>using statement</strong> - avtomatsko zapre datoteko</li>
+                    <li><strong>Format podatkov</strong> - ime;cena;zaloga;dobavitelj</li>
+                    <li><strong>WriteLine()</strong> - zapiše vrstico in doda nov red</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ISCI ARTIKLE -->
+        <div class="section">
+            <h2><span class="tag">Metoda 2</span> Iskanje Artiklov po Dobavitelju in Zalogi</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda prebere datoteko artiklov in poišče tiste, ki ustrezajo določenemu dobavitelju
+                in imajo zalogo manjšo od določenega števila. Rezultate shrani v novo datoteko.
+            </div>
+            <pre><code>static void IsciArtikle()
+{
+    if (!File.Exists(potDoDatoteke))
+    {
+        Console.WriteLine("\nDatoteka ne obstaja!");
+        return;
+    }
+
+    Console.WriteLine("\n ---- ISKANJE ARTIKLOV ----");
+    Console.WriteLine("Vnesi ime dobavitelja: ");
+    string iskanDobavitelj = Console.ReadLine();
+
+    Console.WriteLine("Vnesi maximalno zalog: ");
+    string vnosMaxZalog = Console.ReadLine();
+
+    int maksZaloga = int.Parse(vnosMaxZalog);
+
+    List&lt;string&gt; najdeniArtikli = new List&lt;string&gt;();
+
+    try
+    {
+        using (StreamReader sr = new StreamReader(potDoDatoteke))
+        {
+            string vrstica;
+
+            while ((vrstica = sr.ReadLine()) != null)
+            {
+                // Razdelimo vrstico na dele glede na podpičje. Split ustvari array stringov
+                string[] podatki = vrstica.Split(';');
+
+                if(podatki.Length == 4)
+                {
+                    string ime = podatki[0];
+                    string cena = podatki[1];
+                    int zaloga = int.Parse(podatki[2]);
+                    string dobavitelj = podatki[3];
+
+                    // ujemanje dobavitelja in zaloga manjša od vnešene
+                    if((dobavitelj.ToLower() == iskanDobavitelj.ToLower()) && (zaloga < maksZaloga))
+                    {
+                        najdeniArtikli.Add(vrstica);
+                    }
+                }
+            }
+
+            if (najdeniArtikli.Count > 0)
+            {
+                Console.WriteLine($"Najdenih je bilo {najdeniArtikli.Count} artiklov: ");
+                Console.WriteLine("-------------------------------");
+
+                foreach (string artikel in najdeniArtikli)
+                {
+                    string[] podatki = artikel.Split(";");
+                    Console.WriteLine($"Izdelek: {podatki[0]}");
+                    Console.WriteLine($"Cena: {podatki[1]} EUR");
+                    Console.WriteLine($"Zaloga: {podatki[2]} kosov");
+                    Console.WriteLine($"Dobavitelj: {podatki[3]}");
+                    Console.WriteLine("-------------------------------");
+                }
+
+                string datotekaRezultatov = "rezultati_iskanja.txt";
+                using (StreamWriter sw = new StreamWriter(datotekaRezultatov, false))
+                {
+                    Console.WriteLine($"REZULTATI ISKANJA - Dobavitelj {iskanDobavitelj}, Zaloga < {maksZaloga}");
+                    Console.WriteLine("================================");
+
+                    foreach (string artikel in najdeniArtikli)
+                    {
+                        sw.WriteLine(artikel);
+                    }
+                }
+                Console.WriteLine($"\n Rezultati shranjeni v {datotekaRezultatov}");
+
+            }
+            else
+            {
+                Console.WriteLine("Ni najdenih artilklov, ki bi ustrezali pogojem.");
+            }
+        }
+    }
+    catch (Exception ex){
+        Console.WriteLine($"Prišlo je do napake pri branju: {ex.Message}");
+    }
+    Console.ReadKey();
+    Console.Clear();
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>File.Exists()</strong> - preveri ali datoteka obstaja</li>
+                    <li><strong>StreamReader</strong> - za branje iz datoteke</li>
+                    <li><strong>ReadLine()</strong> - prebere eno vrstico</li>
+                    <li><strong>Split(';')</strong> - razdeli vrstico na polja</li>
+                    <li><strong>List&lt;string&gt;</strong> - dinamičen seznam za shranjevanje rezultatov</li>
+                    <li><strong>ToLower()</strong> - primerjava brez upoštevanja velikih/malih črk</li>
+                    <li><strong>false parameter</strong> - prepiše obstoječo datoteko rezultatov</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BERI VSE ARTIKLE -->
+        <div class="section">
+            <h2><span class="tag">Metoda 3</span> Prikaz Vseh Artiklov</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda prebere vse artikle iz datoteke in jih prikaže na konzoli v lepem formatu.
+            </div>
+            <pre><code>static void BeriVseArtikle()
+{
+    if (!File.Exists(potDoDatoteke))
+    {
+        Console.WriteLine("Datoteka artiklov ne obstaja!");
+        return;
+    }
+
+    Console.WriteLine("\n ---- VSI ARTIKLI ----");
+    Console.WriteLine("==============================================");
+    try
+    {
+        using(StreamReader sr = new StreamReader(potDoDatoteke))
+        {
+            string vrstica;
+            int stevilka = 1;
+
+            while ((vrstica = sr.ReadLine()) != null)
+            {
+                string[] podatki = vrstica.Split(";");
+
+                if(podatki.Length == 4)
+                {
+                    Console.WriteLine($"\n{stevilka}. {podatki[0]}");
+                    Console.WriteLine($"    Cena: {podatki[1]} EUR");
+                    Console.WriteLine($"    Zaloga: {podatki[2]} kosov");
+                    Console.WriteLine($"    Dobavitelj: {podatki[3]}");
+                    stevilka++;
+                }
+            }
+
+            Console.WriteLine("\n==============================================");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Napaka pri branju {ex.Message}");
+    }
+    Console.ReadKey();
+    Console.Clear();
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Oštevilčevanje</strong> - uporaba spremenljivke <code>stevilka</code></li>
+                    <li><strong>Formatiran izpis</strong> - vrstice z zamiki za lepši prikaz</li>
+                    <li><strong>Preverjanje dolžine</strong> - <code>podatki.Length == 4</code> za veljavnost</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ZNIZAJ CENE -->
+        <div class="section">
+            <h2><span class="tag">Metoda 4</span> Znižanje Cen (Popust)</h2>
+            <div class="info-box">
+                <strong>💡 Opis:</strong> Ta metoda prebere vse artikle, izračuna nove cene z določenim popustom
+                in shrani akcijske artikle v novo datoteko.
+            </div>
+            <pre><code>static void ZnizajCene()
+{
+    if (!File.Exists(potDoDatoteke))
+    {
+        Console.WriteLine("Datoteka artiklov ne obstaja!");
+        return;
+    }
+
+    Console.WriteLine("\n ---- ZNIŽANJE CEN ----");
+    Console.WriteLine("Vnesite odstotek znižanja (npr. 10 za 10%): ");
+    string vnosOdstotka = Console.ReadLine();
+
+    double odstotek = double.Parse(vnosOdstotka);
+
+    if(odstotek <= 0 || odstotek > 100)
+    {
+        Console.WriteLine("\n Odstotek mora biti med 0 in 100");
+        return;
+    }
+
+    List&lt;string&gt; akcijskiArtikli = new List&lt;string&gt;();
+    int stArtklov = 0;
+
+    try
+    {
+        using (StreamReader sr = new StreamReader(potDoDatoteke))
+        {
+            string vrstica;
+
+            while ((vrstica = sr.ReadLine()) != null)
+            {
+                string[] podatki = vrstica.Split(";");
+                if (podatki.Length == 4)
+                {
+                    string ime = podatki[0];
+                    double staraCena = double.Parse(podatki[1]);
+                    string zaloga = podatki[2];
+                    string dobavitelj = podatki[3];
+
+
+                    double novaCena = staraCena * (1 - odstotek / 100);
+                    novaCena = Math.Round(novaCena, 2);
+
+                    string novaVrstica = $"{ime};{novaCena.ToString("F2")};{zaloga};{dobavitelj}";
+
+                    akcijskiArtikli.Add(novaVrstica);
+                    stArtklov++;
+
+                    Console.WriteLine($"\n{ime}");
+                    Console.WriteLine($"    Stara cena: {staraCena.ToString("F2")} EUR");
+                    Console.WriteLine($"    Nova cena: {novaCena.ToString("F2")} EUR, znižano za {odstotek}%");
+                }
+
+            }
+        }
+
+        string datotekaAkcije = "artikli_akcija.txt";
+
+        using (StreamWriter sw = new StreamWriter(datotekaAkcije, false))
+        {
+            sw.WriteLine($"AKCIJA - Znižanje {odstotek}%");
+            sw.WriteLine($"Datum: {DateTime.Now.ToString("dd.MM.yyyy HH:mm")}");
+            sw.WriteLine($"Število artiklov {stArtklov}");
+            sw.WriteLine();
+
+            foreach (string artikel in akcijskiArtikli)
+            {
+                sw.WriteLine(artikel);
+            }
+        }
+
+        Console.WriteLine($"Uspešno znižanih {stArtklov} artiklov");
+        Console.WriteLine($"Akcijski artikli shranjeni v {datotekaAkcije}");
+    }
+    catch (FormatException)
+    {
+        Console.WriteLine("\nNapaka: Cena v datoteki ni veljavno število!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nPrišlo je do napake: {ex.Message}");
+    }
+}</code></pre>
+
+            <h3>🔑 Ključni Koncepti:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Matematične operacije</strong> - izračun popusta: <code>staraCena * (1 - odstotek / 100)</code></li>
+                    <li><strong>Math.Round()</strong> - zaokroževanje na 2 decimalni mesti</li>
+                    <li><strong>ToString("F2")</strong> - formatiranje s točno 2 decimalnima mestoma</li>
+                    <li><strong>DateTime.Now</strong> - pridobivanje trenutnega datuma in časa</li>
+                    <li><strong>FormatException</strong> - lovljenje napak pri pretvorbi števil</li>
+                    <li><strong>Glave datoteke</strong> - pisanje informacij na začetek datoteke (akcija, datum, št. artiklov)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- EXAMPLE FILE FORMAT -->
+        <div class="section">
+            <h2><span class="tag">Format</span> Primer Vsebine Datoteke artikli.txt</h2>
+            <pre><code>Logitech MX Mouse;149.99;34;TechSupply
+HP Laptop;899.50;12;TechSupply
+Nike Shoes;89.99;5;SportWorld
+Apple iPhone;1099.00;20;MobileStore
+Samsung TV;699.99;8;ElectroShop</code></pre>
+
+            <h3>📋 Format Podatkov:</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Polje 1:</strong> Ime izdelka (string)</li>
+                    <li><strong>Polje 2:</strong> Cena (decimal/double)</li>
+                    <li><strong>Polje 3:</strong> Zaloga (integer)</li>
+                    <li><strong>Polje 4:</strong> Dobavitelj (string)</li>
+                    <li><strong>Ločilo:</strong> Podpičje (;)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- KEY CONCEPTS -->
+        <div class="section">
+            <h2><span class="tag">Povzetek</span> Ključni Koncepti za TXT Datoteke</h2>
+
+            <h3>📝 StreamWriter (Pisanje)</h3>
+            <div class="info-box">
+                <pre><code>// Append mode (doda na konec)
+using (StreamWriter sw = new StreamWriter("datoteka.txt", true))
+{
+    sw.WriteLine("nova vrstica");
+}
+
+// Overwrite mode (prepiše vse)
+using (StreamWriter sw = new StreamWriter("datoteka.txt", false))
+{
+    sw.WriteLine("nova vsebina");
+}</code></pre>
+            </div>
+
+            <h3>📖 StreamReader (Branje)</h3>
+            <div class="info-box">
+                <pre><code>using (StreamReader sr = new StreamReader("datoteka.txt"))
+{
+    string vrstica;
+    while ((vrstica = sr.ReadLine()) != null)
+    {
+        // Obdelaj vrstico
+        string[] podatki = vrstica.Split(';');
+    }
+}</code></pre>
+            </div>
+
+            <h3>🔄 Parsing in Formatting</h3>
+            <div class="info-box">
+                <pre><code>// Parsing (string → število)
+int zaloga = int.Parse("123");
+double cena = double.Parse("99.99");
+decimal vrednost = decimal.Parse("149.99");
+
+// Formatting (število → string)
+double cena = 99.99;
+string formatiran = cena.ToString("F2");  // "99.99" (2 decimalni mesti)
+
+// Varno parsing (preveri veljavnost)
+if (int.TryParse(input, out int rezultat))
+{
+    // Uspešno pretvorjeno
+}
+else
+{
+    // Napaka pri pretvorbi
+}</code></pre>
+            </div>
+
+            <h3>⚠️ Pogoste Napake</h3>
+            <div class="info-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li>❌ <strong>Pozabljanje <code>using</code></strong> - datoteka ostane odprta</li>
+                    <li>❌ <strong>Ne preverjanje File.Exists()</strong> - program se sesuje</li>
+                    <li>❌ <strong>Uporaba false namesto true</strong> - prepiše celotno datoteko</li>
+                    <li>❌ <strong>Parsing brez validacije</strong> - FormatException</li>
+                    <li>❌ <strong>Pozabljanje Split()</strong> - ne moreš dostopati do posameznih polj</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>💡 TXT Datoteke - Celotna Koda v Slovenščini</strong></p>
+            <p style="margin-top: 0.5rem;">Vsi primeri iz naloga01_nestrukturiraniPodatki</p>
+        </footer>
+    </div>
+</body>
+</html>
