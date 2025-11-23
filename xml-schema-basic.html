@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML Schema Basic - Cheat Sheet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f35;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff00a0;
+            --accent-tertiary: #7c3aed;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2d3748;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 160, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        nav {
+            background: rgba(26, 31, 53, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        nav a.active {
+            color: var(--accent-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            animation: lineGrow 2s ease-out;
+        }
+
+        @keyframes lineGrow {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 0.6s ease-out backwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+        .section:nth-child(9) { animation-delay: 0.9s; }
+        .section:nth-child(10) { animation-delay: 1.0s; }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 217, 255, 0.2);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        h2::before {
+            content: '▸';
+            margin-right: 0.5rem;
+            color: var(--accent-secondary);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-secondary);
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-primary);
+            display: block;
+            line-height: 1.6;
+        }
+
+        .note {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: var(--accent-primary);
+        }
+
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--error);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning strong {
+            color: var(--error);
+        }
+
+        .tip {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 217, 255, 0.1));
+            border: 1px solid var(--accent-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip::before {
+            content: '💡';
+            font-size: 2rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            opacity: 0.3;
+        }
+
+        .tip-title {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer::before {
+            content: '{ C# + XML + XSD }';
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Developer Cheat Sheets</li>
+            <li><a href="index.html">DTD Basics</a></li>
+            <li><a href="txt-files.html">TXT Files</a></li>
+            <li><a href="dtd-csharp.html">DTD in C#</a></li>
+            <li><a href="xml-schema-basic.html" class="active">XML Schema</a></li>
+            <li><a href="xml-schema-advanced.html">XSD Advanced</a></li>
+            <li><a href="exam-cheat-sheet.html">Exam Guide</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>XML SCHEMA (XSD)</h1>
+            <p class="subtitle">📐 Basic XML Schema Validation in C#</p>
+        </header>
+
+        <div class="section">
+            <h2>1. What is XML Schema?</h2>
+            <p>XML Schema (XSD) is a more powerful alternative to DTD for defining XML document structure:</p>
+            <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                <li>Uses XML syntax (easier to learn and parse)</li>
+                <li>Supports data types (string, int, date, decimal, etc.)</li>
+                <li>More precise validation rules</li>
+                <li>Supports namespaces</li>
+                <li>Extensible and reusable</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Creating XML with Schema Reference</h2>
+
+            <h3>In XML file - add schema reference</h3>
+            <pre data-lang="xml"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;artikli xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="shema.xsd"&gt;
+  &lt;!-- your content here --&gt;
+&lt;/artikli&gt;</code></pre>
+
+            <h3>Programmatically in C#</h3>
+            <pre data-lang="C#"><code>XmlElement rootArt = doc.CreateElement("artikli");
+rootArt.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+rootArt.SetAttribute("noNamespaceSchemaLocation",
+    "http://www.w3.org/2001/XMLSchema-instance", "shema.xsd");
+docArt.AppendChild(rootArt);</code></pre>
+
+            <div class="note">
+                <strong>Key attributes:</strong><br>
+                • <code>xmlns:xsi</code> - declares the XML Schema Instance namespace<br>
+                • <code>xsi:noNamespaceSchemaLocation</code> - points to your XSD file
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. Basic XSD Schema Structure</h2>
+
+            <h3>shema.xsd - Basic template</h3>
+            <pre data-lang="xsd"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+  &lt;!-- Define root element --&gt;
+  &lt;xs:element name="artikli"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="artikel" minOccurs="0" maxOccurs="unbounded"&gt;
+          &lt;!-- article definition --&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+
+&lt;/xs:schema&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>4. Common XSD Data Types</h2>
+
+            <pre data-lang="xsd"><code>&lt;!-- Simple string element --&gt;
+&lt;xs:element name="naziv" type="xs:string"/&gt;
+
+&lt;!-- Integer element --&gt;
+&lt;xs:element name="zaloga" type="xs:integer"/&gt;
+
+&lt;!-- Decimal element --&gt;
+&lt;xs:element name="cena" type="xs:decimal"/&gt;
+
+&lt;!-- Date element --&gt;
+&lt;xs:element name="zadnjaNabava" type="xs:date"/&gt;
+
+&lt;!-- Restricted string (enumeration) --&gt;
+&lt;xs:attribute name="kategorija"&gt;
+  &lt;xs:simpleType&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+      &lt;xs:enumeration value="elektronika"/&gt;
+      &lt;xs:enumeration value="oblacila"/&gt;
+      &lt;xs:enumeration value="obutev"/&gt;
+      &lt;xs:enumeration value="hrana"/&gt;
+      &lt;xs:enumeration value="drugo"/&gt;
+    &lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+&lt;/xs:attribute&gt;</code></pre>
+
+            <div class="note">
+                <strong>Common types:</strong><br>
+                • <code>xs:string</code> - text<br>
+                • <code>xs:integer</code> - whole numbers<br>
+                • <code>xs:decimal</code> - decimal numbers<br>
+                • <code>xs:date</code> - dates (YYYY-MM-DD)<br>
+                • <code>xs:boolean</code> - true/false
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. Defining Elements with Attributes</h2>
+
+            <pre data-lang="xsd"><code>&lt;xs:element name="artikel"&gt;
+  &lt;xs:complexType&gt;
+    &lt;xs:sequence&gt;
+      &lt;!-- Child elements --&gt;
+      &lt;xs:element name="naziv" type="xs:string"/&gt;
+      &lt;xs:element name="cena" type="xs:decimal"/&gt;
+      &lt;xs:element name="zaloga" type="xs:integer"/&gt;
+      &lt;xs:element name="dobaviteljId" type="xs:string"/&gt;
+      &lt;xs:element name="zadnjaNabava" type="xs:date"/&gt;
+
+      &lt;!-- Empty element with attribute --&gt;
+      &lt;xs:element name="razpolozljiv"&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:attribute name="stanje" type="xs:string" use="required"/&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:sequence&gt;
+
+    &lt;!-- Attributes on artikel element --&gt;
+    &lt;xs:attribute name="id" type="xs:string" use="required"/&gt;
+    &lt;xs:attribute name="kategorija" type="xs:string"/&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:element&gt;</code></pre>
+
+            <div class="note">
+                <strong>Attribute usage:</strong><br>
+                • <code>use="required"</code> - attribute is mandatory<br>
+                • <code>use="optional"</code> - attribute is optional<br>
+                • No use attribute = optional by default
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Occurrence Constraints</h2>
+
+            <pre data-lang="xsd"><code>&lt;!-- Element must appear exactly once (default) --&gt;
+&lt;xs:element name="naziv" type="xs:string"/&gt;
+
+&lt;!-- Element is optional (0 or 1) --&gt;
+&lt;xs:element name="opis" type="xs:string" minOccurs="0"/&gt;
+
+&lt;!-- Element can appear 0 or more times --&gt;
+&lt;xs:element name="artikel" minOccurs="0" maxOccurs="unbounded"/&gt;
+
+&lt;!-- Element must appear at least once --&gt;
+&lt;xs:element name="artikel" minOccurs="1" maxOccurs="unbounded"/&gt;
+
+&lt;!-- Element appears between 1 and 5 times --&gt;
+&lt;xs:element name="telefon" minOccurs="1" maxOccurs="5"/&gt;</code></pre>
+
+            <div class="note">
+                <strong>Quick reference:</strong><br>
+                • <code>minOccurs="0" maxOccurs="1"</code> = optional (0 or 1)<br>
+                • <code>minOccurs="0" maxOccurs="unbounded"</code> = 0 or more<br>
+                • <code>minOccurs="1" maxOccurs="unbounded"</code> = 1 or more<br>
+                • No occurrence attributes = exactly once
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. XML Schema Validation in C#</h2>
+
+            <h3>Setup validation</h3>
+            <pre data-lang="C#"><code>using System.Xml;
+using System.Xml.Schema;
+
+static bool validacijaOK = true;
+
+static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+
+    try
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.ValidationType = ValidationType.Schema;
+        settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+
+        // Add schema file
+        settings.Schemas.Add(null, "shema.xsd");
+
+        XmlReader reader = XmlReader.Create(pot, settings);
+
+        while (reader.Read()) ;  // Read entire document to validate
+        reader.Close();
+
+        if (validacijaOK)
+        {
+            Console.WriteLine("✅ XML is valid!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Validation error: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+// Callback for validation errors
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    Console.WriteLine($"❌ Validation error: {e.Message}");
+    validacijaOK = false;
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>8. Safe Validation Pattern with Temp Files</h2>
+
+            <pre data-lang="C#"><code>static void DodajArtikel()
+{
+    // ... get user input ...
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        // ... create and add new element ...
+
+        // Save to temporary file first
+        string tempPath = "temp_artikli.xml";
+        doc.Save(tempPath);
+
+        // Validate temp file
+        ValidirajXML(tempPath);
+
+        if (validacijaOK)
+        {
+            // Only replace original if validation passed
+            File.Copy(tempPath, "artikli.xml", true);
+            File.Delete(tempPath);
+            Console.WriteLine("\n✅ Article successfully added and validated!");
+        }
+        else
+        {
+            // Delete temp file if validation failed
+            File.Delete(tempPath);
+            Console.WriteLine("\n❌ Article NOT added due to validation error!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nError: {ex.Message}");
+    }
+}</code></pre>
+
+            <div class="warning">
+                <strong>Always validate before saving!</strong> Use the temp file pattern to avoid corrupting your XML files.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>9. Complete XSD Example</h2>
+
+            <h3>shema.xsd - Complete schema for products</h3>
+            <pre data-lang="xsd"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+  &lt;!-- ARTIKLI (Products) --&gt;
+  &lt;xs:element name="artikli"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="artikel" minOccurs="0" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="naziv" type="xs:string"/&gt;
+              &lt;xs:element name="cena" type="xs:decimal"/&gt;
+              &lt;xs:element name="zaloga" type="xs:integer"/&gt;
+              &lt;xs:element name="dobaviteljId" type="xs:string"/&gt;
+              &lt;xs:element name="zadnjaNabava" type="xs:date"/&gt;
+
+              &lt;xs:element name="razpolozljiv"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:attribute name="stanje" use="required"&gt;
+                    &lt;xs:simpleType&gt;
+                      &lt;xs:restriction base="xs:string"&gt;
+                        &lt;xs:enumeration value="da"/&gt;
+                        &lt;xs:enumeration value="ne"/&gt;
+                      &lt;/xs:restriction&gt;
+                    &lt;/xs:simpleType&gt;
+                  &lt;/xs:attribute&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+
+            &lt;xs:attribute name="id" type="xs:string" use="required"/&gt;
+            &lt;xs:attribute name="kategorija" use="required"&gt;
+              &lt;xs:simpleType&gt;
+                &lt;xs:restriction base="xs:string"&gt;
+                  &lt;xs:enumeration value="elektronika"/&gt;
+                  &lt;xs:enumeration value="oblacila"/&gt;
+                  &lt;xs:enumeration value="obutev"/&gt;
+                  &lt;xs:enumeration value="hrana"/&gt;
+                  &lt;xs:enumeration value="drugo"/&gt;
+                &lt;/xs:restriction&gt;
+              &lt;/xs:simpleType&gt;
+            &lt;/xs:attribute&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+
+  &lt;!-- DOBAVITELJI (Suppliers) --&gt;
+  &lt;xs:element name="dobavitelji"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="dobavitelj" minOccurs="0" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="naziv" type="xs:string"/&gt;
+              &lt;xs:element name="naslov" type="xs:string"/&gt;
+              &lt;xs:element name="davcna" type="xs:string"/&gt;
+              &lt;xs:element name="kontakt" type="xs:string"/&gt;
+              &lt;xs:element name="opis" type="xs:string"/&gt;
+
+              &lt;xs:element name="aktiven"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:attribute name="status" type="xs:string" use="required"/&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+
+            &lt;xs:attribute name="id" type="xs:string" use="required"/&gt;
+            &lt;xs:attribute name="tip" use="required"&gt;
+              &lt;xs:simpleType&gt;
+                &lt;xs:restriction base="xs:string"&gt;
+                  &lt;xs:enumeration value="mikro"/&gt;
+                  &lt;xs:enumeration value="malo"/&gt;
+                  &lt;xs:enumeration value="srednje"/&gt;
+                  &lt;xs:enumeration value="veliko"/&gt;
+                &lt;/xs:restriction&gt;
+              &lt;/xs:simpleType&gt;
+            &lt;/xs:attribute&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+
+&lt;/xs:schema&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>10. XSD vs DTD Quick Comparison</h2>
+
+            <table style="width: 100%; border-collapse: separate; border-spacing: 0; margin: 1rem 0; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color);">
+                <thead style="background: linear-gradient(135deg, var(--accent-tertiary), var(--accent-secondary));">
+                    <tr>
+                        <th style="padding: 1rem; text-align: left; font-weight: 700; color: white;">Feature</th>
+                        <th style="padding: 1rem; text-align: left; font-weight: 700; color: white;">DTD</th>
+                        <th style="padding: 1rem; text-align: left; font-weight: 700; color: white;">XSD (XML Schema)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: var(--bg-secondary);">
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Syntax</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Custom syntax</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">XML syntax</td>
+                    </tr>
+                    <tr style="background: var(--bg-secondary);">
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Data types</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">No</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Yes (string, int, date, etc.)</td>
+                    </tr>
+                    <tr style="background: var(--bg-secondary);">
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Namespaces</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">No</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Yes</td>
+                    </tr>
+                    <tr style="background: var(--bg-secondary);">
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Reusable types</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Limited</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid var(--border-color);">Yes</td>
+                    </tr>
+                    <tr style="background: var(--bg-secondary);">
+                        <td style="padding: 1rem;">Validation</td>
+                        <td style="padding: 1rem;">Basic structure</td>
+                        <td style="padding: 1rem;">Structure + data types</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tip">
+            <div class="tip-title">💡 Best Practices</div>
+            <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                <li>Always validate before saving to avoid corrupting XML files</li>
+                <li>Use meaningful element and attribute names</li>
+                <li>Define proper data types for better validation</li>
+                <li>Use enumerations for fixed value sets</li>
+                <li>Keep XSD files modular and reusable</li>
+                <li>Test your schema with various XML documents</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>XML Schema Basic - Complete Validation Guide</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Master XSD validation in C#</p>
+        </footer>
+    </div>
+</body>
+</html>
