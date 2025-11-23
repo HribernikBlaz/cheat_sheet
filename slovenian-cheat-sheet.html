@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slovenski Cheat Sheet - Vse Vaje</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f35;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff00a0;
+            --accent-tertiary: #7c3aed;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 160, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        nav {
+            background: rgba(26, 31, 53, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 0.8rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+            font-weight: 800;
+            font-size: 1.1rem;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-primary);
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 0 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .section:hover {
+            box-shadow: 0 4px 8px rgba(0, 217, 255, 0.2);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1rem;
+            color: var(--accent-secondary);
+            margin: 1rem 0 0.5rem;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-secondary);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            color: var(--accent-primary);
+            font-size: 0.8rem;
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.8rem;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent-tertiary);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .tag-txt { background: var(--accent-success); }
+        .tag-xml { background: var(--accent-primary); }
+        .tag-dtd { background: var(--accent-warning); }
+        .tag-xsd { background: var(--accent-secondary); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .highlight {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 3px solid var(--accent-primary);
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Slovenski Cheat Sheet</li>
+            <li><a href="index.html">DTD</a></li>
+            <li><a href="txt-files.html">TXT</a></li>
+            <li><a href="dtd-csharp.html">DTD C#</a></li>
+            <li><a href="xml-schema-basic.html">XSD</a></li>
+            <li><a href="xml-schema-advanced.html">XSD Adv</a></li>
+            <li><a href="exam-cheat-sheet.html">Exam</a></li>
+            <li><a href="slovenian-cheat-sheet.html" class="active">Slovensko</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>SLOVENSKI CHEAT SHEET</h1>
+            <p class="subtitle">🇸🇮 Vse 5 Vaj - TXT, XML, DTD & XSD Kompleten Vodič v Slovenščini</p>
+        </header>
+
+        <!-- VAJA 1: TXT DATOTEKE -->
+        <div class="section">
+            <h2><span class="tag tag-txt">VAJA 1</span> TXT Datoteke - Nestrukturirani Podatki</h2>
+
+            <h3>📁 Shranjevanje Artikla (Append)</h3>
+            <pre><code>static void ShraniArtikel()
+{
+    Console.WriteLine("Ime izdelka: ");
+    string ime = Console.ReadLine();
+
+    Console.WriteLine("Cena izdelka: ");
+    string cena = Console.ReadLine();
+
+    Console.WriteLine("Zaloga: ");
+    string zaloga = Console.ReadLine();
+
+    Console.WriteLine("Dobavitelj: ");
+    string dobavitelj = Console.ReadLine();
+
+    // Ustvarjanje vrstice z vsemi podatki, ločeno s podpičjem
+    string vrstica = $"{ime};{cena};{zaloga};{dobavitelj}";
+
+    try
+    {
+        // StreamWriter s true parametrom odpre datoteko v append načinu
+        using (StreamWriter sw = new StreamWriter("artikli.txt", true))
+        {
+            sw.WriteLine(vrstica);
+        }
+        Console.WriteLine("\nArtikel je bil uspešno shranjen!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nPrišlo je do izjeme {ex.Message}");
+    }
+}</code></pre>
+
+            <div class="grid-2">
+                <div>
+                    <h3>🔍 Iskanje Artiklov po Dobavitelju in Zalogi</h3>
+                    <pre><code>static void IsciArtikle()
+{
+    if (!File.Exists("artikli.txt"))
+    {
+        Console.WriteLine("\nDatoteka ne obstaja!");
+        return;
+    }
+
+    Console.WriteLine("Vnesi ime dobavitelja: ");
+    string iskanDobavitelj = Console.ReadLine();
+
+    Console.WriteLine("Vnesi maximalno zalog: ");
+    string vnosMaxZalog = Console.ReadLine();
+    int maksZaloga = int.Parse(vnosMaxZalog);
+
+    List&lt;string&gt; najdeniArtikli = new List&lt;string&gt;();
+
+    try
+    {
+        using (StreamReader sr = new StreamReader("artikli.txt"))
+        {
+            string vrstica;
+            while ((vrstica = sr.ReadLine()) != null)
+            {
+                // Razdelimo vrstico na dele glede na podpičje
+                string[] podatki = vrstica.Split(';');
+
+                if(podatki.Length == 4)
+                {
+                    string ime = podatki[0];
+                    string cena = podatki[1];
+                    int zaloga = int.Parse(podatki[2]);
+                    string dobavitelj = podatki[3];
+
+                    // Ujemanje dobavitelja in zaloga manjša od vnešene
+                    if((dobavitelj.ToLower() == iskanDobavitelj.ToLower())
+                       && (zaloga < maksZaloga))
+                    {
+                        najdeniArtikli.Add(vrstica);
+                    }
+                }
+            }
+
+            if (najdeniArtikli.Count > 0)
+            {
+                Console.WriteLine($"Najdenih je bilo {najdeniArtikli.Count} artiklov");
+
+                // Shranjevanje rezultatov v novo datoteko
+                using (StreamWriter sw = new StreamWriter("rezultati_iskanja.txt", false))
+                {
+                    foreach (string artikel in najdeniArtikli)
+                    {
+                        sw.WriteLine(artikel);
+                    }
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Prišlo je do napake: {ex.Message}");
+    }
+}</code></pre>
+                </div>
+
+                <div>
+                    <h3>💰 Znižanje Cen (Popust)</h3>
+                    <pre><code>static void ZnizajCene()
+{
+    Console.WriteLine("Vnesite odstotek znižanja (npr. 10 za 10%): ");
+    string vnosOdstotka = Console.ReadLine();
+    double odstotek = double.Parse(vnosOdstotka);
+
+    if(odstotek <= 0 || odstotek > 100)
+    {
+        Console.WriteLine("\nOdstotek mora biti med 0 in 100");
+        return;
+    }
+
+    List&lt;string&gt; akcijskiArtikli = new List&lt;string&gt;();
+
+    try
+    {
+        using (StreamReader sr = new StreamReader("artikli.txt"))
+        {
+            string vrstica;
+            while ((vrstica = sr.ReadLine()) != null)
+            {
+                string[] podatki = vrstica.Split(";");
+                if (podatki.Length == 4)
+                {
+                    string ime = podatki[0];
+                    double staraCena = double.Parse(podatki[1]);
+                    string zaloga = podatki[2];
+                    string dobavitelj = podatki[3];
+
+                    // Izračun nove cene
+                    double novaCena = staraCena * (1 - odstotek / 100);
+                    novaCena = Math.Round(novaCena, 2);
+
+                    string novaVrstica =
+                        $"{ime};{novaCena.ToString("F2")};{zaloga};{dobavitelj}";
+
+                    akcijskiArtikli.Add(novaVrstica);
+                }
+            }
+        }
+
+        // Shranjevanje akcijskih artiklov
+        using (StreamWriter sw = new StreamWriter("artikli_akcija.txt", false))
+        {
+            sw.WriteLine($"AKCIJA - Znižanje {odstotek}%");
+            sw.WriteLine($"Datum: {DateTime.Now.ToString("dd.MM.yyyy HH:mm")}");
+            sw.WriteLine();
+
+            foreach (string artikel in akcijskiArtikli)
+            {
+                sw.WriteLine(artikel);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nPrišlo je do napake: {ex.Message}");
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- VAJA 2: XML STRUKTURIRANO -->
+        <div class="section">
+            <h2><span class="tag tag-xml">VAJA 2</span> XML Strukturirano (Brez DTD/Schema)</h2>
+
+            <h3>📝 Ustvarjanje XML Datotek</h3>
+            <pre><code>static void NarediDatoteke()
+{
+    if (!File.Exists("artikli.xml"))
+    {
+        XmlDocument document = new XmlDocument();
+        XmlDeclaration declaration = document.CreateXmlDeclaration("1.0", "UTF-8", null);
+        document.AppendChild(declaration);
+
+        XmlElement root = document.CreateElement("artikli");
+        document.AppendChild(root);
+        document.Save("artikli.xml");
+    }
+
+    if (!File.Exists("dobavitelji.xml"))
+    {
+        XmlDocument document = new XmlDocument();
+        XmlDeclaration declaration = document.CreateXmlDeclaration("1.0", "UTF-8", null);
+        document.AppendChild(declaration);
+
+        XmlElement root = document.CreateElement("dobavitelji");
+        document.AppendChild(root);
+        document.Save("dobavitelji.xml");
+    }
+}</code></pre>
+
+            <div class="grid-2">
+                <div>
+                    <h3>📦 Ustvarjanje Testnih Podatkov</h3>
+                    <pre><code>static void UstvariTestnePodatke()
+{
+    // DOBAVITELJI
+    XmlDocument docDob = new XmlDocument();
+    XmlDeclaration declDob = docDob.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docDob.AppendChild(declDob);
+    XmlElement rootDob = docDob.CreateElement("dobavitelji");
+    docDob.AppendChild(rootDob);
+
+    UstvariDobavitelja(docDob, rootDob, "1", "dobavitelj1",
+        "naslov1", "davcna1", "kontakt1", "opis1");
+    UstvariDobavitelja(docDob, rootDob, "2", "dobavitelj2",
+        "naslov2", "davcna2", "kontakt2", "opis2");
+    docDob.Save("dobavitelji.xml");
+
+    // ARTIKLI
+    XmlDocument docArt = new XmlDocument();
+    XmlDeclaration declArt = docArt.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docArt.AppendChild(declArt);
+    XmlElement rootArt = docArt.CreateElement("artikli");
+    docArt.AppendChild(rootArt);
+
+    UstvariArtikel(docArt, rootArt, "A001", "artikel1",
+        "149.99", "34", "2", "2025-11-11");
+    UstvariArtikel(docArt, rootArt, "A002", "artikel2",
+        "129.99", "11", "1", "2025-11-11");
+    docArt.Save("artikli.xml");
+}</code></pre>
+                </div>
+
+                <div>
+                    <h3>🏭 Ustvarjanje Dobavitelja</h3>
+                    <pre><code>static void UstvariDobavitelja(XmlDocument doc, XmlElement root,
+    string id, string naziv, string naslov, string davcna,
+    string kontakt, string opis)
+{
+    XmlElement dobavitelj = doc.CreateElement("dobavitelj");
+    dobavitelj.SetAttribute("id", id);
+
+    XmlElement nazivEl = doc.CreateElement("naziv");
+    nazivEl.InnerText = naziv;
+    dobavitelj.AppendChild(nazivEl);
+
+    XmlElement naslovEl = doc.CreateElement("naslov");
+    naslovEl.InnerText = naslov;
+    dobavitelj.AppendChild(naslovEl);
+
+    XmlElement davcnaEl = doc.CreateElement("davcna");
+    davcnaEl.InnerText = davcna;
+    dobavitelj.AppendChild(davcnaEl);
+
+    XmlElement kontaktEl = doc.CreateElement("kontakt");
+    kontaktEl.InnerText = kontakt;
+    dobavitelj.AppendChild(kontaktEl);
+
+    XmlElement opisEl = doc.CreateElement("opis");
+    opisEl.InnerText = opis;
+    dobavitelj.AppendChild(opisEl);
+
+    root.AppendChild(dobavitelj);
+}</code></pre>
+
+                    <h3>📱 Ustvarjanje Artikla</h3>
+                    <pre><code>static void UstvariArtikel(XmlDocument doc, XmlElement root,
+    string id, string naziv, string cena, string zaloga,
+    string dobaviteljId, string datum)
+{
+    XmlElement artikel = doc.CreateElement("artikel");
+    artikel.SetAttribute("id", id);
+
+    XmlElement nazivEl = doc.CreateElement("naziv");
+    nazivEl.InnerText = naziv;
+    artikel.AppendChild(nazivEl);
+
+    XmlElement cenaEl = doc.CreateElement("cena");
+    cenaEl.InnerText = cena;
+    artikel.AppendChild(cenaEl);
+
+    XmlElement zalogaEl = doc.CreateElement("zaloga");
+    zalogaEl.InnerText = zaloga;
+    artikel.AppendChild(zalogaEl);
+
+    XmlElement dobaviteljIdEl = doc.CreateElement("dobaviteljId");
+    dobaviteljIdEl.InnerText = dobaviteljId;
+    artikel.AppendChild(dobaviteljIdEl);
+
+    XmlElement datumEl = doc.CreateElement("zadnjaNabava");
+    datumEl.InnerText = datum;
+    artikel.AppendChild(datumEl);
+
+    root.AppendChild(artikel);
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div>
+                    <h3>📋 Izpis Artiklov</h3>
+                    <pre><code>static void IzpisArtiklov()
+{
+    if (!File.Exists("artikli.xml"))
+    {
+        Console.WriteLine("Datoteka ne obstaja!");
+        return;
+    }
+
+    XmlDocument doc = new XmlDocument();
+    doc.Load("artikli.xml");
+
+    XmlNodeList artikli = doc.SelectNodes("//artikel");
+
+    if (artikli.Count == 0)
+    {
+        Console.WriteLine("\nNi še nobenega artikla!");
+        return;
+    }
+
+    Console.WriteLine("\n=============SEZNAM ARTIKLOV=============");
+
+    foreach (XmlNode artikel in artikli)
+    {
+        string id = artikel.Attributes["id"]?.Value ?? "?";
+        string naziv = artikel.SelectSingleNode("naziv")?.InnerText ?? "";
+        string cena = artikel.SelectSingleNode("cena")?.InnerText ?? "";
+        string zaloga = artikel.SelectSingleNode("zaloga")?.InnerText ?? "";
+        string dobaviteljId = artikel.SelectSingleNode("dobaviteljId")?.InnerText ?? "";
+
+        Console.WriteLine($"\nArtikel ID: {id}");
+        Console.WriteLine($"   Naziv: {naziv}");
+        Console.WriteLine($"   Cena: {cena} EUR");
+        Console.WriteLine($"   Zaloga: {zaloga} kosov");
+        Console.WriteLine($"   Dobavitelj: {dobaviteljId}");
+    }
+
+    Console.WriteLine($"\nSkupaj {artikli.Count} artiklov");
+}</code></pre>
+                </div>
+
+                <div>
+                    <h3>➕ Dodajanje Artikla</h3>
+                    <pre><code>static void DodajArtikel()
+{
+    Console.Write("\nID artikla (npr. A002): ");
+    string id = Console.ReadLine();
+
+    Console.Write("Naziv artikla: ");
+    string naziv = Console.ReadLine();
+
+    Console.Write("Cena (EUR): ");
+    string cenaVnos = Console.ReadLine();
+    decimal cena = decimal.Parse(cenaVnos,
+        CultureInfo.InvariantCulture);
+
+    Console.Write("Zaloga (kosi): ");
+    string zalogaVnos = Console.ReadLine();
+    int zaloga = int.Parse(zalogaVnos);
+
+    Console.Write("ID dobavitelja: ");
+    string dobaviteljId = Console.ReadLine();
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        XmlNode root = doc.SelectSingleNode("artikli");
+
+        XmlElement novArtikel = doc.CreateElement("artikel");
+        novArtikel.SetAttribute("id", id);
+
+        XmlElement nazivEl = doc.CreateElement("naziv");
+        nazivEl.InnerText = naziv;
+        novArtikel.AppendChild(nazivEl);
+
+        XmlElement cenaEl = doc.CreateElement("cena");
+        cenaEl.InnerText = cena.ToString("F2",
+            CultureInfo.InvariantCulture);
+        novArtikel.AppendChild(cenaEl);
+
+        XmlElement zalogaEl = doc.CreateElement("zaloga");
+        zalogaEl.InnerText = zaloga.ToString();
+        novArtikel.AppendChild(zalogaEl);
+
+        XmlElement dobEl = doc.CreateElement("dobaviteljId");
+        dobEl.InnerText = dobaviteljId;
+        novArtikel.AppendChild(dobEl);
+
+        XmlElement datumEl = doc.CreateElement("zadnjaNabava");
+        datumEl.InnerText = DateTime.Now.ToString("yyyy-MM-dd");
+        novArtikel.AppendChild(datumEl);
+
+        root.AppendChild(novArtikel);
+        doc.Save("artikli.xml");
+
+        Console.WriteLine($"\nArtikel {naziv} uspešno dodan!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka: {ex.Message}");
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div>
+                    <h3>✏️ Urejanje Artikla</h3>
+                    <pre><code>static void UrediArtikel()
+{
+    Console.Write("Vnesi ID artikla: ");
+    string id = Console.ReadLine();
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        XmlNode artikel = doc.SelectSingleNode($"//artikel[@id='{id}']");
+
+        if (artikel == null)
+        {
+            Console.WriteLine($"\nArtikel z ID {id} ne obstaja!");
+            return;
+        }
+
+        Console.WriteLine("\n--- TRENUTNI PODATKI ---");
+        Console.WriteLine($"Naziv: {artikel.SelectSingleNode("naziv")?.InnerText}");
+        Console.WriteLine($"Cena: {artikel.SelectSingleNode("cena")?.InnerText}");
+        Console.WriteLine("\nPusti prazno da se nič ne spremeni.");
+
+        Console.Write("\nNov naziv: ");
+        string novNaziv = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novNaziv))
+        {
+            artikel.SelectSingleNode("naziv").InnerText = novNaziv;
+        }
+
+        Console.Write("Nova cena (EUR): ");
+        string novaCenaVnos = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(novaCenaVnos))
+        {
+            decimal novaCena;
+            if (decimal.TryParse(novaCenaVnos, NumberStyles.Any,
+                CultureInfo.InvariantCulture, out novaCena))
+            {
+                artikel.SelectSingleNode("cena").InnerText =
+                    novaCena.ToString("F2", CultureInfo.InvariantCulture);
+            }
+        }
+
+        doc.Save("artikli.xml");
+        Console.WriteLine("\nArtikel uspešno posodobljen!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka: {ex.Message}");
+    }
+}</code></pre>
+                </div>
+
+                <div>
+                    <h3>🗑️ Brisanje Artikla</h3>
+                    <pre><code>static void IzbrisiArtikel()
+{
+    Console.Write("Vnesi ID artikla: ");
+    string id = Console.ReadLine();
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        XmlNode artikel = doc.SelectSingleNode($"//artikel[@id='{id}']");
+
+        if (artikel == null)
+        {
+            Console.WriteLine($"\nArtikel z ID '{id}' ne obstaja!");
+            return;
+        }
+
+        string naziv = artikel.SelectSingleNode("naziv")?.InnerText ?? "Neznan";
+
+        Console.Write($"\nRes želiš izbrisati artikel '{naziv}'? (y/n): ");
+        string potrditev = Console.ReadLine();
+
+        if (potrditev?.ToLower() == "y")
+        {
+            artikel.ParentNode.RemoveChild(artikel);
+            doc.Save("artikli.xml");
+
+            Console.WriteLine($"\nArtikel '{naziv}' (ID: {id}) uspešno izbrisan!");
+        }
+        else
+        {
+            Console.WriteLine("\nBrisanje preklicano.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka: {ex.Message}");
+    }
+}</code></pre>
+
+                    <h3>🔍 Iskanje Artiklov po Dobavitelju</h3>
+                    <pre><code>static void IsciArtiklePoDobavitelju()
+{
+    Console.Write("ID dobavitelja: ");
+    string dobID = Console.ReadLine();
+
+    Console.Write("Maksimalna zaloga: ");
+    string maxZalogaVnos = Console.ReadLine();
+    int maxZaloga = int.Parse(maxZalogaVnos);
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        XmlNodeList vsiArtikliDobavitelja =
+            doc.SelectNodes($"//artikel[dobaviteljId='{dobID}']");
+
+        int stevec = 0;
+        foreach (XmlNode artikel in vsiArtikliDobavitelja)
+        {
+            int zaloga = int.Parse(
+                artikel.SelectSingleNode("zaloga")?.InnerText ?? "0");
+
+            if (zaloga < maxZaloga)
+            {
+                stevec++;
+                string id = artikel.Attributes["id"]?.Value ?? "?";
+                string naziv = artikel.SelectSingleNode("naziv")?.InnerText ?? "";
+
+                Console.WriteLine($"\n{stevec}. {naziv} (ID: {id})");
+                Console.WriteLine($"   Zaloga: {zaloga} kosov");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka: {ex.Message}");
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- VAJA 3: DTD -->
+        <div class="section">
+            <h2><span class="tag tag-dtd">VAJA 3</span> DTD - Document Type Definition</h2>
+
+            <h3>📝 Ustvarjanje XML z DTD</h3>
+            <div class="grid-2">
+                <div>
+                    <h4>Način 1: String Template</h4>
+                    <pre><code>static void NarediDatoteke()
+{
+    if (!File.Exists("artikli.xml"))
+    {
+        string xmlArtikli = $@"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;!DOCTYPE artikli SYSTEM ""besednjak.dtd""&gt;
+&lt;artikli&gt;
+&lt;/artikli&gt;";
+        File.WriteAllText("artikli.xml", xmlArtikli);
+    }
+
+    if (!File.Exists("dobavitelji.xml"))
+    {
+        string xmlDobavitelji = $@"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;!DOCTYPE dobavitelji SYSTEM ""besednjak.dtd""&gt;
+&lt;dobavitelji&gt;
+&lt;/dobavitelji&gt;";
+        File.WriteAllText("dobavitelji.xml", xmlDobavitelji);
+    }
+}</code></pre>
+                </div>
+
+                <div>
+                    <h4>Način 2: XmlDocument</h4>
+                    <pre><code>static void NarediDatoteke()
+{
+    // DOBAVITELJI
+    XmlDocument docDob = new XmlDocument();
+    XmlDeclaration declDob = docDob.CreateXmlDeclaration(
+        "1.0", "UTF-8", null);
+    docDob.AppendChild(declDob);
+
+    XmlDocumentType doctypeDob = docDob.CreateDocumentType(
+        "dobavitelji", null, "besednjak.dtd", null);
+    docDob.AppendChild(doctypeDob);
+
+    XmlElement rootDob = docDob.CreateElement("dobavitelji");
+    docDob.AppendChild(rootDob);
+
+    docDob.Save("dobavitelji.xml");
+
+    // ARTIKLI
+    XmlDocument docArt = new XmlDocument();
+    XmlDeclaration declArt = docArt.CreateXmlDeclaration(
+        "1.0", "UTF-8", null);
+    docArt.AppendChild(declArt);
+
+    XmlDocumentType doctypeArt = docArt.CreateDocumentType(
+        "artikli", null, "besednjak.dtd", null);
+    docArt.AppendChild(doctypeArt);
+
+    XmlElement rootArt = docArt.CreateElement("artikli");
+    docArt.AppendChild(rootArt);
+
+    docArt.Save("artikli.xml");
+}</code></pre>
+                </div>
+            </div>
+
+            <h3>✅ Validacija DTD</h3>
+            <pre><code>static bool validacijaOK = true;
+
+static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+
+    try
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.ValidationType = ValidationType.DTD;
+        settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+        settings.XmlResolver = new XmlUrlResolver();
+
+        XmlReader reader = XmlReader.Create(pot, settings);
+
+        while (reader.Read()) ;
+        reader.Close();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Napaka pri validaciji: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    Console.WriteLine($"❌ Napaka pri validaciji: {e.Message}");
+    validacijaOK = false;
+}</code></pre>
+
+            <h3>🛡️ Varno Shranjevanje s Temp Datoteko</h3>
+            <pre><code>static void DodajArtikel()
+{
+    // ... vnos podatkov ...
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        // ... dodajanje artikla ...
+
+        // Shranjevanje v začasno datoteko
+        string tempPath = "temp_artikli.xml";
+        doc.Save(tempPath);
+
+        // Validacija začasne datoteke
+        ValidirajXML(tempPath);
+
+        if (validacijaOK)
+        {
+            // Če je validacija OK, prepiši originalno datoteko
+            File.Copy(tempPath, "artikli.xml", true);
+            File.Delete(tempPath);
+            Console.WriteLine("\nArtikel uspešno dodan in validiran!");
+        }
+        else
+        {
+            // Če validacija ni OK, izbriši začasno datoteko
+            File.Delete(tempPath);
+            Console.WriteLine("\nArtikel ni bil dodan zaradi napake pri validaciji!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka: {ex.Message}");
+    }
+}</code></pre>
+
+            <h3>📦 Ustvarjanje Dobavitelja z EMPTY Elementom</h3>
+            <pre><code>static void UstvariDobavitelja(XmlDocument doc, XmlElement root,
+    string id, string tip, string naziv, string naslov,
+    string davcna, string kontakt, string opis, string aktiven)
+{
+    XmlElement dobavitelj = doc.CreateElement("dobavitelj");
+    dobavitelj.SetAttribute("id", id);
+    dobavitelj.SetAttribute("tip", tip);
+
+    XmlElement nazivEl = doc.CreateElement("naziv");
+    nazivEl.InnerText = naziv;
+    dobavitelj.AppendChild(nazivEl);
+
+    XmlElement naslovEl = doc.CreateElement("naslov");
+    naslovEl.InnerText = naslov;
+    dobavitelj.AppendChild(naslovEl);
+
+    XmlElement davcnaEl = doc.CreateElement("davcna");
+    davcnaEl.InnerText = davcna;
+    dobavitelj.AppendChild(davcnaEl);
+
+    XmlElement kontaktEl = doc.CreateElement("kontakt");
+    kontaktEl.InnerText = kontakt;
+    dobavitelj.AppendChild(kontaktEl);
+
+    XmlElement opisEl = doc.CreateElement("opis");
+    opisEl.InnerText = opis;
+    dobavitelj.AppendChild(opisEl);
+
+    // EMPTY element z atributom
+    XmlElement aktivenEl = doc.CreateElement("aktiven");
+    aktivenEl.SetAttribute("status", aktiven);
+    dobavitelj.AppendChild(aktivenEl);
+
+    root.AppendChild(dobavitelj);
+}</code></pre>
+
+            <h3>📱 Ustvarjanje Artikla z EMPTY Elementom</h3>
+            <pre><code>static void UstvariArtikel(XmlDocument doc, XmlElement root,
+    string id, string kategorija, string naziv, string cena,
+    string zaloga, string dobaviteljId, string datum, string razpolozljiv)
+{
+    XmlElement artikel = doc.CreateElement("artikel");
+    artikel.SetAttribute("id", id);
+    artikel.SetAttribute("kategorija", kategorija);
+
+    XmlElement nazivEl = doc.CreateElement("naziv");
+    nazivEl.InnerText = naziv;
+    artikel.AppendChild(nazivEl);
+
+    XmlElement cenaEl = doc.CreateElement("cena");
+    cenaEl.InnerText = cena;
+    artikel.AppendChild(cenaEl);
+
+    XmlElement zalogaEl = doc.CreateElement("zaloga");
+    zalogaEl.InnerText = zaloga;
+    artikel.AppendChild(zalogaEl);
+
+    XmlElement dobaviteljIdEl = doc.CreateElement("dobaviteljId");
+    dobaviteljIdEl.InnerText = dobaviteljId;
+    artikel.AppendChild(dobaviteljIdEl);
+
+    XmlElement datumEl = doc.CreateElement("zadnjaNabava");
+    datumEl.InnerText = datum;
+    artikel.AppendChild(datumEl);
+
+    // EMPTY element z atributom
+    XmlElement razpolozljivEl = doc.CreateElement("razpolozljiv");
+    razpolozljivEl.SetAttribute("stanje", razpolozljiv);
+    artikel.AppendChild(razpolozljivEl);
+
+    root.AppendChild(artikel);
+}</code></pre>
+
+            <h3>📖 Branje EMPTY Elementa z Atributom</h3>
+            <pre><code>static void IzpisArtiklov()
+{
+    XmlDocument doc = new XmlDocument();
+    doc.Load("artikli.xml");
+
+    XmlNodeList artikli = doc.SelectNodes("//artikel");
+
+    foreach (XmlNode artikel in artikli)
+    {
+        string id = artikel.Attributes["id"]?.Value ?? "?";
+        string kategorija = artikel.Attributes["kategorija"]?.Value ?? "?";
+        string naziv = artikel.SelectSingleNode("naziv")?.InnerText ?? "";
+
+        // Branje EMPTY elementa z atributom
+        XmlNode razpolozljivNode = artikel.SelectSingleNode("razpolozljiv");
+        string razpolozljiv = razpolozljivNode?.Attributes["stanje"]?.Value ?? "?";
+
+        Console.WriteLine($"Artikel ID: {id}");
+        Console.WriteLine($"   Kategorija: {kategorija}");
+        Console.WriteLine($"   Naziv: {naziv}");
+        Console.WriteLine($"   Razpoložljiv: {razpolozljiv}");
+    }
+}</code></pre>
+        </div>
+
+        <!-- VAJA 4: XML SCHEMA OSNOVNO -->
+        <div class="section">
+            <h2><span class="tag tag-xsd">VAJA 4</span> XML Schema - Osnovna Definicija</h2>
+
+            <h3>📝 Ustvarjanje XML z XML Schema</h3>
+            <div class="grid-2">
+                <div>
+                    <h4>Način 1: String Template</h4>
+                    <pre><code>static void NarediDatoteke()
+{
+    if (!File.Exists("artikli.xml"))
+    {
+        string xmlArtikli = @"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;artikli xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+         xsi:noNamespaceSchemaLocation=""shema.xsd""&gt;
+&lt;/artikli&gt;";
+        File.WriteAllText("artikli.xml", xmlArtikli);
+    }
+
+    if (!File.Exists("dobavitelji.xml"))
+    {
+        string xmlDobavitelji = @"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;dobavitelji xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+             xsi:noNamespaceSchemaLocation=""shema.xsd""&gt;
+&lt;/dobavitelji&gt;";
+        File.WriteAllText("dobavitelji.xml", xmlDobavitelji);
+    }
+}</code></pre>
+                </div>
+
+                <div>
+                    <h4>Način 2: XmlDocument</h4>
+                    <pre><code>static void NarediDatoteke()
+{
+    if (!File.Exists("artikli.xml"))
+    {
+        XmlDocument docArt = new XmlDocument();
+        XmlDeclaration declArt = docArt.CreateXmlDeclaration(
+            "1.0", "UTF-8", null);
+        docArt.AppendChild(declArt);
+
+        XmlElement rootArt = docArt.CreateElement("artikli");
+        rootArt.SetAttribute("xmlns:xsi",
+            "http://www.w3.org/2001/XMLSchema-instance");
+        rootArt.SetAttribute("noNamespaceSchemaLocation",
+            "http://www.w3.org/2001/XMLSchema-instance",
+            "shema.xsd");
+        docArt.AppendChild(rootArt);
+
+        docArt.Save("artikli.xml");
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h3>✅ Validacija XML Schema</h3>
+            <pre><code>static bool validacijaOK = true;
+
+static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+
+    try
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.ValidationType = ValidationType.Schema;
+        settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+
+        // Dodajanje sheme
+        settings.Schemas.Add(null, "shema.xsd");
+
+        XmlReader reader = XmlReader.Create(pot, settings);
+
+        while (reader.Read()) ;
+        reader.Close();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Napaka pri validaciji: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    Console.WriteLine($"❌ Napaka pri validaciji: {e.Message}");
+    validacijaOK = false;
+}</code></pre>
+
+            <h3>🛡️ Varno Dodajanje z Validacijo</h3>
+            <pre><code>static void DodajArtikel()
+{
+    // ... vnos podatkov ...
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        XmlElement root = doc.DocumentElement;
+        UstvariArtikel(doc, root, id, kategorija, naziv,
+            cena.ToString(CultureInfo.InvariantCulture),
+            zaloga.ToString(), dobaviteljId, datum, razpolozljiv);
+
+        // Shranjevanje v začasno datoteko
+        string tempPath = "temp_artikli.xml";
+        doc.Save(tempPath);
+
+        // Validacija
+        ValidirajXML(tempPath);
+
+        if (validacijaOK)
+        {
+            File.Copy(tempPath, "artikli.xml", true);
+            File.Delete(tempPath);
+            Console.WriteLine("\nArtikel uspešno dodan in validiran!");
+        }
+        else
+        {
+            File.Delete(tempPath);
+            Console.WriteLine("\nArtikel ni bil dodan zaradi napake pri validaciji!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"\nNapaka: {ex.Message}");
+    }
+}</code></pre>
+        </div>
+
+        <!-- VAJA 5: XML SCHEMA NAPREDNO -->
+        <div class="section">
+            <h2><span class="tag tag-xsd">VAJA 5</span> XML Schema - Napredna Validacija</h2>
+
+            <h3>✅ Validacija z XmlSchemaSet (Include/Redefine)</h3>
+            <pre><code>static bool validacijaOK = true;
+static List&lt;string&gt; validacijskeNapake = new List&lt;string&gt;();
+
+static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+    validacijskeNapake.Clear();
+
+    try
+    {
+        XmlSchemaSet schemaSet = new XmlSchemaSet();
+        schemaSet.XmlResolver = new XmlUrlResolver(); // KLJUČNO!
+        schemaSet.Add(null, "shema.xsd");
+
+        /*
+        shema.xsd
+            ↓ include
+          tipi.xsd (EmailType, DavcnaStevilkaType, ArtikelIdType...)
+            ↓ redefine
+          omejitve.xsd (BaseDobaviteljType → razširjen)
+        */
+
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.ValidationType = ValidationType.Schema;
+        settings.ValidationEventHandler += ValidationCallBack;
+        settings.Schemas = schemaSet;
+        settings.XmlResolver = new XmlUrlResolver();
+
+        using (XmlReader reader = XmlReader.Create(pot, settings))
+        {
+            Console.WriteLine($"Preverjam: {pot}");
+            while (reader.Read()); // prebere cel dokument
+        }
+
+        if (validacijaOK)
+        {
+            Console.WriteLine($"✅ Dokument {pot} je veljaven!");
+        }
+        else
+        {
+            Console.WriteLine($"❌ Dokument {pot} vsebuje napake:");
+            foreach (string napaka in validacijskeNapake)
+            {
+                Console.WriteLine($"  - {napaka}");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Kritična napaka pri validaciji: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    string napaka = $"{e.Severity}: {e.Message}";
+    validacijskeNapake.Add(napaka);
+    Console.WriteLine($"  ❌ {napaka}");
+    validacijaOK = false;
+}</code></pre>
+
+            <h3>🔍 Regex Validacija v C# (Pred Dodajanjem)</h3>
+            <pre><code>using System.Text.RegularExpressions;
+
+static void DodajArtikel()
+{
+    Console.Write("\nID artikla (npr. A002): ");
+    string id = Console.ReadLine();
+
+    // Validacija ID formata: A + 3 ali več številk
+    if (!Regex.IsMatch(id, @"^A[0-9]{3,}$"))
+    {
+        Console.WriteLine("\nNeveljaven format ID! Mora biti A + vsaj 3 številke (npr. A001)");
+        return;
+    }
+
+    if (AliArtikelObstaja(id))
+    {
+        Console.WriteLine($"\n⚠️ Artikel z id {id} že obstaja!");
+        return;
+    }
+
+    // ... nadaljevanje vnosa ...
+}</code></pre>
+
+            <h3>📋 Ustvarjanje Testnih Podatkov z Validacijo</h3>
+            <pre><code>static void UstvariTestnePodatke()
+{
+    Console.WriteLine("\n⚠️ To bo prepisalo obstoječe podatke!");
+    Console.Write("Ste prepričani? (y/n): ");
+    string potrditev = Console.ReadLine();
+
+    if (potrditev?.ToLower() != "y")
+    {
+        Console.WriteLine("Prekinjeno");
+        return;
+    }
+
+    // DOBAVITELJI
+    XmlDocument docDob = new XmlDocument();
+    XmlDeclaration declDob = docDob.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docDob.AppendChild(declDob);
+
+    XmlElement rootDob = docDob.CreateElement("dobavitelji");
+    rootDob.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    rootDob.SetAttribute("noNamespaceSchemaLocation",
+        "http://www.w3.org/2001/XMLSchema-instance", "shema.xsd");
+    docDob.AppendChild(rootDob);
+
+    UstvariDobavitelja(docDob, rootDob, "D1", "malo", "Dobavitelj 1",
+        "Naslov 1", "12345678", "kontakt1@email.com", "Opis dobavitelja 1", "da");
+    UstvariDobavitelja(docDob, rootDob, "D2", "srednje", "Dobavitelj 2",
+        "Naslov 2", "87654321", "kontakt2@email.com", "Opis dobavitelja 2", "da");
+    UstvariDobavitelja(docDob, rootDob, "D3", "mikro", "Dobavitelj 3",
+        "Naslov 3", "11223344", "kontakt3@email.com", "Opis dobavitelja 3", "ne");
+
+    docDob.Save("dobavitelji.xml");
+
+    // ARTIKLI
+    XmlDocument docArt = new XmlDocument();
+    XmlDeclaration declArt = docArt.CreateXmlDeclaration("1.0", "UTF-8", null);
+    docArt.AppendChild(declArt);
+
+    XmlElement rootArt = docArt.CreateElement("artikli");
+    rootArt.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    rootArt.SetAttribute("noNamespaceSchemaLocation",
+        "http://www.w3.org/2001/XMLSchema-instance", "shema.xsd");
+    docArt.AppendChild(rootArt);
+
+    UstvariArtikel(docArt, rootArt, "A001", "elektronika", "Artikel 1",
+        "149.99", "34", "D2", "2025-11-11", "da");
+    UstvariArtikel(docArt, rootArt, "A002", "oblacila", "Artikel 2",
+        "129.99", "11", "D1", "2025-11-11", "da");
+    UstvariArtikel(docArt, rootArt, "A003", "obutev", "Artikel 3",
+        "189.99", "5", "D1", "2025-11-11", "da");
+
+    docArt.Save("artikli.xml");
+
+    Console.WriteLine("✅ Testni podatki uspešno ustvarjeni!");
+
+    // Validacija ustvarjenih podatkov
+    Console.WriteLine("\n🔍 Validiram ustvarjene podatke...");
+    ValidirajXML("artikli.xml");
+    ValidirajXML("dobavitelji.xml");
+}</code></pre>
+
+            <h3>📊 Validacija Vseh Dokumentov</h3>
+            <pre><code>static void ValidirajVseDokumente()
+{
+    Console.WriteLine("\n========== VALIDACIJA XML DOKUMENTOV ==========");
+
+    Console.WriteLine("\n🔍 Validiram artikle...");
+    ValidirajXML("artikli.xml");
+
+    Console.WriteLine("\n🔍 Validiram dobavitelje...");
+    ValidirajXML("dobavitelji.xml");
+
+    if (validacijaOK)
+    {
+        Console.WriteLine("\n✅ Oba dokumenta sta veljavna glede na XSD shemo!");
+    }
+    else
+    {
+        Console.WriteLine("\n❌ Validacija ni uspela. Preverite napake zgoraj.");
+    }
+
+    Console.WriteLine("\nPritisnite katerokoli tipko za nadaljevanje...");
+    Console.ReadKey();
+}</code></pre>
+        </div>
+
+        <!-- POMOŽNE FUNKCIJE -->
+        <div class="section">
+            <h2>🔧 Pomožne Funkcije</h2>
+
+            <div class="grid-2">
+                <div>
+                    <h3>Preverjanje Obstoja</h3>
+                    <pre><code>static bool AliArtikelObstaja(string id)
+{
+    if (!File.Exists("artikli.xml")) return false;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        XmlNode artikel = doc.SelectSingleNode($"//artikel[@id='{id}']");
+        return artikel != null;
+    }
+    catch
+    {
+        return false;
+    }
+}
+
+static bool AliDobaviteljObstaja(string id)
+{
+    if (!File.Exists("dobavitelji.xml")) return false;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("dobavitelji.xml");
+
+        XmlNode dobavitelj = doc.SelectSingleNode($"//dobavitelj[@id='{id}']");
+        return dobavitelj != null;
+    }
+    catch
+    {
+        return false;
+    }
+}
+
+static bool ImaDobavitelje()
+{
+    if (!File.Exists("dobavitelji.xml")) return false;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("dobavitelji.xml");
+
+        XmlNodeList dobavitelji = doc.SelectNodes("//dobavitelj");
+        return dobavitelji.Count > 0;
+    }
+    catch
+    {
+        return false;
+    }
+}</code></pre>
+                </div>
+
+                <div>
+                    <h3>Prikaz in Pridobivanje Podatkov</h3>
+                    <pre><code>static void PrikaziArtikle()
+{
+    if (!File.Exists("artikli.xml")) return;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("artikli.xml");
+
+        XmlNodeList artikli = doc.SelectNodes("//artikel");
+
+        foreach (XmlNode artikel in artikli)
+        {
+            string id = artikel.Attributes["id"]?.Value ?? "?";
+            string naziv = artikel.SelectSingleNode("naziv")?.InnerText ?? "?";
+            Console.WriteLine($" [{id}] - {naziv}");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Napaka pri branju artiklov: {ex.Message}");
+    }
+}
+
+static void PrikaziDobavitelje()
+{
+    if (!File.Exists("dobavitelji.xml")) return;
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("dobavitelji.xml");
+
+        XmlNodeList dobavitelji = doc.SelectNodes("//dobavitelj");
+
+        foreach (XmlNode dobavitelj in dobavitelji)
+        {
+            string id = dobavitelj.Attributes["id"]?.Value ?? "?";
+            string naziv = dobavitelj.SelectSingleNode("naziv")?.InnerText ?? "?";
+            Console.WriteLine($" [{id}] - {naziv}");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Napaka pri branju dobaviteljev: {ex.Message}");
+    }
+}
+
+static string PridobiNazivDobavitelja(string dobaviteljId)
+{
+    if (!File.Exists("dobavitelji.xml")) return "Neznano";
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load("dobavitelji.xml");
+
+        XmlNode dobavitelj = doc.SelectSingleNode($"//dobavitelj[@id='{dobaviteljId}']");
+
+        if (dobavitelj != null)
+        {
+            return dobavitelj.SelectSingleNode("naziv")?.InnerText ?? "Neznano";
+        }
+    }
+    catch
+    {
+        // Ignore
+    }
+    return "Neznano";
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- HITRI NAPOTKI -->
+        <div class="section">
+            <h2>⚡ Hitri Napotki in Vzorci</h2>
+
+            <div class="grid-2">
+                <div>
+                    <h3>Formatiranje in Parsing</h3>
+                    <div class="highlight">
+                        <strong>Formatiranje decimalk (2 decimalni mesti):</strong><br>
+                        <code>cena.ToString("F2", CultureInfo.InvariantCulture)</code>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Parsing z invariant culture:</strong><br>
+                        <code>decimal.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture)</code>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Varno parsing (TryParse):</strong><br>
+                        <code>if (int.TryParse(input, out int result)) { ... }</code>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Datum v formatu YYYY-MM-DD:</strong><br>
+                        <code>DateTime.Now.ToString("yyyy-MM-dd")</code>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>XPath Poizvedbe</h3>
+                    <div class="highlight">
+                        <strong>Vsi artikli:</strong><br>
+                        <code>//artikel</code>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Artikel z določenim ID:</strong><br>
+                        <code>//artikel[@id='A001']</code>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Artikel z določenim dobaviteljem:</strong><br>
+                        <code>//artikel[dobaviteljId='D1']</code>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Vračanje rezultatov:</strong><br>
+                        <code>SelectNodes()</code> - vrne NodeList (več elementov)<br>
+                        <code>SelectSingleNode()</code> - vrne prvi zadetek
+                    </div>
+                </div>
+            </div>
+
+            <h3>⚠️ Pogoste Napake - IZOGNI SE TEM!</h3>
+            <div class="highlight">
+                <ul style="margin-left: 1.5rem; color: var(--text-primary);">
+                    <li>❌ Pozabljanje <code>using</code> stavkov</li>
+                    <li>❌ Ne preverjanje <code>File.Exists()</code> pred branjem</li>
+                    <li>❌ Uporaba <code>false</code> namesto <code>true</code> pri append načinu</li>
+                    <li>❌ Ne validiranje pred shranjevanjem XML</li>
+                    <li>❌ Manjkajoč <code>XmlResolver</code> pri modularnih shemah</li>
+                    <li>❌ Pozabljanje <code>?.</code> null-conditional operatorja</li>
+                    <li>❌ Ne zapiranje reader-jev (uporabi <code>using</code>)</li>
+                    <li>❌ ID ne sme začeti s številko (uporabi prefix kot "A001")</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <strong>🎓 Srečno pri izpitu!</strong><br>
+            <p style="margin-top: 0.5rem;">Preglej vse 5 vaj • Vadi validacijo • Zapomni si vzorce</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Vse primere kode iz dejanskih .cs datotek</p>
+        </footer>
+    </div>
+</body>
+</html>
