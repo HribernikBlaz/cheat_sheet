@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTD, Regex & XML Schema - Referenčni vodič</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #64ffda;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+        }
+
+        .section {
+            background: rgba(30, 30, 46, 0.8);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            color: #64ffda;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 2px solid rgba(100, 255, 218, 0.3);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #ffd700;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        h4 {
+            color: #ff6b9d;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .symbol-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(20, 20, 36, 0.6);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .symbol-table th {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .symbol-table td {
+            padding: 12px 15px;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .symbol-table tr:hover {
+            background: rgba(100, 255, 218, 0.05);
+        }
+
+        .symbol {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2em;
+            font-family: 'Courier New', monospace;
+        }
+
+        pre {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        code {
+            color: #ff6b9d;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 107, 157, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .example-box {
+            background: rgba(100, 255, 218, 0.05);
+            border-left: 4px solid #64ffda;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #ffc107;
+        }
+
+        .key-concept {
+            background: rgba(255, 107, 157, 0.1);
+            border-left: 4px solid #ff6b9d;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .inline-code {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 DTD, Regex & XML Schema - Referenčni vodič</h1>
+
+        <!-- DTD SECTION -->
+        <div class="section">
+            <h2>📋 DTD (Document Type Definition)</h2>
+
+            <h3>Simboli in operatorji</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Pomen</th>
+                        <th>Primer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">?</span></td>
+                        <td>Neobvezno - element se pojavi <strong>0 ali 1-krat</strong></td>
+                        <td><code>&lt;!ELEMENT oseba (naziv, email?)&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">*</span></td>
+                        <td>Poljubno število - element se pojavi <strong>0 ali večkrat</strong></td>
+                        <td><code>&lt;!ELEMENT artikli (artikel*)&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">+</span></td>
+                        <td>Vsaj enkrat - element se pojavi <strong>1 ali večkrat</strong></td>
+                        <td><code>&lt;!ELEMENT dobavitelji (dobavitelj+)&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">|</span></td>
+                        <td>ALI operator - izbira <strong>enega</strong> od elementov</td>
+                        <td><code>&lt;!ELEMENT kontakt (email | telefon)&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">,</span></td>
+                        <td>Zaporedje - elementi <strong>v določenem vrstnem redu</strong></td>
+                        <td><code>&lt;!ELEMENT artikel (naziv, cena, zaloga)&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">#PCDATA</span></td>
+                        <td>Parsed Character Data - <strong>besedilo</strong></td>
+                        <td><code>&lt;!ELEMENT naziv (#PCDATA)&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">EMPTY</span></td>
+                        <td>Prazen element - <strong>brez vsebine</strong></td>
+                        <td><code>&lt;!ELEMENT razpolozljiv EMPTY&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">ANY</span></td>
+                        <td>Kakršnakoli vsebina</td>
+                        <td><code>&lt;!ELEMENT opis ANY&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Atributi v DTD</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Tip</th>
+                        <th>Pomen</th>
+                        <th>Primer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">#REQUIRED</span></td>
+                        <td>Obvezen atribut</td>
+                        <td><code>&lt;!ATTLIST artikel id ID #REQUIRED&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">#IMPLIED</span></td>
+                        <td>Neobvezen atribut</td>
+                        <td><code>&lt;!ATTLIST artikel opis CDATA #IMPLIED&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">#FIXED</span></td>
+                        <td>Fiksna vrednost</td>
+                        <td><code>&lt;!ATTLIST artikel verzija CDATA #FIXED "1.0"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">ID</span></td>
+                        <td>Unikatni identifikator</td>
+                        <td><code>&lt;!ATTLIST artikel id ID #REQUIRED&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">IDREF</span></td>
+                        <td>Referenca na ID</td>
+                        <td><code>&lt;!ATTLIST artikel dobaviteljId IDREF #REQUIRED&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">(val1|val2)</span></td>
+                        <td>Enumeracija - izbira vrednosti</td>
+                        <td><code>&lt;!ATTLIST artikel tip (mikro|malo|srednje|veliko) #REQUIRED&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Primer kompleksne DTD strukture</h3>
+
+<pre>&lt;!-- besednjak.dtd --&gt;
+
+&lt;!-- ARTIKLI --&gt;
+&lt;!ELEMENT artikli (artikel*)&gt;
+&lt;!ELEMENT artikel (naziv, cena, zaloga, dobaviteljId, zadnjaNabava, razpolozljiv)&gt;
+&lt;!ATTLIST artikel
+    id ID #REQUIRED
+    kategorija (elektronika|obutev|oblacila|hrana|drugo) #REQUIRED&gt;
+
+&lt;!ELEMENT naziv (#PCDATA)&gt;
+&lt;!ELEMENT cena (#PCDATA)&gt;
+&lt;!ELEMENT zaloga (#PCDATA)&gt;
+&lt;!ELEMENT dobaviteljId (#PCDATA)&gt;
+&lt;!ELEMENT zadnjaNabava (#PCDATA)&gt;
+&lt;!ELEMENT razpolozljiv EMPTY&gt;
+&lt;!ATTLIST razpolozljiv stanje (da|ne) #REQUIRED&gt;
+
+&lt;!-- DOBAVITELJI --&gt;
+&lt;!ELEMENT dobavitelji (dobavitelj+)&gt;
+&lt;!ELEMENT dobavitelj (naziv, naslov, davcna, kontakt, opis, aktiven)&gt;
+&lt;!ATTLIST dobavitelj
+    id ID #REQUIRED
+    tip (mikro|malo|srednje|veliko) #REQUIRED&gt;
+
+&lt;!ELEMENT naslov (#PCDATA)&gt;
+&lt;!ELEMENT davcna (#PCDATA)&gt;
+&lt;!ELEMENT kontakt (#PCDATA)&gt;
+&lt;!ELEMENT opis (#PCDATA)&gt;
+&lt;!ELEMENT aktiven EMPTY&gt;
+&lt;!ATTLIST aktiven status (da|ne) #REQUIRED&gt;</pre>
+
+            <h3>Uporaba DTD v C#</h3>
+
+<pre>// Validacija XML proti DTD
+static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+
+    try
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;          // Omogoči DTD procesiranje
+        settings.ValidationType = ValidationType.DTD;          // Tip validacije: DTD
+        settings.ValidationEventHandler += ValidationCallBack; // Handler za napake
+        settings.XmlResolver = new XmlUrlResolver();           // Reši zunanje reference
+
+        XmlReader reader = XmlReader.Create(pot, settings);
+        while (reader.Read()) ;  // Preberi cel dokument (validacija poteka sproti)
+        reader.Close();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Napaka pri validaciji: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    Console.WriteLine($"❌ Napaka pri validaciji: {e.Message}");
+    validacijaOK = false;
+}</pre>
+
+            <h3>Kreiranje XML dokumenta z DTD referenco</h3>
+
+<pre>// Metoda 1: String template
+string xmlArtikli = $@"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;!DOCTYPE artikli SYSTEM ""{potDoBesednjaka}""&gt;
+&lt;artikli&gt;
+&lt;/artikli&gt;";
+File.WriteAllText(potDoArtiklov, xmlArtikli);
+
+// Metoda 2: XmlDocument API
+XmlDocument docDob = new XmlDocument();
+XmlDeclaration declDob = docDob.CreateXmlDeclaration("1.0", "UTF-8", null);
+docDob.AppendChild(declDob);
+
+// Dodaj DOCTYPE
+XmlDocumentType doctypeDob = docDob.CreateDocumentType(
+    "dobavitelji",      // Ime root elementa
+    null,              // Public ID
+    potDoBesednjaka,   // System ID (pot do DTD)
+    null               // Internal subset
+);
+docDob.AppendChild(doctypeDob);
+
+XmlElement rootDob = docDob.CreateElement("dobavitelji");
+docDob.AppendChild(rootDob);
+docDob.Save(potDoDobaviteljev);</pre>
+
+            <div class="key-concept">
+                <h4>🔑 Ključni koncept: EMPTY elementi</h4>
+                <p>EMPTY elementi <strong>nimajo vsebine</strong>, ampak lahko imajo atribute:</p>
+                <pre>// Kreiranje EMPTY elementa z atributom
+XmlElement aktivenEl = doc.CreateElement("aktiven");
+aktivenEl.SetAttribute("status", "da");
+dobavitelj.AppendChild(aktivenEl);
+
+// Rezultat v XML: &lt;aktiven status="da"/&gt;
+
+// Branje atributa iz EMPTY elementa
+XmlNode aktivenNode = dobavitelj.SelectSingleNode("aktiven");
+string aktiven = aktivenNode?.Attributes["status"]?.Value ?? "?";</pre>
+            </div>
+        </div>
+
+        <!-- REGEX SECTION -->
+        <div class="section">
+            <h2>🔤 Regex (Regular Expressions)</h2>
+
+            <h3>Osnovni simboli in kvantifikatorji</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Pomen</th>
+                        <th>Primer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">.</span></td>
+                        <td>Katerikoli en znak</td>
+                        <td><code>a.c</code> → abc, a9c, a c</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">*</span></td>
+                        <td>0 ali več ponovitev</td>
+                        <td><code>ab*c</code> → ac, abc, abbc</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">+</span></td>
+                        <td>1 ali več ponovitev</td>
+                        <td><code>ab+c</code> → abc, abbc (ne ac)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">?</span></td>
+                        <td>0 ali 1 ponovitev</td>
+                        <td><code>colou?r</code> → color, colour</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">{n}</span></td>
+                        <td>Točno n ponovitev</td>
+                        <td><code>\d{3}</code> → 123, 456</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">{n,}</span></td>
+                        <td>Vsaj n ponovitev</td>
+                        <td><code>\d{3,}</code> → 123, 1234, 12345</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">{n,m}</span></td>
+                        <td>Od n do m ponovitev</td>
+                        <td><code>\d{3,5}</code> → 123, 1234, 12345</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Znakovi razredi</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Pomen</th>
+                        <th>Ekvivalentno</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">\d</span></td>
+                        <td>Števka (digit)</td>
+                        <td><code>[0-9]</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">\D</span></td>
+                        <td>Ne-števka</td>
+                        <td><code>[^0-9]</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">\w</span></td>
+                        <td>Besedni znak</td>
+                        <td><code>[a-zA-Z0-9_]</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">\W</span></td>
+                        <td>Ne-besedni znak</td>
+                        <td><code>[^a-zA-Z0-9_]</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">\s</span></td>
+                        <td>Beli prostor (space, tab, newline)</td>
+                        <td><code>[ \t\n\r\f\v]</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">\S</span></td>
+                        <td>Ne-beli prostor</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">[abc]</span></td>
+                        <td>Eden od znakov a, b ali c</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">[^abc]</span></td>
+                        <td>Katerikoli znak razen a, b, c</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">[a-z]</span></td>
+                        <td>Katerakoli mala črka</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">[A-Z]</span></td>
+                        <td>Katerakoli velika črka</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Sidrišča (Anchors)</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Pomen</th>
+                        <th>Primer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">^</span></td>
+                        <td>Začetek niza</td>
+                        <td><code>^A[0-9]{3}$</code> → A001</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">$</span></td>
+                        <td>Konec niza</td>
+                        <td><code>^\d{8}$</code> → 12345678</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">\b</span></td>
+                        <td>Meja besede</td>
+                        <td><code>\bcat\b</code> → "cat" (ne "category")</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">\B</span></td>
+                        <td>Ne-meja besede</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Skupine in alternative</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Pomen</th>
+                        <th>Primer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">|</span></td>
+                        <td>ALI operator</td>
+                        <td><code>cat|dog</code> → cat ali dog</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">(...)</span></td>
+                        <td>Skupina za zajemanje</td>
+                        <td><code>(ab)+</code> → ab, abab, ababab</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">(?:...)</span></td>
+                        <td>Ne-zajemajoča skupina</td>
+                        <td><code>(?:ab)+</code> → ab, abab (brez zajemanja)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Escape znaki</h3>
+
+            <div class="warning-box">
+                <strong>⚠️ Posebni znaki:</strong> Za ujemanje posebnih znakov (. * + ? ^ $ { } [ ] ( ) | \) jih je potrebno escapati z backslash: <code>\.</code>, <code>\*</code>, <code>\+</code>
+            </div>
+
+            <h3>Praktični primeri iz projektov</h3>
+
+            <h4>1. Validacija Artikel ID (A + 3 ali več številk)</h4>
+<pre>// Regex pattern: ^A[0-9]{3,}$
+// ^ = začetek niza
+// A = črka "A"
+// [0-9]{3,} = vsaj 3 števke
+// $ = konec niza
+
+if (!System.Text.RegularExpressions.Regex.IsMatch(id, @"^A[0-9]{3,}$"))
+{
+    Console.WriteLine("Neveljaven format ID! Mora biti A + vsaj 3 številke (npr. A001)");
+    return;
+}
+
+// Veljavno: A001, A123, A9999
+// Neveljavno: A1, A12, B001, A12a</pre>
+
+            <h4>2. Validacija Email naslova</h4>
+<pre>// Regex pattern: ^[\w\.-]+@[\w\.-]+\.\w+$
+string emailPattern = @"^[\w\.-]+@[\w\.-]+\.\w+$";
+
+// [\w\.-]+ = ena ali več besednih znakov, pik ali pomišljajev
+// @ = znak @
+// [\w\.-]+ = ena ali več besednih znakov, pik ali pomišljajev (domena)
+// \. = pika (escapana)
+// \w+ = ena ali več besednih znakov (končnica)
+
+if (System.Text.RegularExpressions.Regex.IsMatch(email, emailPattern))
+{
+    // Veljaven email
+}</pre>
+
+            <h4>3. Validacija davčne številke (8 številk)</h4>
+<pre>// Regex pattern: ^\d{8}$
+string davcnaPattern = @"^\d{8}$";
+
+// ^\d{8}$ = točno 8 števk od začetka do konca niza
+
+if (System.Text.RegularExpressions.Regex.IsMatch(davcna, davcnaPattern))
+{
+    // Veljavna davčna številka
+}
+
+// Veljavno: 12345678
+// Neveljavno: 1234567, 123456789, 1234567a</pre>
+
+            <h4>4. Validacija datuma (YYYY-MM-DD)</h4>
+<pre>// Regex pattern: ^\d{4}-\d{2}-\d{2}$
+string datumPattern = @"^\d{4}-\d{2}-\d{2}$";
+
+// \d{4} = 4 števke (leto)
+// - = pomišljaj
+// \d{2} = 2 števki (mesec)
+// - = pomišljaj
+// \d{2} = 2 števki (dan)
+
+if (System.Text.RegularExpressions.Regex.IsMatch(datum, datumPattern))
+{
+    // Veljaven datum format
+}
+
+// Veljavno: 2025-11-11, 2024-01-31
+// Neveljavno: 2025-1-1, 25-11-11, 2025/11/11</pre>
+
+            <h3>Uporaba Regex v C#</h3>
+
+<pre>using System.Text.RegularExpressions;
+
+// Metoda 1: IsMatch (preveri ujemanje)
+bool ujema = Regex.IsMatch("A001", @"^A[0-9]{3,}$");
+
+// Metoda 2: Match (vrne Match objekt)
+Match match = Regex.Match("kontakt@email.com", @"^([\w\.-]+)@([\w\.-]+)$");
+if (match.Success)
+{
+    string user = match.Groups[1].Value;    // kontakt
+    string domain = match.Groups[2].Value;  // email.com
+}
+
+// Metoda 3: Matches (vrne vse ujemanja)
+MatchCollection matches = Regex.Matches(besedilo, @"\d+");
+foreach (Match m in matches)
+{
+    Console.WriteLine(m.Value);
+}
+
+// Metoda 4: Replace (zamenjaj)
+string rezultat = Regex.Replace("A001, A002, A003", @"A(\d{3})", "Artikel-$1");
+// Rezultat: "Artikel-001, Artikel-002, Artikel-003"</pre>
+        </div>
+
+        <!-- XML SCHEMA SECTION -->
+        <div class="section">
+            <h2>📐 XML Schema (XSD)</h2>
+
+            <h3>Osnovni koncepti</h3>
+
+            <div class="key-concept">
+                <h4>🔑 XML Schema vs DTD</h4>
+                <p>XML Schema ponuja:</p>
+                <ul>
+                    <li>Močnejšo tipizacijo (string, int, decimal, date...)</li>
+                    <li>Namespace podporo</li>
+                    <li>Razširljivost in ponovno uporabo (include, redefine, import)</li>
+                    <li>Kompleksne omejitve (minLength, maxLength, pattern...)</li>
+                    <li>Sam je XML dokument</li>
+                </ul>
+            </div>
+
+            <h3>Tipi podatkov v XML Schema</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Tip</th>
+                        <th>Opis</th>
+                        <th>Primer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">xs:string</span></td>
+                        <td>Besedilo</td>
+                        <td>"Hello World", "A001"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:int</span></td>
+                        <td>Celo število</td>
+                        <td>-123, 0, 456</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:decimal</span></td>
+                        <td>Decimalno število</td>
+                        <td>123.45, -0.5</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:boolean</span></td>
+                        <td>Boolean vrednost</td>
+                        <td>true, false</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:date</span></td>
+                        <td>Datum (YYYY-MM-DD)</td>
+                        <td>2025-11-11</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:dateTime</span></td>
+                        <td>Datum in čas</td>
+                        <td>2025-11-11T14:30:00</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:positiveInteger</span></td>
+                        <td>Pozitivno celo število</td>
+                        <td>1, 2, 100</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Definiranje elementov</h3>
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+    &lt;!-- Enostaven element --&gt;
+    &lt;xs:element name="naziv" type="xs:string"/&gt;
+    &lt;xs:element name="zaloga" type="xs:int"/&gt;
+    &lt;xs:element name="cena" type="xs:decimal"/&gt;
+
+    &lt;!-- Element z omejitvami --&gt;
+    &lt;xs:element name="email"&gt;
+        &lt;xs:simpleType&gt;
+            &lt;xs:restriction base="xs:string"&gt;
+                &lt;xs:pattern value="[\w\.-]+@[\w\.-]+\.\w+"/&gt;
+            &lt;/xs:restriction&gt;
+        &lt;/xs:simpleType&gt;
+    &lt;/xs:element&gt;
+
+&lt;/xs:schema&gt;</pre>
+
+            <h3>Omejitve (Restrictions)</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Omejitev</th>
+                        <th>Opis</th>
+                        <th>Primer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">minLength</span></td>
+                        <td>Minimalna dolžina</td>
+                        <td><code>&lt;xs:minLength value="3"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">maxLength</span></td>
+                        <td>Maksimalna dolžina</td>
+                        <td><code>&lt;xs:maxLength value="50"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">length</span></td>
+                        <td>Točna dolžina</td>
+                        <td><code>&lt;xs:length value="8"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">pattern</span></td>
+                        <td>Regex vzorec</td>
+                        <td><code>&lt;xs:pattern value="A[0-9]{3,}"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">minInclusive</span></td>
+                        <td>Minimalna vrednost (vključno)</td>
+                        <td><code>&lt;xs:minInclusive value="0"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">maxInclusive</span></td>
+                        <td>Maksimalna vrednost (vključno)</td>
+                        <td><code>&lt;xs:maxInclusive value="100"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">minExclusive</span></td>
+                        <td>Minimalna vrednost (izključno)</td>
+                        <td><code>&lt;xs:minExclusive value="0"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">maxExclusive</span></td>
+                        <td>Maksimalna vrednost (izključno)</td>
+                        <td><code>&lt;xs:maxExclusive value="100"/&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">enumeration</span></td>
+                        <td>Možne vrednosti</td>
+                        <td><code>&lt;xs:enumeration value="da"/&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Kompleksni tipi (complexType)</h3>
+
+<pre>&lt;!-- Artikel tip z elementi in atributi --&gt;
+&lt;xs:complexType name="ArtikelType"&gt;
+    &lt;xs:sequence&gt;
+        &lt;xs:element name="naziv" type="xs:string"/&gt;
+        &lt;xs:element name="cena" type="xs:decimal"/&gt;
+        &lt;xs:element name="zaloga" type="xs:int"/&gt;
+        &lt;xs:element name="dobaviteljId" type="xs:string"/&gt;
+        &lt;xs:element name="zadnjaNabava" type="xs:date"/&gt;
+        &lt;xs:element name="razpolozljiv"&gt;
+            &lt;xs:complexType&gt;
+                &lt;xs:attribute name="stanje" use="required"&gt;
+                    &lt;xs:simpleType&gt;
+                        &lt;xs:restriction base="xs:string"&gt;
+                            &lt;xs:enumeration value="da"/&gt;
+                            &lt;xs:enumeration value="ne"/&gt;
+                        &lt;/xs:restriction&gt;
+                    &lt;/xs:simpleType&gt;
+                &lt;/xs:attribute&gt;
+            &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute name="id" type="ArtikelIdType" use="required"/&gt;
+    &lt;xs:attribute name="kategorija" type="KategorijaType" use="required"/&gt;
+&lt;/xs:complexType&gt;</pre>
+
+            <h3>Enumeracija (izbira vrednosti)</h3>
+
+<pre>&lt;xs:simpleType name="TipPodjetjaType"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+        &lt;xs:enumeration value="mikro"/&gt;
+        &lt;xs:enumeration value="malo"/&gt;
+        &lt;xs:enumeration value="srednje"/&gt;
+        &lt;xs:enumeration value="veliko"/&gt;
+    &lt;/xs:restriction&gt;
+&lt;/xs:simpleType&gt;
+
+&lt;xs:simpleType name="KategorijaType"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+        &lt;xs:enumeration value="elektronika"/&gt;
+        &lt;xs:enumeration value="obutev"/&gt;
+        &lt;xs:enumeration value="oblacila"/&gt;
+        &lt;xs:enumeration value="hrana"/&gt;
+        &lt;xs:enumeration value="drugo"/&gt;
+    &lt;/xs:restriction&gt;
+&lt;/xs:simpleType&gt;</pre>
+
+            <h3>Validacija XML proti XSD v C#</h3>
+
+<pre>// OSNOVNA SCHEMA VALIDACIJA
+static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+
+    try
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.ValidationType = ValidationType.Schema;      // Tip validacije: Schema
+        settings.ValidationEventHandler += ValidationCallBack;  // Handler za napake
+
+        // Dodaj shemo
+        settings.Schemas.Add(null, potDoSheme);
+
+        XmlReader reader = XmlReader.Create(pot, settings);
+        while (reader.Read()) ;  // Preberi cel dokument
+        reader.Close();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Napaka pri validaciji: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    Console.WriteLine($"❌ Napaka pri validaciji: {e.Message}");
+    validacijaOK = false;
+}</pre>
+
+            <h3>Kreiranje XML dokumenta z XSD referenco</h3>
+
+<pre>// String template način
+string xmlArtikli = @"&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt;
+&lt;artikli xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+         xsi:noNamespaceSchemaLocation=""shema.xsd""&gt;
+&lt;/artikli&gt;";
+File.WriteAllText(potDoArtiklov, xmlArtikli);
+
+// XmlDocument API način
+XmlDocument docArt = new XmlDocument();
+XmlDeclaration declArt = docArt.CreateXmlDeclaration("1.0", "UTF-8", null);
+docArt.AppendChild(declArt);
+
+XmlElement rootArt = docArt.CreateElement("artikli");
+rootArt.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+rootArt.SetAttribute("noNamespaceSchemaLocation",
+    "http://www.w3.org/2001/XMLSchema-instance", "shema.xsd");
+docArt.AppendChild(rootArt);
+
+docArt.Save(potDoArtiklov);</pre>
+
+            <h3>Primer celotne sheme (shema.xsd)</h3>
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+    &lt;!-- Custom tipi --&gt;
+    &lt;xs:simpleType name="ArtikelIdType"&gt;
+        &lt;xs:restriction base="xs:string"&gt;
+            &lt;xs:pattern value="A[0-9]{3,}"/&gt;  &lt;!-- A + vsaj 3 številke --&gt;
+        &lt;/xs:restriction&gt;
+    &lt;/xs:simpleType&gt;
+
+    &lt;xs:simpleType name="EmailType"&gt;
+        &lt;xs:restriction base="xs:string"&gt;
+            &lt;xs:pattern value="[\w\.-]+@[\w\.-]+\.\w+"/&gt;
+        &lt;/xs:restriction&gt;
+    &lt;/xs:simpleType&gt;
+
+    &lt;xs:simpleType name="DavcnaStevilkaType"&gt;
+        &lt;xs:restriction base="xs:string"&gt;
+            &lt;xs:pattern value="\d{8}"/&gt;  &lt;!-- Točno 8 številk --&gt;
+        &lt;/xs:restriction&gt;
+    &lt;/xs:simpleType&gt;
+
+    &lt;!-- Root elementi --&gt;
+    &lt;xs:element name="artikli"&gt;
+        &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+                &lt;xs:element name="artikel" type="ArtikelType"
+                            minOccurs="0" maxOccurs="unbounded"/&gt;
+            &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+    &lt;/xs:element&gt;
+
+    &lt;xs:element name="dobavitelji"&gt;
+        &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+                &lt;xs:element name="dobavitelj" type="DobaviteljType"
+                            minOccurs="1" maxOccurs="unbounded"/&gt;
+            &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+    &lt;/xs:element&gt;
+
+&lt;/xs:schema&gt;</pre>
+
+            <h3>minOccurs in maxOccurs</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Kombinacija</th>
+                        <th>DTD ekvivalent</th>
+                        <th>Pomen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>minOccurs="0" maxOccurs="1"</code></td>
+                        <td><span class="symbol">?</span></td>
+                        <td>Neobvezno (0 ali 1)</td>
+                    </tr>
+                    <tr>
+                        <td><code>minOccurs="0" maxOccurs="unbounded"</code></td>
+                        <td><span class="symbol">*</span></td>
+                        <td>0 ali več</td>
+                    </tr>
+                    <tr>
+                        <td><code>minOccurs="1" maxOccurs="unbounded"</code></td>
+                        <td><span class="symbol">+</span></td>
+                        <td>1 ali več</td>
+                    </tr>
+                    <tr>
+                        <td><code>minOccurs="1" maxOccurs="1"</code></td>
+                        <td>(privzeto)</td>
+                        <td>Točno 1 (obvezno)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- IMPROVED XML SCHEMA SECTION -->
+        <div class="section">
+            <h2>🚀 Napredna XML Schema (Include & Redefine)</h2>
+
+            <div class="key-concept">
+                <h4>🔑 Modularnost in ponovno uporaba</h4>
+                <p>Napredne sheme omogočajo:</p>
+                <ul>
+                    <li><strong>include</strong> - vključitev drugih shem (ponovno uporabi tipe)</li>
+                    <li><strong>redefine</strong> - razširi ali spremeni obstoječe tipe</li>
+                    <li><strong>import</strong> - vključitev shem iz drugih namespace-ov</li>
+                </ul>
+            </div>
+
+            <h3>Struktura modularne sheme</h3>
+
+            <div class="example-box">
+                <h4>Hierarhija datotek</h4>
+                <pre>shema.xsd          (glavna shema)
+    ↓ include
+  tipi.xsd         (osnovni tipi: EmailType, DavcnaStevilkaType...)
+    ↓ redefine
+  omejitve.xsd     (omejitve: BaseDobaviteljType → razširjen tip)</pre>
+            </div>
+
+            <h3>1. tipi.xsd - Osnovni tipi</h3>
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+    &lt;!-- Email tip --&gt;
+    &lt;xs:simpleType name="EmailType"&gt;
+        &lt;xs:restriction base="xs:string"&gt;
+            &lt;xs:pattern value="[\w\.-]+@[\w\.-]+\.\w+"/&gt;
+        &lt;/xs:restriction&gt;
+    &lt;/xs:simpleType&gt;
+
+    &lt;!-- Davčna številka tip (8 številk) --&gt;
+    &lt;xs:simpleType name="DavcnaStevilkaType"&gt;
+        &lt;xs:restriction base="xs:string"&gt;
+            &lt;xs:pattern value="\d{8}"/&gt;
+            &lt;xs:length value="8"/&gt;
+        &lt;/xs:restriction&gt;
+    &lt;/xs:simpleType&gt;
+
+    &lt;!-- Artikel ID tip --&gt;
+    &lt;xs:simpleType name="ArtikelIdType"&gt;
+        &lt;xs:restriction base="xs:string"&gt;
+            &lt;xs:pattern value="A[0-9]{3,}"/&gt;
+        &lt;/xs:restriction&gt;
+    &lt;/xs:simpleType&gt;
+
+    &lt;!-- Osnovni Artikel tip --&gt;
+    &lt;xs:complexType name="BaseArtikelType"&gt;
+        &lt;xs:sequence&gt;
+            &lt;xs:element name="naziv" type="xs:string"/&gt;
+            &lt;xs:element name="cena" type="xs:decimal"/&gt;
+        &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+
+&lt;/xs:schema&gt;</pre>
+
+            <h3>2. omejitve.xsd - Razširitve z redefine</h3>
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+    &lt;!-- Redefiniraj BaseArtikelType iz tipi.xsd --&gt;
+    &lt;xs:redefine schemaLocation="tipi.xsd"&gt;
+        &lt;xs:complexType name="BaseArtikelType"&gt;
+            &lt;xs:complexContent&gt;
+                &lt;xs:extension base="BaseArtikelType"&gt;  &lt;!-- Razširi originalni tip --&gt;
+                    &lt;xs:sequence&gt;
+                        &lt;!-- Dodaj nove elemente --&gt;
+                        &lt;xs:element name="zaloga" type="xs:int"/&gt;
+                        &lt;xs:element name="dobaviteljId" type="xs:string"/&gt;
+                        &lt;xs:element name="zadnjaNabava" type="xs:date"/&gt;
+                    &lt;/xs:sequence&gt;
+                &lt;/xs:extension&gt;
+            &lt;/xs:complexContent&gt;
+        &lt;/xs:complexType&gt;
+    &lt;/xs:redefine&gt;
+
+&lt;/xs:schema&gt;</pre>
+
+            <h3>3. shema.xsd - Glavna shema</h3>
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+    &lt;!-- Vključi tipi.xsd --&gt;
+    &lt;xs:include schemaLocation="tipi.xsd"/&gt;
+
+    &lt;!-- Redefiniraj z omejitvami --&gt;
+    &lt;xs:redefine schemaLocation="omejitve.xsd"&gt;
+        &lt;!-- Dodaj še več omejitev... --&gt;
+    &lt;/xs:redefine&gt;
+
+    &lt;!-- Root elementi --&gt;
+    &lt;xs:element name="artikli"&gt;
+        &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+                &lt;xs:element name="artikel" type="BaseArtikelType"
+                            minOccurs="0" maxOccurs="unbounded"/&gt;
+            &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+    &lt;/xs:element&gt;
+
+&lt;/xs:schema&gt;</pre>
+
+            <h3>Validacija z XmlSchemaSet</h3>
+
+<pre>static void ValidirajXML(string pot)
+{
+    validacijaOK = true;
+    validacijskeNapake.Clear();
+
+    try
+    {
+        // XmlSchemaSet za kompleksne sheme (z include/redefine)
+        XmlSchemaSet schemaSet = new XmlSchemaSet();
+        schemaSet.XmlResolver = new XmlUrlResolver();  // ⚠️ KLJUČNO za resolviranje include/redefine
+        schemaSet.Add(null, potDoSheme);
+
+        /* Hierarhija:
+           shema.xsd
+             ↓ include
+           tipi.xsd (EmailType, DavcnaStevilkaType, ArtikelIdType, BaseArtikelType...)
+             ↓ redefine
+           omejitve.xsd (BaseDobaviteljType → razširjen z dodatnimi elementi)
+        */
+
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.ValidationType = ValidationType.Schema;
+        settings.ValidationEventHandler += ValidationCallBack;
+        settings.Schemas = schemaSet;
+        settings.XmlResolver = new XmlUrlResolver();  // ⚠️ KLJUČNO
+
+        using (XmlReader reader = XmlReader.Create(pot, settings))
+        {
+            Console.WriteLine($"Preverjam: {pot}");
+            while (reader.Read());  // Prebere cel dokument, validacija poteka sproti
+        }
+
+        if (validacijaOK)
+        {
+            Console.WriteLine($"✅ Dokument {pot} je veljaven!");
+        }
+        else
+        {
+            Console.WriteLine($"❌ Dokument {pot} vsebuje napake:");
+            foreach (string napaka in validacijskeNapake)
+            {
+                Console.WriteLine($"  - {napaka}");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Kritična napaka pri validaciji: {ex.Message}");
+        validacijaOK = false;
+    }
+}
+
+private static void ValidationCallBack(object sender, ValidationEventArgs e)
+{
+    string napaka = $"{e.Severity}: {e.Message}";
+    validacijskeNapake.Add(napaka);
+    Console.WriteLine($"  ❌ {napaka}");
+    validacijaOK = false;
+}</pre>
+
+            <div class="warning-box">
+                <h4>⚠️ Pomembno pri include/redefine</h4>
+                <ul>
+                    <li><strong>XmlResolver mora biti nastavljen!</strong> Brez njega se zunanje datoteke ne bodo resolvale.</li>
+                    <li>Uporabi <code>XmlSchemaSet</code> namesto direktnega dodajanja v <code>settings.Schemas.Add()</code></li>
+                    <li><strong>include</strong> - za ponovno uporabo tipov iz istega namespace-a</li>
+                    <li><strong>redefine</strong> - za razširitev ali spremembo obstoječih tipov</li>
+                    <li><strong>import</strong> - za vključitev shem iz drugih namespace-ov</li>
+                </ul>
+            </div>
+
+            <h3>Include vs Redefine vs Import</h3>
+
+            <table class="symbol-table">
+                <thead>
+                    <tr>
+                        <th>Ukaz</th>
+                        <th>Namen</th>
+                        <th>Uporaba</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="symbol">xs:include</span></td>
+                        <td>Vključi shemo iz istega namespace-a</td>
+                        <td>Ponovno uporabi tipe brez sprememb</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:redefine</span></td>
+                        <td>Vključi in <strong>razširi/spremeni</strong> tipe</td>
+                        <td>Dodaj nove elemente ali omejitve obstoječim tipom</td>
+                    </tr>
+                    <tr>
+                        <td><span class="symbol">xs:import</span></td>
+                        <td>Vključi shemo iz <strong>drugega namespace-a</strong></td>
+                        <td>Za modularne sheme z namespace-i</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Extension vs Restriction</h3>
+
+<pre>&lt;!-- EXTENSION - Razširi tip z novimi elementi/atributi --&gt;
+&lt;xs:complexType name="RazsirijeniArtikel"&gt;
+    &lt;xs:complexContent&gt;
+        &lt;xs:extension base="BaseArtikelType"&gt;
+            &lt;xs:sequence&gt;
+                &lt;xs:element name="opis" type="xs:string"/&gt;  &lt;!-- DODAJ nov element --&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name="popust" type="xs:decimal"/&gt;  &lt;!-- DODAJ nov atribut --&gt;
+        &lt;/xs:extension&gt;
+    &lt;/xs:complexContent&gt;
+&lt;/xs:complexType&gt;
+
+&lt;!-- RESTRICTION - Omeji tip (bolj strogo) --&gt;
+&lt;xs:simpleType name="OmejenaZaloga"&gt;
+    &lt;xs:restriction base="xs:int"&gt;
+        &lt;xs:minInclusive value="0"/&gt;      &lt;!-- Minimalno 0 --&gt;
+        &lt;xs:maxInclusive value="1000"/&gt;   &lt;!-- Maksimalno 1000 --&gt;
+    &lt;/xs:restriction&gt;
+&lt;/xs:simpleType&gt;</pre>
+        </div>
+
+        <!-- PRACTICAL EXAMPLES SECTION -->
+        <div class="section">
+            <h2>💡 Praktični primeri in best practices</h2>
+
+            <h3>Varna validacija pred shranjevanjem</h3>
+
+<pre>static void DodajArtikel()
+{
+    // ... zbiranje podatkov od uporabnika ...
+
+    try
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(potDoArtiklov);
+
+        XmlElement root = doc.DocumentElement;
+        UstvariArtikel(doc, root, id, kategorija, naziv, cena, zaloga,
+                       dobaviteljId, datum, razpolozljiv);
+
+        // Najprej shrani v temp datoteko
+        string tempPath = "temp_artikli.xml";
+        doc.Save(tempPath);
+
+        // Validiraj temp datoteko
+        ValidirajXML(tempPath);
+
+        if (validacijaOK)
+        {
+            // Če je validacija uspešna, prepiši originalno datoteko
+            File.Copy(tempPath, potDoArtiklov, true);
+            File.Delete(tempPath);
+            Console.WriteLine("✅ Artikel uspešno dodan in validiran!");
+        }
+        else
+        {
+            // Če validacija ni uspešna, zavrži temp datoteko
+            File.Delete(tempPath);
+            Console.WriteLine("❌ Artikel ni bil dodan zaradi napake pri validaciji!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Napaka pri dodajanju: {ex.Message}");
+    }
+}</pre>
+
+            <h3>Branje EMPTY elementov z atributi</h3>
+
+<pre>// Kreiranje
+XmlElement razpolozljivEl = doc.CreateElement("razpolozljiv");
+razpolozljivEl.SetAttribute("stanje", "da");
+artikel.AppendChild(razpolozljivEl);
+// Rezultat: &lt;razpolozljiv stanje="da"/&gt;
+
+// Branje
+XmlNode razpolozljivNode = artikel.SelectSingleNode("razpolozljiv");
+string razpolozljiv = razpolozljivNode?.Attributes["stanje"]?.Value ?? "?";
+// Uporabi null-conditional (?.) in null-coalescing (??) operatorje</pre>
+
+            <h3>Pravilno formatiranje decimalnih števil</h3>
+
+<pre>using System.Globalization;
+
+// Pri pisanju - uporabi InvariantCulture
+decimal cena = 149.99m;
+cenaEl.InnerText = cena.ToString("F2", CultureInfo.InvariantCulture);
+// Rezultat: "149.99" (ne "149,99")
+
+// Pri branju - uporabi InvariantCulture
+string cenaVnos = Console.ReadLine();
+decimal cena;
+if (decimal.TryParse(cenaVnos, NumberStyles.Any, CultureInfo.InvariantCulture, out cena))
+{
+    // Uspešno parsirano
+}</pre>
+
+            <h3>XPath queries</h3>
+
+<pre>// Vse artikle
+XmlNodeList artikli = doc.SelectNodes("//artikel");
+
+// Artikel z določenim ID-jem
+XmlNode artikel = doc.SelectSingleNode($"//artikel[@id='{id}']");
+
+// Artikli določenega dobavitelja
+XmlNodeList artikliDob = doc.SelectNodes($"//artikel[dobaviteljId='{dobID}']");
+
+// Element znotraj artikel-a
+string naziv = artikel.SelectSingleNode("naziv")?.InnerText ?? "";
+
+// Atribut
+string kategorija = artikel.Attributes["kategorija"]?.Value ?? "?";</pre>
+
+            <div class="key-concept">
+                <h4>🔑 Povzetek ključnih konceptov</h4>
+                <ol>
+                    <li><strong>DTD</strong> - Enostaven, omejen, primeren za osnovno validacijo</li>
+                    <li><strong>XML Schema</strong> - Močnejša tipizacija, več omejitev, bolj fleksibilen</li>
+                    <li><strong>Include/Redefine</strong> - Modularnost in ponovno uporaba tipov</li>
+                    <li><strong>Regex</strong> - Za kompleksne validacijske vzorce (email, ID, davčna...)</li>
+                    <li><strong>XmlResolver</strong> - Obvezen za resolviranje include/redefine/import</li>
+                    <li><strong>Temp datoteke</strong> - Vedno validiraj pred prepisovanjem originalov</li>
+                    <li><strong>InvariantCulture</strong> - Za pravilno formatiranje decimalnih števil</li>
+                    <li><strong>Null operatorji</strong> - ?. in ?? za varno branje XML-ja</li>
+                </ol>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
