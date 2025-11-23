@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <!-- ====================================== -->
+  <!-- VKLJUČITEV ZUNANJIH SHEM -->
+  <!-- ====================================== -->
+  
+  <!-- Include - vključi tipe iz iste imenskega prostora -->
+  <xs:include schemaLocation="tipi.xsd"/>
+  
+  <!-- Redefine - vključi in preoblikuj tip -->
+  <xs:redefine schemaLocation="omejitve.xsd">
+    <!-- Razširimo BaseDobaviteljType z dodatnimi elementi -->
+    <xs:complexType name="BaseDobaviteljType">
+      <xs:complexContent>
+        <xs:extension base="BaseDobaviteljType">
+          <xs:sequence>
+            <xs:element ref="davcna"/>
+            <xs:element ref="kontakt"/>
+            <xs:element name="opis" type="xs:string"/>
+            <xs:element name="aktiven">
+              <xs:complexType>
+                <xs:attribute name="status" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:enumeration value="da"/>
+                      <xs:enumeration value="ne"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:redefine>
+
+  <!-- ====================================== -->
+  <!-- KOMPLEKSNI TIP Z COMPLEXCONTENT -->
+  <!-- ====================================== -->
+  
+  <!-- Razširjen artikel tip - complexContent razširja BaseArtikelType -->
+  <xs:complexType name="ArtikelType">
+    <xs:complexContent>
+      <xs:extension base="BaseArtikelType">
+        <xs:sequence>
+          <xs:element name="dobaviteljId" type="xs:string"/>
+          <xs:element name="zadnjaNabava" type="xs:date"/>
+          <xs:element name="razpolozljiv">
+            <xs:complexType>
+              <xs:attribute name="stanje" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="da"/>
+                    <xs:enumeration value="ne"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="ArtikelIdType" use="required"/>
+        <xs:attribute name="kategorija" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="elektronika"/>
+              <xs:enumeration value="obutev"/>
+              <xs:enumeration value="oblacila"/>
+              <xs:enumeration value="hrana"/>
+              <xs:enumeration value="drugo"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- ====================================== -->
+  <!-- KOMPLEKSNI TIP ZA DOBAVITELJA -->
+  <!-- ====================================== -->
+  
+  <xs:complexType name="DobaviteljType">
+    <xs:complexContent>
+      <xs:extension base="BaseDobaviteljType">
+        <xs:attribute name="id" type="DobaviteljIdType" use="required"/>
+        <xs:attribute name="tip" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="mikro"/>
+              <xs:enumeration value="malo"/>
+              <xs:enumeration value="srednje"/>
+              <xs:enumeration value="veliko"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- ====================================== -->
+  <!-- SUBSTITUTION GROUP - omogoča različno poimenovanje -->
+  <!-- ====================================== -->
+  
+  <xs:element name="artikel" type="ArtikelType"/>
+  <xs:element name="izdelek" substitutionGroup="artikel"/>
+  <xs:element name="produkt" substitutionGroup="artikel"/>
+  
+  <xs:element name="dobavitelj" type="DobaviteljType"/>
+  <xs:element name="supplier" substitutionGroup="dobavitelj"/>
+  <xs:element name="ponudnik" substitutionGroup="dobavitelj"/>
+
+  <!-- ====================================== -->
+  <!-- ROOT ELEMENTI -->
+  <!-- ====================================== -->
+  
+  <xs:element name="artikli">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Uporabimo artikel, ampak lahko tudi substitucijske elemente -->
+        <xs:element ref="artikel" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="dobavitelji">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Uporabimo dobavitelj, ampak lahko tudi substitucijske elemente -->
+        <xs:element ref="dobavitelj" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

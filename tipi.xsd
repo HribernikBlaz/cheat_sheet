@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <!-- ====================================== -->
+  <!-- KOMPLEKSNI TIPI Z REGULARNIMI IZRAZI -->
+  <!-- ====================================== -->
+  
+  <!-- 1. Email format - kompleksen regex -->
+  <xs:simpleType name="EmailType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- 2. Slovenska davčna številka - 8 številk -->
+  <xs:simpleType name="DavcnaStevilkaType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{8}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- 3. Telefonska številka SI - različni formati -->
+  <xs:simpleType name="TelefonType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\+386|0)[1-9][0-9]{7,8}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- 4. Artikel ID - format A + 3 številke -->
+  <xs:simpleType name="ArtikelIdType">
+    <xs:restriction base="xs:ID">
+      <xs:pattern value="A[0-9]{3,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- 5. Dobavitelj ID - format D + 1 ali več številk -->
+  <xs:simpleType name="DobaviteljIdType">
+    <xs:restriction base="xs:ID">
+      <xs:pattern value="D[0-9]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ====================================== -->
+  <!-- OSNOVNI ELEMENTI -->
+  <!-- ====================================== -->
+  
+  <xs:element name="naziv" type="xs:string"/>
+  <xs:element name="cena" type="xs:decimal"/>
+  <xs:element name="naslov" type="xs:string"/>
+  <xs:element name="davcna" type="DavcnaStevilkaType"/>
+  <xs:element name="kontakt" type="EmailType"/>
+
+  <!-- ====================================== -->
+  <!-- OSNOVNI KOMPLEKSNI TIP - brez simpleContent/complexContent -->
+  <!-- ====================================== -->
+  
+  <!-- Osnovni tip za artikel - bo razširjen v glavni shemi -->
+  <xs:complexType name="BaseArtikelType">
+    <xs:sequence>
+      <xs:element ref="naziv"/>
+      <xs:element ref="cena"/>
+      <xs:element name="zaloga" type="xs:positiveInteger"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
