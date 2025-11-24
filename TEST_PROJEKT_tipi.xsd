@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="EmailType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ClanIdType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="C[0-9]{3,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="KnjigaIdType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="K[0-9]{3,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ====================================== -->
+  <!-- OSNOVNI ELEMENTI -->
+  <!-- ====================================== -->
+  
+  <xs:element name="ime" type="xs:string"/>
+  <xs:element name="priimek" type="xs:string"/>
+  <xs:element name="email" type="EmailType"/>
+
+  <xs:element name="naslov" type="xs:string"/>
+  <xs:element name="datumIzposoje" type="xs:date"/>
+
+  <xs:element name="idClana" type="ClanIdType"/>
+  <xs:element name="idKnjige" type="KnjigaIdType"/>
+
+  <!-- ====================================== -->
+  <!-- OSNOVNI KOMPLEKSNI TIP - brez simpleContent/complexContent -->
+  <!-- ====================================== -->
+  
+  <!-- Osnovni tip za artikel - bo razširjen v glavni shemi -->
+  <xs:complexType name="BaseClanType">
+    <xs:sequence>
+      <xs:element ref="ime"/>
+      <xs:element ref="priimek"/>
+      <xs:element ref="email"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  
+  <xs:complexType name="BaseIzposojaType">
+    <xs:sequence>
+      <xs:element ref="idClana"/>
+      <xs:element ref="idKnjige"/>
+      <xs:element ref="naslov"/>
+      <xs:element ref="datumIzposoje"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:include schemaLocation="tipi.xsd"/>
+
+  <xs:complexType name="ClanType">
+    <xs:complexContent>
+      <xs:extension base="BaseClanType">
+        <xs:attribute name="id" type="ClanIdType" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:element name="clani">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="clan" type="ClanType" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+    <xs:complexType name="IzposojaType">
+    <xs:complexContent>
+      <xs:extension base="BaseIzposojaType">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="izposoje">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="izposoja" type="IzposojaType" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
